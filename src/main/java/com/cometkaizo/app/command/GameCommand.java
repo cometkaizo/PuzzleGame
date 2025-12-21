@@ -19,14 +19,9 @@ public class GameCommand extends Command {
         this.app = app;
         rootNode.split(
                 new LiteralCommandNodeBuilder("load").split(
-                        new LiteralCommandNodeBuilder("named")
+                        /*new LiteralCommandNodeBuilder("named")
                                 .then(new ArgumentCommandNodeBuilder(new StringArgument("namespace")))
                                 .executes(this::loadNamed),
-                        new LiteralCommandNodeBuilder("builtin")
-                                .then(new ArgumentCommandNodeBuilder(new StringArgument("namespace")))
-                                .then(new LiteralCommandNodeBuilder("as"))
-                                .then(new ArgumentCommandNodeBuilder(new StringArgument("newName")))
-                                .executes(this::loadBuiltin),
                         new LiteralCommandNodeBuilder("new").then(new LiteralCommandNodeBuilder("as"))
                                 .then(new ArgumentCommandNodeBuilder(new StringArgument("name")))
                                 .executes(this::loadNew),
@@ -34,7 +29,12 @@ public class GameCommand extends Command {
                                 .then(new ArgumentCommandNodeBuilder(new StringArgument("location")))
                                 .then(new LiteralCommandNodeBuilder("named"))
                                 .then(new ArgumentCommandNodeBuilder(new StringArgument("namespace")))
-                                .executes(this::loadFrom)
+                                .executes(this::loadFrom),*/
+                        new LiteralCommandNodeBuilder("builtin")
+                                .then(new ArgumentCommandNodeBuilder(new StringArgument("namespace")))
+                                .then(new LiteralCommandNodeBuilder("as"))
+                                .then(new ArgumentCommandNodeBuilder(new StringArgument("newName")))
+                                .executes(this::loadBuiltin)
                 ),
                 new LiteralCommandNodeBuilder("save")
                         .split(
@@ -47,7 +47,7 @@ public class GameCommand extends Command {
         );
     }
 
-    private void loadNew() {
+    /*private void loadNew() {
         String name = (String) parsedArgs.get("name");
         Main.log("Creating & loading new world... Previous unsaved progress will be lost if load succeeds");
         app.createNewWorld(name);
@@ -64,7 +64,7 @@ public class GameCommand extends Command {
         String namespace = (String) parsedArgs.get("namespace");
         Main.log("Loading world '" + namespace + "'... Previous unsaved progress will be lost if load succeeds");
         app.loadFrom(namespace);
-    }
+    }*/
 
     private void loadBuiltin() {
 
@@ -74,7 +74,7 @@ public class GameCommand extends Command {
         String location = (String) parsedArgs.get("location");
         Main.log("Saving game to '" + location + "'...");
 
-        boolean success = app.saveGameIn(Path.of(location));
+        boolean success = app.saveGameTo(Path.of(location));
 
         if (success) Main.log("Successfully saved world to '" + location + "'");
         else Main.log("Failed to save world to '" + location + "'");
