@@ -12,24 +12,33 @@ import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.InputListener;
 import com.cometkaizo.input.RawInputListener;
 import com.cometkaizo.input.RawInputListenerImpl;
-import com.cometkaizo.io.IOUtils;
 import com.cometkaizo.io.data.DataTypes;
 import com.cometkaizo.screen.GameRenderer;
+import com.cometkaizo.screen.Overlay;
+import com.cometkaizo.screen.TitleScreen;
 import com.cometkaizo.system.app.App;
+import com.cometkaizo.util.FileUtils;
 import com.cometkaizo.world.Tickable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
+import static com.cometkaizo.util.FileUtils.exists;
+
 public class GameApp extends App implements Tickable {
+    public static final String SAVE_DIR_NAME = "PuzzleGame";
 
     private final GameAppSettings settings;
     private final CommandGroup commandGroup;
+    private File saveDir;
 
-    private final Game game;
+    private Game game;
+    private Overlay overlay;
 
     private JFrame frame;
     private GameRenderer renderer;
@@ -40,6 +49,7 @@ public class GameApp extends App implements Tickable {
         this.settings = settings;
         this.commandGroup = commandGroup;
         this.game = new Game(this, new GameSettings());
+        this.overlay = new TitleScreen(this);
     }
 
     public GameApp() {
@@ -51,6 +61,7 @@ public class GameApp extends App implements Tickable {
                 () -> new TPCommand(this)
         );
         this.game = new Game(this, new GameSettings());
+        this.overlay = new TitleScreen(this);
     }
 
     public void parseInput(String input) {
@@ -65,6 +76,7 @@ public class GameApp extends App implements Tickable {
     public void setup() {
         super.setup();
         Main.log("App setting up with settings:\n" + settings + "\nand command group:\n" + commandGroup);
+        makeSaveDirIn(FileUtils.getAppdataDir());
 
         InputBindings.INPUT_BINDINGS.register(this);
         DataTypes.DATA_TYPES.register(this);
@@ -81,7 +93,7 @@ public class GameApp extends App implements Tickable {
         frame.addKeyListener(rawInputListener);
         frame.addWindowListener(new WindowCloseListener());
 
-        renderer = new GameRenderer(settings.defaultRendererSettings, game);
+        renderer = new GameRenderer(settings.defaultRendererSettings, this);
         renderer.addMouseListener(rawInputListener);
         renderer.addMouseMotionListener(rawInputListener);
 
@@ -98,6 +110,21 @@ public class GameApp extends App implements Tickable {
         rawInputListener.removeInputListener(listener);
     }
 
+    private void makeSaveDirIn(File parent) {
+        try {
+            if (exists(parent)) {
+                saveDir = new File(parent, SAVE_DIR_NAME);
+            } else {
+                saveDir = new File(FileUtils.thisProgramLocation(), SAVE_DIR_NAME);
+            }
+            if (!saveDir.exists() && !saveDir.mkdirs())
+                throw new IllegalStateException("Could not create data folder at " + saveDir.getPath());
+        } catch (SecurityException e) {
+            saveDir = null;
+            throw new IllegalStateException("Could not create data folder in " + parent.getPath());
+        }
+    }
+
     @Override
     public void cleanup() {
         super.cleanup();
@@ -111,7 +138,9 @@ public class GameApp extends App implements Tickable {
     @Override
     public void tick() {
         super.tick();
-        if (game != null) game.tick();
+
+        if (shouldTickGame()) game.tick();
+        if (shouldTickOrRenderOverlay()) overlay.tick();
     }
 
     public void render(double partialTick) {
@@ -119,27 +148,36 @@ public class GameApp extends App implements Tickable {
         if (frame != null) frame.repaint();
     }
 
-    public void createNewWorld(String name) {
-        Main.log("Creating & loading new world from '" + settings.resourceWorldsPath + "'...");
-        game.readFrom(settings.resourceWorldsPath.toPath(), settings.newWorldSubPath, IOUtils.toNamespace(name), name);
-    }
-
-    public void loadFrom(String namespace) {
-        loadFrom(Path.of(settings.gamePath.toString(), settings.gameSaveSubPath), namespace);
-    }
-
-    public void loadFrom(Path savePath, String saveName) {
-        Main.log("Loading game from '" + savePath + "'...");
-        game.readFrom(savePath, saveName);
-    }
-
-    public boolean saveGameIn(Path gamePath) {
-        Main.log("Saving game to '" + gamePath + "'");
-        return game.saveIn(gamePath);
+    public boolean saveGameTo(Path path) {
+        Main.log("Saving game to '" + path + "'");
+        return game.write(path);
     }
 
     public boolean saveGame() {
-        return saveGameIn(settings.gamePath);
+        return saveGameTo(saveDir.toPath().resolve(game.name));
+    }
+
+    public boolean loadGameFrom(Path path) {
+        Main.log("Loading game from '" + path + "'");
+        try {
+            setGame(new Game(this, path));
+            return true;
+        } catch (IOException e) {
+            Main.log("Failed with exception");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean loadGame() {
+        return loadGameFrom(saveDir.toPath().resolve(game.name));
+    }
+
+    private void setGame(Game game) {
+        if (game == this.game) return;
+        this.game.cleanup();
+        game.setup();
+        this.game = game;
     }
 
     private class WindowCloseListener extends WindowAdapter {
@@ -149,6 +187,7 @@ public class GameApp extends App implements Tickable {
                     "Are you sure you want to exit?", "Consider very carefully...",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                saveGame();
                 Main.stop(0);
             }
         }
@@ -162,6 +201,23 @@ public class GameApp extends App implements Tickable {
     public Game getGame() {
         return game;
     }
+    public Overlay getOverlay() {
+        return overlay;
+    }
+    public void setOverlay(Overlay overlay) {
+        if (this.overlay != null) this.overlay.cleanup();
+        this.overlay = overlay;
+    }
+    public boolean shouldTickGame() {
+        return game != null && (overlay == null || overlay.shouldTickGame());
+    }
+    public boolean shouldRenderGame() {
+        return game != null && (overlay == null || overlay.shouldRenderGame());
+    }
+    public boolean shouldTickOrRenderOverlay() {
+        return overlay != null;
+    }
+
     public Dimension getPanelSize() {
         return renderer.getSize();
     }
