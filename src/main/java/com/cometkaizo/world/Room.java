@@ -2,7 +2,6 @@ package com.cometkaizo.world;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
-import com.cometkaizo.io.DataSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
@@ -13,9 +12,6 @@ import com.cometkaizo.world.block.BlockTypes;
 import com.cometkaizo.world.entity.*;
 
 import java.awt.*;
-import java.awt.geom.Area;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,34 +130,6 @@ public class Room implements Tickable, Renderable, Resettable {
     }
 
 
-    public record Atmosphere(Color darknessColor) {
-        public static final String DARKNESS_COLOR_KEY = "darknessColor";
-
-        public static Atmosphere of(String data) {
-            CompoundData compoundData = new CompoundData();
-            String[] parts = data.split(",");
-
-            int r = Integer.parseInt(parts[0]);
-            int g = Integer.parseInt(parts[1]);
-            int b = Integer.parseInt(parts[2]);
-            int a = Integer.parseInt(parts[3]);
-            compoundData.putInt(DARKNESS_COLOR_KEY, new Color(r, g, b, a).getRGB());
-
-            return Atmosphere.of(compoundData);
-        }
-
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putInt(DARKNESS_COLOR_KEY, darknessColor.getRGB());
-            return data;
-        }
-
-        public static Atmosphere of(CompoundData data) {
-            Color darknessColor = new Color(data.getInt(DARKNESS_COLOR_KEY), true);
-            return new Atmosphere(darknessColor);
-        }
-    }
-
     public static class ConnectionSet {
         private final Map<Direction, Connection> connections = new HashMap<>(4);
         public ConnectionSet(Connection upConnection,
@@ -250,64 +218,6 @@ public class Room implements Tickable, Renderable, Resettable {
             int length = data.getInt(LENGTH_KEY);
 
             return new Connection(start, length, destination, rooms);
-        }
-    }
-
-    public static class RespawnSet implements DataSerializable {
-        private final Map<Direction, Vector.ImmutableDouble> respawnPositions = new HashMap<>(4);
-        public RespawnSet(Vector.ImmutableDouble upRespawnPos,
-                          Vector.ImmutableDouble downRespawnPos,
-                          Vector.ImmutableDouble leftRespawnPos,
-                          Vector.ImmutableDouble rightRespawnPos) {
-            respawnPositions.put(Direction.UP, upRespawnPos);
-            respawnPositions.put(Direction.DOWN, downRespawnPos);
-            respawnPositions.put(Direction.LEFT, leftRespawnPos);
-            respawnPositions.put(Direction.RIGHT, rightRespawnPos);
-        }
-        public RespawnSet(CompoundData data) {
-            read(data);
-        }
-
-        public static RespawnSet of(String data) {
-            CompoundData compound = new CompoundData();
-
-            Stream<String> lines = data.lines();
-            for (String line : lines.toList()) {
-                String[] parts = line.split(",");
-
-                String direction = parts[0];
-                double x = Double.parseDouble(parts[1]);
-                double y = Double.parseDouble(parts[2]);
-                compound.put(direction, Vector.immutable(x, y).write());
-            }
-
-            return new RespawnSet(compound);
-        }
-
-        public Vector.ImmutableDouble get(Direction lastEntrySide) {
-            return respawnPositions.get(lastEntrySide);
-        }
-
-        @Override
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            for (Direction key : respawnPositions.keySet()) {
-                var respawnPos = respawnPositions.get(key);
-                if (respawnPos != null) data.put(key.name(), respawnPos.write());
-            }
-            return data;
-        }
-
-        @Override
-        public void read(CompoundData data) {
-            Map<Direction, Vector.ImmutableDouble> respawnPositions = new HashMap<>(4);
-            for (String key : data.asMap().keySet()) {
-                var direction = Direction.valueOf(key);
-                var respawnPos = Vector.immutableDouble(data.getCompound(key));
-                respawnPositions.put(direction, respawnPos);
-            }
-            this.respawnPositions.clear();
-            this.respawnPositions.putAll(respawnPositions);
         }
     }
 
@@ -625,107 +535,6 @@ public class Room implements Tickable, Renderable, Resettable {
             return entity;
         }
 
-        public class Renderer implements Renderable, DataSerializable {
-            public static final String OPTIONS_KEY = "darknessColor";
-            private final Rectangle2D screen = new Rectangle2D.Float();
-            private boolean emittedLight;
-            public Area darkness;
-            public Player player;
-            public List<Entity> entities = new ArrayList<>(1);
-            public Options options;
-
-            public Renderer(Options options) {
-                this.options = options;
-            }
-            public Renderer(CompoundData data) {
-                read(data);
-            }
-
-            private void addEntity(Entity entity) {
-                if (entity instanceof Player p) player = p;
-                else entities.add(entity);
-            }
-            private void removeEntity(Entity entity) {
-                if (entity == player) player = null;
-                else entities.remove(entity);
-            }
-
-            public void emitLight(Vector.Double position, double radius, Canvas canvas) {
-                emitLight(position.getX(), position.getY(), radius, canvas);
-            }
-
-            public void emitLight(double x, double y, double radius, Canvas canvas) {
-                if (darkness != null) {
-                    darkness.subtract(getLightArea(x, y, radius, canvas));
-                    emittedLight = true;
-                }
-            }
-
-            private Area getLightArea(double x, double y, double radius, Canvas canvas) {
-                double screenX = canvas.toScreenX(x - radius);
-                double screenY = canvas.toScreenY(y + radius);
-                int screenDiameter = canvas.toScreenLength(radius * 2);
-                return new Area(new Ellipse2D.Float((float) screenX, (float) screenY, screenDiameter, screenDiameter));
-            }
-
-            @Override
-            public void render(Canvas canvas) {
-                for (var row : blocks) for (var b : row) b.render(canvas);
-                entities.forEach((entity) -> entity.render(canvas));
-                player.render(canvas);
-
-                renderDarkness(canvas);
-            }
-
-            private void renderDarkness(Canvas canvas) {
-                Color darknessColor = options.atmosphere.darknessColor;
-                if (darknessColor == null || darknessColor.getAlpha() == 0) return;
-                updateScreenSize(canvas);
-                if (darkness == null) darkness = new Area(screen);
-
-                canvas.getGraphics().setColor(darknessColor);
-                canvas.getGraphics().fill(darkness);
-
-                if (emittedLight) darkness = new Area(screen);
-                emittedLight = false;
-            }
-
-            private void updateScreenSize(Canvas canvas) {
-                screen.setRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            }
-
-            @Override
-            public CompoundData write() {
-                CompoundData data = new CompoundData();
-                data.put(OPTIONS_KEY, options.write());
-                return data;
-            }
-
-            @Override
-            public void read(CompoundData data) {
-                options = Options.of(data.getCompound(OPTIONS_KEY));
-            }
-
-            public record Options(Atmosphere atmosphere) {
-
-                public static final String ATMOSPHERE_KEY = "atmosphere";
-
-                public static Options of(String data) {
-                    return new Options(Atmosphere.of(data));
-                }
-
-                public CompoundData write() {
-                    CompoundData data = new CompoundData();
-                    data.put(ATMOSPHERE_KEY, atmosphere.write());
-                    return data;
-                }
-
-                public static Options of(CompoundData data) {
-                    Atmosphere atmosphere = Atmosphere.of(data.getCompound(ATMOSPHERE_KEY));
-                    return new Options(atmosphere);
-                }
-            }
-        }
     }
 
     public record Checkpoint(Vector.ImmutableDouble pos, BoundingBox activationArea, String name) {
