@@ -57,6 +57,7 @@ public abstract class CollidableEntity extends MovableEntity {
         if (boundingBox != null) tickBoundingBox();
     }
 
+    /// Returns whether this entity is solid to the specified entity
     public boolean isSolid(Entity entity) {
         return false;
     }

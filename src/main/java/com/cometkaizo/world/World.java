@@ -77,7 +77,7 @@ public class World implements PathSerializable, Tickable, Renderable {
     public void read(Path path) throws IOException {
         rooms.clear();
 
-        try (Scanner in = new Scanner(Main.getResource(path + "\\info.txt"))) {
+        try (Scanner in = new Scanner(Main.getResource(path + "/info.txt"))) {
             for (var roomDir : in.nextLine().split(";")) {
                 addRoom(new Room(game, this, path.resolve(roomDir)));
             }

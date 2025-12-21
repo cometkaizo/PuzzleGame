@@ -1,8 +1,6 @@
 package com.cometkaizo.input;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public interface RawInputListener extends MouseListener, MouseMotionListener, KeyListener {
     void addInputListener(InputListener listener);
