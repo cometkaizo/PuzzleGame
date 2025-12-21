@@ -9,7 +9,6 @@ import com.cometkaizo.game.event.*;
 import com.cometkaizo.input.InputListener;
 import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.input.MouseButtonBinding;
-import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.*;
@@ -17,29 +16,27 @@ import com.cometkaizo.world.entity.Collectible;
 import com.cometkaizo.world.entity.Player;
 
 import java.awt.*;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Game implements Tickable, Renderable, InputListener {
-    public static final String WORLD_DIR_NAME = "world";
-    public static final String INFO_FILE_NAME = "game.info";
-    public static final String CURRENT_ROOM_KEY = "currentRoom";
+    public static final String GAME_STATE_FILENAME = "state.txt";
     private static final Font TIMER_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 30);
     private static final Color TIMER_COLOR = new Color(154, 48, 26);
     private final GameApp app;
     private final GameSettings settings;
+    private final GameState state;
     private final EventBus eventBus;
     private final Vector.MutableDouble cameraPosition, prevCameraPosition, targetCameraPosition;
     public boolean hasLuggage;
+    // todo: currently only has one save slot
+    public String name = "save";
     private double cameraSpeed;
     private World world;
     public Room room;
     private Player player;
-    private Direction lastEntrySide = Direction.LEFT;
     public long tick = 0;
     private Dialogue dialogue;
     private Set<Collectible> collectedCollectibles = new HashSet<>();
@@ -48,18 +45,52 @@ public class Game implements Tickable, Renderable, InputListener {
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
 
+    /// Reads in a game from a previous save file
+    public Game(GameApp app, Path path) throws IOException {
+        var state = new GameState(path.resolve(GAME_STATE_FILENAME));
+        this(app, new GameSettings(), state);
+    }
+
+    /// Writes this game to a save file location
+    public boolean write(Path path) {
+        try {
+            path.toFile().mkdirs();
+            updateState();
+            state.write(path.resolve(GAME_STATE_FILENAME));
+            return true;
+        } catch (IOException e) {
+            Main.log("Failed to save world to '" + path + "'; reason:");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /// updates the game state field for saving
+    private void updateState() {
+        state.playerPos = Vector.immutableDouble(player.getPosition());
+    }
+
+    /// Creates a new game
     public Game(GameApp app, GameSettings settings) {
+        this(app, settings, new GameState());
+    }
+
+    private Game(GameApp app, GameSettings settings, GameState state) {
         this.app = app;
         this.settings = settings;
+        this.state = state;
         this.eventBus = new SimpleEventBus();
         eventBus.register(PlayerDeathEvent.class, this::onPlayerDeath);
         eventBus.register(RoomSwitchEvent.class, this::onRoomSwitch);
 
         try {
-            world = new World(this, Path.of("\\world"));
+            world = new World(this, Path.of("/world"));
             room = world.getRoom("lobby");
+
             if (room.getCheckpoints().isEmpty()) throw new IllegalStateException("No respawn position");
-            player = room.player = new Player(room.walls, Vector.mutableDouble(room.getFirstCheckpoint().pos()), new Args(""));
+            if (state.playerPos == null) state.playerPos = room.getFirstCheckpoint().pos();
+
+            player = room.player = new Player(room.walls, Vector.mutableDouble(state.playerPos), new Args(""));
             this.cameraPosition = Vector.mutable(0D, 0D);
             this.prevCameraPosition = Vector.mutable(0D, 0D);
             this.targetCameraPosition = Vector.mutable(0D, 0D);
@@ -205,17 +236,17 @@ public class Game implements Tickable, Renderable, InputListener {
 
     @Override
     public void mousePressed(MouseButtonBinding button, int x, int y) {
-        eventBus.post(new MousePressedEvent(button, toCoordX(x), toCoordY(y)));
+        eventBus.post(new MousePressedEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
 
     @Override
     public void mouseDown(MouseButtonBinding button, int x, int y) {
-        eventBus.post(new MouseDownEvent(button, toCoordX(x), toCoordY(y)));
+        eventBus.post(new MouseDownEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
 
     @Override
     public void mouseReleased(MouseButtonBinding button, int x, int y) {
-        eventBus.post(new MouseReleasedEvent(button, toCoordX(x), toCoordY(y)));
+        eventBus.post(new MouseReleasedEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
 
     public double toCoordX(int screenX) {
@@ -252,69 +283,6 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
 
-    public void readFrom(Path savePath, String saveName) {
-        Path path = Path.of(savePath.toString(), saveName);
-        try {
-            if (path.toFile().exists()) {
-                setWorld(new World(this, Path.of(path.toString(), WORLD_DIR_NAME)));
-                readInfo(Path.of(path.toString(), INFO_FILE_NAME));
-            } else {
-                Main.log("No save file found at '" + path + "'");
-            }
-        } catch (IOException e) {
-            Main.log("Failed to load world from '" + path + "'; reason:");
-            e.printStackTrace();
-        }
-    }
-
-    private void readInfo(Path infoPath) throws IOException {
-        CompoundData data = CompoundData.of(infoPath);
-        room = world.getRoom(data.getString(CURRENT_ROOM_KEY));
-        player = room.player;
-    }
-
-    public void readFrom(Path savePath, String saveName, String namespace, String name) {
-        Path path = Path.of(savePath.toString(), saveName);
-        try {
-            if (path.toFile().exists()) {
-                setWorld(new World(this, namespace, name, Path.of(path.toString(), WORLD_DIR_NAME)));
-                readInfo(Path.of(path.toString(), INFO_FILE_NAME));
-            } else {
-                Main.log("No save file found at '" + path + "'");
-            }
-        } catch (IOException e) {
-            Main.log("Failed to load world from '" + path + "'; reason:");
-            e.printStackTrace();
-        }
-    }
-
-    public boolean saveIn(Path gamePath) {
-        try {
-            if (world != null) {
-                Path saveDir = getWorldSavePath(gamePath);
-                world.write(Path.of(saveDir.toString(), WORLD_DIR_NAME));
-                writeInfo(saveDir);
-            }
-            return true;
-        } catch (IOException e) {
-            Main.log("Failed to save world to '" + gamePath + "'; reason:");
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private Path getWorldSavePath(Path gamePath) {
-        return Path.of(gamePath.toString(), app.getSettings().gameSaveSubPath, world.getNamespace());
-    }
-
-    private void writeInfo(Path saveDirectory) throws IOException {
-        Path infoPath = Path.of(saveDirectory.toString(), INFO_FILE_NAME);
-        infoPath.getParent().toFile().mkdirs();
-
-        CompoundData data = new CompoundData();
-        data.putString(CURRENT_ROOM_KEY, room.getNamespace());
-        data.write(new DataOutputStream(Files.newOutputStream(infoPath)));
-    }
 
     public GameSettings getSettings() {
         return settings;
