@@ -15,7 +15,6 @@ public class GameAppSettings extends AppSettings {
     public Color defaultBackgroundColor = new Color(255, 237, 212);
     public GameRenderer.Settings defaultRendererSettings = new GameRenderer.Settings(new Dimension(defaultWidth, defaultHeight), defaultBackgroundColor);
 
-    public Path gamePath = Path.of("E:/andyw/Data/.game");
     public final String gameSaveSubPath = "saves";
     public ResourceLocation resourceWorldsPath = new ResourceLocation("data/worlds");
     public String newWorldSubPath = "original";
