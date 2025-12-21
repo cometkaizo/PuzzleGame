@@ -57,6 +57,23 @@ public class Canvas {
                 null);
     }
 
+    public void renderString(String str, Font font, Color color, float x, float y, boolean centerX, boolean centerY) {
+        var oF = g.getFont();
+        var oCr = g.getColor();
+
+        g.setFont(font);
+        g.setColor(color);
+        var fontMetrics = g.getFontMetrics();
+
+        if (centerX) x += - fontMetrics.stringWidth(str) / 2F;
+        if (centerY) y += - fontMetrics.getHeight() / 2F + fontMetrics.getAscent();
+
+        g.drawString(str, x, y);
+
+        g.setFont(oF);
+        g.setColor(oCr);
+    }
+
     private boolean isNotVisible(double x, double y, double width, double height) {
         return x >= screenWidth || y >= screenHeight ||
                 x + width <= 0 || y + height <= 0;
