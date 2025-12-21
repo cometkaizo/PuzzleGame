@@ -97,10 +97,10 @@ public class Button extends CollidableEntity implements AnimatedResettable {
         boundingBox.position.y = position.y;
     }
 
-    @Override
+    /*@Override
     public boolean canBeMovedBy(Entity other) {
         return other instanceof ButtonActivatedPlatform platform && platform.isAttached(this);
-    }
+    }*/
 
     @Override
     public boolean canCollideWhenMoving() {

@@ -279,9 +279,6 @@ public class Player extends CollidableEntity {
         }
         if (input == InputBindings.INTERACT.get()) {
             if (canConfirmCollectible()) {
-                if (displayedCollectible.getVariation() == Collectible.LUGGAGE_VARIATION) {
-                    setHeld(layer.addEntity(new Luggage(layer, position, Args.EMPTY)));
-                }
                 displayedCollectible = null;
             }
             else if (canInteractDialogue()) game.advanceDialogue();
@@ -325,7 +322,7 @@ public class Player extends CollidableEntity {
             held.setPosition(startPosition);
             if (room.walls.containsSolid(held.boundingBox, held)) held.setPosition(position);
             if (room.walls.containsSolid(held.boundingBox, held)) held.setPosition((int)getX() + halfHeldWidth, (int)getY());
-            if (!isTouching(held) && held instanceof Luggage l) l.solid = true;
+//            if (!isTouching(held) && held instanceof Luggage l) l.solid = true;
 
             var throwDelta = Vector.mutable(targetX, targetY).subtract(held.position);
             held.launch(throwDelta.normalize().scale(throwStrength).add(motion));

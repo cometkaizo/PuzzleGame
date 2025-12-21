@@ -1,7 +1,5 @@
 package com.cometkaizo.world.entity;
 
-import com.cometkaizo.game.event.KeyPressedEvent;
-import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
@@ -10,26 +8,20 @@ import com.cometkaizo.world.Vector;
 
 import java.awt.*;
 
-public class Collectible extends CollidableEntity {
+// todo: make inventory system and connect it with these items
+public abstract class Collectible extends Interactable {
 
-    public static final int LUGGAGE_VARIATION = 0;
     protected final int collectDuration = 5;
     protected int collectTime = -1;
-    protected int variation;
 
     public Collectible(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position.add(0.5, 0D), args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
-        game.getEventBus().register(KeyPressedEvent.class, this::onKeyPressed);
     }
 
-    private void onKeyPressed(KeyPressedEvent event) {
-        if (event.input() == InputBindings.INTERACT.get() && canBeInteracted()) {
-            collect();
-        }
-    }
 
-    private void collect() {
+    @Override
+    protected void interact() {
         room.player.displayedCollectible = this;
         room.player.onInteract();
         collectTime = 0;
@@ -37,18 +29,13 @@ public class Collectible extends CollidableEntity {
         Assets.sound("notify").play();
     }
 
-    private boolean canBeInteracted() {
-        return isTouching(room.player) && room.player.canInteract() && !collected();
+    @Override
+    protected boolean canBeInteracted() {
+        return super.canBeInteracted() && !collected();
     }
 
     public boolean collected() {
         return collectTime > -1;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        variation = originalArgs.nextInt(0);
     }
 
     @Override
@@ -70,11 +57,6 @@ public class Collectible extends CollidableEntity {
     }
 
     @Override
-    protected String getTexturePath() {
-        return "collectible/" + (canBeInteracted() ? "hovered/" : "normal/") + variation;
-    }
-
-    @Override
     public void render(Canvas canvas) {
         var g = canvas.getGraphics();
         var oT = g.getTransform();
@@ -91,7 +73,7 @@ public class Collectible extends CollidableEntity {
         double playerScreenY = canvas.toScreenY(canvas.lerp(room.player.getOldY(), room.player.getY()));
 
         if (!collected()) {
-            if (variation == LUGGAGE_VARIATION) translateY = -canvas.toScreenLength(1.5);
+
         } else if (room.player.displayedCollectible == this) {
             translateX = playerScreenX - screenX + canvas.toScreenLength(0.63);
             translateY = playerScreenY - screenY - canvas.toScreenLength(2.2) * (1 - Math.pow(1 - Math.min(1, (collectTime + canvas.partialTick()) / collectDuration), 2.5));
@@ -110,25 +92,5 @@ public class Collectible extends CollidableEntity {
 
         g.setTransform(oT);
         g.setComposite(oC);
-    }
-
-    public void renderOverlay(Canvas canvas) {
-        var g = canvas.getGraphics();
-        var oT = g.getTransform();
-
-        int screenX = 20 + variation * 60;
-        int screenY = 20;
-
-        g.translate(screenX, screenY);
-        g.scale(0.5, 0.5);
-        g.translate(-screenX, -screenY);
-
-        canvas.renderImage(getTexture(), 20 + variation * 60, 20);
-
-        g.setTransform(oT);
-    }
-
-    public int getVariation() {
-        return variation;
     }
 }

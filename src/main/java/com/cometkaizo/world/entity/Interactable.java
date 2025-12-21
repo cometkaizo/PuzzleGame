@@ -21,7 +21,7 @@ public abstract class Interactable extends CollidableEntity {
     }
 
     protected boolean canBeInteracted() {
-        return isTouching(room.player, interactDistance());
+        return isTouching(room.player, interactDistance()) && room.player.canInteract();
     }
 
     protected abstract void interact();
