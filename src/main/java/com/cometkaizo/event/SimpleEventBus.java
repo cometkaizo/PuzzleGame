@@ -30,4 +30,10 @@ public class SimpleEventBus implements EventBus {
         listeners.computeIfAbsent(type, k -> new ArrayList<>(1)).add(listener);
     }
 
+    @Override
+    public <T extends Event> void unregister(Class<? extends T> type, Consumer<? super T> listener) {
+        var list = listeners.get(type);
+        if (list != null) list.remove(listener);
+    }
+
 }
