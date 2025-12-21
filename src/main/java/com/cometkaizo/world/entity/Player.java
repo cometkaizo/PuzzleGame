@@ -91,8 +91,8 @@ public class Player extends CollidableEntity {
                 originalPosition = checkpoint.pos();
         }
         if (!Objects.equals(prevCheckpoint, originalPosition)) {
-            // todo: This sound effect gets a bit annoying
-            Assets.sound("notify").play();
+            // collect checkpoint
+//            Assets.sound("notify").play();
         }
     }
     private boolean canActivateCheckpoint() {

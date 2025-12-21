@@ -10,7 +10,7 @@ import com.cometkaizo.world.entity.Entity;
 
 import java.awt.*;
 
-public abstract class Block implements Tickable, Renderable, DataSerializable, Resettable {
+public abstract class Block implements Renderable, DataSerializable, Resettable {
     public static final String TYPE_KEY = "type";
     public static final String POSITION_KEY = "position";
     public final Room room;

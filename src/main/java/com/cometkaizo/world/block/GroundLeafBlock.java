@@ -13,11 +13,6 @@ public class GroundLeafBlock extends Block {
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
     public boolean isSolid(Entity entity) {
         return entity instanceof Player;
     }

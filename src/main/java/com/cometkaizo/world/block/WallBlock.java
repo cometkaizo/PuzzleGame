@@ -29,9 +29,4 @@ public class WallBlock extends Block {
         return textureVariation == null ? null : "wall";
     }
 
-    @Override
-    public void tick() {
-
-    }
-
 }

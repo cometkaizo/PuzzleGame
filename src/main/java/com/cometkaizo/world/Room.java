@@ -603,7 +603,6 @@ public class Room implements Tickable, Renderable, Resettable {
         @Override
         public void tick() {
             entities.forEach(Tickable::tick);
-            for (var row : blocks) for (var b : row) b.tick();
         }
 
         @Override

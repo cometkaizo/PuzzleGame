@@ -17,11 +17,6 @@ public class AirBlock extends Block {
     }
 
     @Override
-    public void tick() {
-
-    }
-
-    @Override
     protected String getTexturePath() {
         return null;
     }

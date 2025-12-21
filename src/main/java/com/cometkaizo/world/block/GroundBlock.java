@@ -29,9 +29,4 @@ public class GroundBlock extends Block {
         return textureVariation != null ? "ground/" + textureVariation : null;
     }
 
-    @Override
-    public void tick() {
-
-    }
-
 }
