@@ -20,6 +20,7 @@ import static java.lang.Math.*;
 
 public class Player extends CollidableEntity {
 
+    protected Vector.MutableDouble lastMotion = Vector.mutable(0D, 0D);
     protected double jumpAccel = 1, diagJumpAccel = jumpAccel * Math.cos(Math.toRadians(45));
     protected double maxJumpSpeed = 1, maxDiagJumpSpeed = maxJumpSpeed * Math.cos(Math.toRadians(45));
     protected int jumpDirection = -1;
@@ -161,6 +162,7 @@ public class Player extends CollidableEntity {
     }
 
     private void tickMotion() {
+
         motion.x *= friction;
         motion.y *= friction;
 
@@ -191,18 +193,25 @@ public class Player extends CollidableEntity {
             if (isHolding()) accel *= holdSpeedAmp;
             maxVelocity = diagonal ? this.maxDiagWalkSpeed : this.maxWalkSpeed;
 
+            double x = 0, y = 0;
+
             if (right) {
-                motion.x += accel;
+                x += accel;
             }
             if (left) {
-                motion.x -= accel;
+                x -= accel;
             }
             if (up) {
-                motion.y += accel;
+                y += accel;
             }
             if (down) {
-                motion.y -= accel;
+                y -= accel;
             }
+
+            if (x != 0 || y != 0) lastMotion.set(x, y);
+
+            motion.x += x;
+            motion.y += y;
         } else {
             if (jumpTime == 1) {
                 if (right) {
@@ -450,5 +459,9 @@ public class Player extends CollidableEntity {
 
     public static Dialogue dialogue(String msg, String textureVariation, Dialogue next) {
         return new Dialogue(msg, "gui/player/" + textureVariation, next);
+    }
+
+    public Vector.Double getLastMotion() {
+        return lastMotion;
     }
 }

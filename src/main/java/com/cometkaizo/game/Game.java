@@ -124,8 +124,9 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
     private void tickCameraPos() {
-        targetCameraPosition.setX(player.getX() + 2);
+        targetCameraPosition.setX(player.getX());
         targetCameraPosition.setY(player.getY() + 0.5);
+        targetCameraPosition.add(player.getLastMotion().normalized());
         room.lockCamera(targetCameraPosition);
 
         var toTarget = targetCameraPosition.subtract(cameraPosition);
@@ -159,9 +160,9 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
     public void teleportCamera() {
-        this.cameraPosition.set(player.getPosition()).add(2.00001D, 0.5D);
-        this.prevCameraPosition.set(player.getPosition()).add(2D, 0.5D);
-        this.targetCameraPosition.set(player.getPosition()).add(2D, 0.5D);
+        this.cameraPosition.set(player.getPosition()).add(0D, 0.5D);
+        this.prevCameraPosition.set(player.getPosition()).add(0D, 0.5D);
+        this.targetCameraPosition.set(player.getPosition()).add(0D, 0.5D);
     }
 
 
