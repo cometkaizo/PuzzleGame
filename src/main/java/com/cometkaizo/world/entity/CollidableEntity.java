@@ -12,6 +12,8 @@ public abstract class CollidableEntity extends MovableEntity {
     protected boolean collidedVertically;
 
     public CollidableEntity(Room.Layer layer, Vector.MutableDouble position, Args args) {
+        // being able to put stuff before super() in java 25 is amazing
+        this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D)); // default hitbox to 1 block x 1 block
         super(layer, position, args);
     }
 
