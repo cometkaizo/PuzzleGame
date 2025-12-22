@@ -1,13 +1,15 @@
-package com.cometkaizo.screen;
+package com.cometkaizo.screen.overlay;
 
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
+import com.cometkaizo.screen.Assets;
+import com.cometkaizo.screen.Button;
+import com.cometkaizo.screen.Canvas;
 
 import java.awt.*;
 import java.util.List;
 
-public class TitleScreen implements Overlay {
-    private final GameApp app;
+public class TitleScreen extends Overlay {
     private static final Font TITLE_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 70);
     private static final String TITLE = "Puzzle Game";
     private final List<Button> buttons = List.of(
@@ -16,12 +18,12 @@ public class TitleScreen implements Overlay {
     );
 
     public TitleScreen(GameApp app) {
-        this.app = app;
-        app.getGame().getEventBus().register(MousePressedEvent.class, this::onClick);
+        super(app);
+        eventBus.register(MousePressedEvent.class, this::onClick);
     }
     @Override
     public void cleanup() {
-        app.getGame().getEventBus().unregister(MousePressedEvent.class, this::onClick);
+        eventBus.unregister(MousePressedEvent.class, this::onClick);
     }
 
     // button functionality
@@ -44,7 +46,7 @@ public class TitleScreen implements Overlay {
 
     @Override
     public void tick() {
-        buttons.forEach(Button::tick);
+        buttons.forEach(com.cometkaizo.screen.Button::tick);
     }
 
     @Override
