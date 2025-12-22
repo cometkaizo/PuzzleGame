@@ -457,10 +457,10 @@ public class Room implements Tickable, Renderable, Resettable {
         }
 
         public List<Block> getBlocksWithin(BoundingBox boundingBox, Predicate<? super Block> condition) {
-            int fromX = (int) floor(boundingBox.getLeft());
-            int fromY = (int) floor(boundingBox.getBottom());
-            int toX = (int) floor(boundingBox.getRight() - 10E-5);
-            int toY = (int) floor(boundingBox.getTop() - 10E-5);
+            int fromX = (int) floor(boundingBox.getLeft() + 1E-5);
+            int fromY = (int) floor(boundingBox.getBottom() + 1E-5);
+            int toX = (int) floor(boundingBox.getRight() - 1E-5);
+            int toY = (int) floor(boundingBox.getTop() - 1E-5);
 
             List<Block> result = new ArrayList<>((abs(toX - fromX) + 1) * (abs(toY - fromY) + 1));
 
