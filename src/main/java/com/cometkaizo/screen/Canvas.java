@@ -80,27 +80,37 @@ public class Canvas {
     public void renderDebugBoundingBox(BoundingBox boundingBox, Color color) {
         if (!debug) return;
         var oldColor = g.getColor();
+        var oldStroke = g.getStroke();
+        g.setStroke(new BasicStroke(3));
         g.setColor(color);
-        g.fillRect(
+
+        g.drawRect(
                 toScreenX(boundingBox.getX()),
                 toScreenY(boundingBox.getY() + boundingBox.getHeight()),
                 toScreenLength(boundingBox.getWidth()),
                 toScreenLength(boundingBox.getHeight())
         );
+
         g.setColor(oldColor);
+        g.setStroke(oldStroke);
     }
     /// Renders the block at the position in red for debug purposes
     public void renderDebugBlock(Vector.Int position, Color color) {
         if (!debug) return;
         var oldColor = g.getColor();
+        var oldStroke = g.getStroke();
+        g.setStroke(new BasicStroke(3));
         g.setColor(color);
-        g.fillRect(
+
+        g.drawRect(
                 toScreenX(position.getX()),
                 toScreenY(position.getY() + 1),
                 toScreenLength(1),
                 toScreenLength(1)
         );
+
         g.setColor(oldColor);
+        g.setStroke(oldStroke);
     }
 
     private boolean isNotVisible(double x, double y, double width, double height) {
