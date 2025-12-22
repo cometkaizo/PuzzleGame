@@ -287,8 +287,7 @@ public class Room implements Tickable, Renderable, Resettable {
                             entities.add(e);
                             if (e.hasName()) named.put(e.getName(), e);
                         } else {
-//                            throw new IllegalArgumentException("No such block or entity: " + id + " at (" + (lines.size() - r) + ":" + (c + 1) + ") (r:c, not ctrl + g)");
-                            Main.err("No such block or entity: " + id +
+                            Main.err(name + " - unknown object id: " + id +
                                     " at (" + (lines.size() - r) + "," + (c + 1) + ")" +
                                     " or (" + MathUtils.toSheetCol(c) + (lines.size() - r) + ")");
                         }
