@@ -113,6 +113,16 @@ public class Canvas {
         g.setStroke(oldStroke);
     }
 
+    /// Fills the screen with the given color
+    public void fillScreen(Color color) {
+        var oldColor = g.getColor();
+
+        g.setColor(color);
+        g.fillRect(0, 0, screenWidth, screenHeight);
+
+        g.setColor(oldColor);
+    }
+
     private boolean isNotVisible(double x, double y, double width, double height) {
         return x >= screenWidth || y >= screenHeight ||
                 x + width <= 0 || y + height <= 0;
@@ -145,9 +155,15 @@ public class Canvas {
     public int getWidth() {
         return screenWidth;
     }
-
     public int getHeight() {
         return screenHeight;
+    }
+
+    public int halfWidth() {
+        return screenWidth / 2;
+    }
+    public int halfHeight() {
+        return screenHeight / 2;
     }
 
     public boolean isDebug() {
