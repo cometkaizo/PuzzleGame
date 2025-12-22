@@ -27,6 +27,6 @@ public abstract class Interactable extends CollidableEntity {
     protected abstract void interact();
 
     protected double interactDistance() {
-        return 0;
+        return 0.1;
     }
 }

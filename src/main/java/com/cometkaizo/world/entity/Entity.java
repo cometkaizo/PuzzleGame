@@ -52,7 +52,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         canvas.renderImage(texture, canvas.lerp(oldPosition.x, getX()), canvas.lerp(oldPosition.y, getY()), getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
     protected double getTextureDeltaXFactor() {
-        return -0.5;
+        return 0;
     }
     protected double getTextureDeltaYFactor() {
         return -1;

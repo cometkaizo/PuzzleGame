@@ -3,14 +3,15 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.game.event.KeyPressedEvent;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.game.event.PlayerDeathEvent;
-import com.cometkaizo.game.event.RoomSwitchEvent;
 import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.input.MouseButtonBinding;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Dialogue;
-import com.cometkaizo.world.*;
+import com.cometkaizo.world.Args;
+import com.cometkaizo.world.Room;
+import com.cometkaizo.world.Vector;
 
 import java.awt.*;
 import java.util.Objects;
@@ -67,7 +68,6 @@ public class Player extends CollidableEntity {
         tickTrigger();
         tickCheckpoint();
         super.tick();
-        trySwitchRoom();
 
         tickJumpBuffer();
         tickJumpTime();
@@ -269,6 +269,7 @@ public class Player extends CollidableEntity {
 
     @Override
     protected void tickBoundingBox() {
+        // center the player's hitbox horizontally on the player's position
         double width = boundingBox.getWidth();
         boundingBox.position.x = position.x - width / 2;
         boundingBox.position.y = position.y;
@@ -387,58 +388,6 @@ public class Player extends CollidableEntity {
         return displayedCollectible != null;
     }
 
-    private void trySwitchRoom() {
-        /*double centerX = boundingBox.getCenterX();
-        double centerY = boundingBox.getCenterY();
-
-        if (centerX <= 0 || centerX >= room.getWidth()) {
-            Direction switchDirection;
-            Room.Connection connection;
-            if (centerX <= 0) switchDirection = Direction.LEFT;
-            else switchDirection = Direction.RIGHT;
-            connection = room.getConnection(switchDirection);
-
-            if (connection != null) {
-                if (boundingBox.getTop() <= connection.start() + connection.length() &&
-                        boundingBox.getBottom() >= connection.start()) {
-                    switchToRoom(connection.destination().get(), connection, switchDirection);
-                }
-            }
-        } else if (centerY <= 0 || centerY >= room.getHeight()) {
-            Direction switchDirection;
-            Room.Connection connection;
-            if (centerY <= 0) switchDirection = Direction.DOWN;
-            else switchDirection = Direction.UP;
-            connection = room.getConnection(switchDirection);
-
-            if (connection != null) {
-                if (boundingBox.getRight() <= connection.start() + connection.length() &&
-                        boundingBox.getLeft() >= connection.start()) {
-                    switchToRoom(connection.destination().get(), connection, switchDirection);
-                }
-            }
-        }*/
-    }
-
-    private void switchToRoom(Room destination, Room.Connection connection, Direction direction) {
-        room.player = null;
-
-        setPositionInNewRoom(destination, connection, direction);
-
-        game.getEventBus().post(new RoomSwitchEvent(this, room, destination));
-        destination.player = this;
-    }
-
-    private void setPositionInNewRoom(Room destination, Room.Connection connection, Direction direction) {
-        if (direction.axis() == Axis.X) {
-            double deltaY = position.y - connection.start();
-            position.y = destination.getConnection(direction.opposite()).start() + deltaY;
-        } else {
-            double deltaX = position.x - connection.start();
-            position.x = destination.getConnection(direction.opposite()).start() + deltaX;
-        }
-    }
-
     public ThrowableEntity getHeld() {
         return held;
     }
@@ -492,6 +441,11 @@ public class Player extends CollidableEntity {
 
         g.setTransform(oT);
         g.setComposite(oC);
+    }
+
+    @Override
+    protected double getTextureDeltaXFactor() {
+        return -0.5;
     }
 
     public static Dialogue dialogue(String msg, String textureVariation, Dialogue next) {

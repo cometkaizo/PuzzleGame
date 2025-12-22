@@ -43,7 +43,14 @@ public abstract class CollidableEntity extends MovableEntity {
         return collidedHorizontally || collidedVertically;
     }
 
-    protected abstract void tickBoundingBox();
+    /**
+     * Updates the bounding box every tick according to position
+     * @implNote default implementation aligns this entity's bounding box like a block would
+      */
+    protected void tickBoundingBox() {
+        boundingBox.position.x = position.x;
+        boundingBox.position.y = position.y - boundingBox.getHeight() + 1;
+    }
 
     @Override
     public void reset() {

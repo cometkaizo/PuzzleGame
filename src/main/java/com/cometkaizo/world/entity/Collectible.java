@@ -45,13 +45,6 @@ public abstract class Collectible extends Interactable {
     }
 
     @Override
-    protected void tickBoundingBox() {
-        double width = boundingBox.getWidth();
-        boundingBox.position.x = position.x - width / 2;
-        boundingBox.position.y = position.y;
-    }
-
-    @Override
     public boolean canCollideWhenMoving() {
         return false;
     }
