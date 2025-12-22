@@ -25,7 +25,7 @@ public class Player extends CollidableEntity {
     protected double maxJumpSpeed = 1, maxDiagJumpSpeed = maxJumpSpeed * Math.cos(Math.toRadians(45));
     protected int jumpDirection = -1;
     protected double walkAccel = 0.3, diagWalkAccel = walkAccel * Math.cos(Math.toRadians(45));
-    protected double maxWalkSpeed = 0.4, maxDiagWalkSpeed = maxWalkSpeed * Math.cos(Math.toRadians(45));
+    protected double maxWalkSpeed = 0.2, maxDiagWalkSpeed = maxWalkSpeed * Math.cos(Math.toRadians(45));
     protected double holdSpeedAmp = 0.6;
     protected double friction = 0.1;
     protected ThrowableEntity held;
