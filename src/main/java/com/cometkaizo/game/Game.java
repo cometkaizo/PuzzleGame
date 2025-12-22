@@ -55,7 +55,6 @@ public class Game implements Tickable, Renderable, InputListener {
     public boolean write(Path path) {
         try {
             path.toFile().mkdirs();
-            updateState();
             state.write(path.resolve(GAME_STATE_FILENAME));
             return true;
         } catch (IOException e) {
@@ -63,11 +62,6 @@ public class Game implements Tickable, Renderable, InputListener {
             e.printStackTrace();
         }
         return false;
-    }
-
-    /// updates the game state field for saving
-    private void updateState() {
-        state.playerPos = Vector.immutableDouble(player.getPosition());
     }
 
     /// Creates a new game
@@ -88,9 +82,9 @@ public class Game implements Tickable, Renderable, InputListener {
             room = world.getRoom("lobby");
 
             if (room.getCheckpoints().isEmpty()) throw new IllegalStateException("No respawn position");
-            if (state.playerPos == null) state.playerPos = room.getFirstCheckpoint().pos();
+            if (state.playerPos == null) state.playerPos = Vector.mutableDouble(room.getFirstCheckpoint().pos());
 
-            player = room.player = new Player(room.walls, Vector.mutableDouble(state.playerPos), new Args(""));
+            player = room.player = new Player(room.walls, state.playerPos, new Args(""));
             this.cameraPosition = Vector.mutable(0D, 0D);
             this.prevCameraPosition = Vector.mutable(0D, 0D);
             this.targetCameraPosition = Vector.mutable(0D, 0D);
@@ -169,7 +163,7 @@ public class Game implements Tickable, Renderable, InputListener {
     public void render(Canvas canvas) {
         if (world != null) world.render(canvas);
         if (room != null) room.render(canvas);
-        for (var c : collectedCollectibles) c.renderOverlay(canvas);
+//        for (var c : collectedCollectibles) c.renderOverlay(canvas);
         if (ended) renderEndScreen(canvas);
         renderTimer(canvas);
         if (getDialogue() != null) getDialogue().render(canvas);
@@ -332,5 +326,9 @@ public class Game implements Tickable, Renderable, InputListener {
 
     public void collect(Collectible collectible) {
         collectedCollectibles.add(collectible);
+    }
+
+    public GameState getState() {
+        return state;
     }
 }

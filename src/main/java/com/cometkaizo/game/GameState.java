@@ -7,13 +7,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class GameState {
-    public Vector.ImmutableDouble playerPos;
+    public Vector.MutableDouble playerPos;
 
     public GameState() {}
     public GameState(InputStream is) throws IOException {
         var in = new ObjectInputStream(is);
         // order matters!
-        playerPos = Vector.immutable(in.readDouble(), in.readDouble());
+        playerPos = Vector.mutable(in.readDouble(), in.readDouble());
     }
     public GameState(Path path) throws IOException {
         var is = Files.newInputStream(path);
@@ -29,8 +29,8 @@ public class GameState {
     public void write(OutputStream os) throws IOException {
         var out = new ObjectOutputStream(os);
         // order matters!
-        out.writeDouble(playerPos.x);
-        out.writeDouble(playerPos.y);
+        out.writeDouble(playerPos.getX());
+        out.writeDouble(playerPos.getY());
         out.flush();
     }
 }

@@ -58,6 +58,7 @@ public class Player extends CollidableEntity {
     public void reset() {
         super.reset();
         deathTime = -1;
+        game.getState().playerPos = position;
     }
 
     @Override
