@@ -43,4 +43,12 @@ public class ImageUtils {
         }
     }
 
+    public static BufferedImage readImageOrNull(String resourceLoc) {
+        try {
+            return ImageIO.read(Main.getResource(resourceLoc));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

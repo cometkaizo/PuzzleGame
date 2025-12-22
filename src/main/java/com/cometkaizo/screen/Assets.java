@@ -15,7 +15,11 @@ public class Assets {
     private static final Map<String, Font> FONTS = Collections.synchronizedMap(new HashMap<>());
     private static final Map<String, Sound> SOUNDS = Collections.synchronizedMap(new HashMap<>());
     public static Image texture(String path) {
-        return TEXTURES.computeIfAbsent("/assets/" + path + ".png", p -> ImageUtils.readImage(p));
+        return TEXTURES.computeIfAbsent("/assets/" + path + ".png", p -> {
+            var image = ImageUtils.readImageOrNull(p);
+            if (image == null) return ImageUtils.readImage("/assets/unknown.png");
+            else return image;
+        });
     }
     public static Font font(String path) {
         return FONTS.computeIfAbsent("/assets/gui/font/" + path + ".ttf", p -> {

@@ -1,9 +1,9 @@
 package com.cometkaizo;
 
 import com.cometkaizo.app.GameDriver;
+import com.cometkaizo.io.NoSuchResourceException;
 
 import java.io.InputStream;
-import java.util.Objects;
 
 // Sound X
 // Dialogue X
@@ -43,6 +43,8 @@ public class Main {
     }
 
     public static InputStream getResource(String p) {
-        return Objects.requireNonNull(Main.class.getResourceAsStream(p.replaceAll("\\\\", "/")), "Cannot find resource: " + p);
+        var resource = Main.class.getResourceAsStream(p.replaceAll("\\\\", "/"));
+        if (resource == null) throw new NoSuchResourceException("Cannot find resource: " + p);
+        return resource;
     }
 }
