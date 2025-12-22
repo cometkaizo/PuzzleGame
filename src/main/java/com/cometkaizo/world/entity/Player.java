@@ -41,12 +41,12 @@ public class Player extends CollidableEntity {
     public Player(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(0.6D, 0.6D));
-        game.getEventBus().register(KeyPressedEvent.class, this::onKeyPressed);
-        game.getEventBus().register(MousePressedEvent.class, this::onMousePressed);
+        eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
+        eventBus.register(MousePressedEvent.class, this::onMousePressed);
     }
 
     public void kill() {
-        game.getEventBus().post(new PlayerDeathEvent(this));
+        eventBus.post(new PlayerDeathEvent(this));
 
         deathAngleMul = Math.random() * 2 - 1;
         if (deathAngleMul >= 0 && deathAngleMul < 0.5) deathAngleMul = 0.5;

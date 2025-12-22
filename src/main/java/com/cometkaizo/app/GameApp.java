@@ -6,16 +6,16 @@ import com.cometkaizo.app.command.GameCommand;
 import com.cometkaizo.app.command.TPCommand;
 import com.cometkaizo.command.CommandGroup;
 import com.cometkaizo.command.CommandSyntaxException;
+import com.cometkaizo.event.EventBus;
+import com.cometkaizo.event.SimpleEventBus;
 import com.cometkaizo.game.Game;
 import com.cometkaizo.game.GameSettings;
-import com.cometkaizo.input.InputBindings;
-import com.cometkaizo.input.InputListener;
-import com.cometkaizo.input.RawInputListener;
-import com.cometkaizo.input.RawInputListenerImpl;
+import com.cometkaizo.game.event.*;
+import com.cometkaizo.input.*;
 import com.cometkaizo.io.data.DataTypes;
 import com.cometkaizo.screen.GameRenderer;
-import com.cometkaizo.screen.Overlay;
-import com.cometkaizo.screen.TitleScreen;
+import com.cometkaizo.screen.overlay.Overlay;
+import com.cometkaizo.screen.overlay.TitleScreen;
 import com.cometkaizo.system.app.App;
 import com.cometkaizo.util.FileUtils;
 import com.cometkaizo.world.Tickable;
@@ -42,7 +42,8 @@ public class GameApp extends App implements Tickable {
 
     private JFrame frame;
     private GameRenderer renderer;
-    private RawInputListener rawInputListener;
+    private RawInputListener gameInputListener, overlayInputListener;
+    private EventBus overlayEventBus = new SimpleEventBus(); // use one single event bus for all screen overlays (eg title screen, interactable interfaces, ...)
 
     public GameApp(GameAppSettings settings, CommandGroup commandGroup) {
         super(settings);
@@ -78,7 +79,8 @@ public class GameApp extends App implements Tickable {
         Main.log("App setting up with settings:\n" + settings + "\nand command group:\n" + commandGroup);
         makeSaveDirIn(FileUtils.getAppdataDir());
 
-        InputBindings.INPUT_BINDINGS.register(this);
+        InputBindings.GAME.register(this);
+        InputBindings.OVERLAY.register(this);
         DataTypes.DATA_TYPES.register(this);
 
         initWindow();
@@ -86,16 +88,22 @@ public class GameApp extends App implements Tickable {
     }
 
     private void initWindow() {
-        rawInputListener = new RawInputListenerImpl(InputBindings.INPUT_BINDINGS);
-
         frame = new JFrame(settings.name);
+
+        gameInputListener = new RawInputListenerImpl(InputBindings.GAME, () -> !shouldTickOrRenderOverlay() && frame.isFocused());
+        overlayInputListener = new RawInputListenerImpl(InputBindings.OVERLAY, () -> shouldTickOrRenderOverlay() && frame.isFocused());
+        overlayInputListener.addInputListener(new OverlayInputListener());
+
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.addKeyListener(rawInputListener);
+        frame.addKeyListener(gameInputListener);
+        frame.addKeyListener(overlayInputListener);
         frame.addWindowListener(new WindowCloseListener());
 
         renderer = new GameRenderer(settings.defaultRendererSettings, this);
-        renderer.addMouseListener(rawInputListener);
-        renderer.addMouseMotionListener(rawInputListener);
+        renderer.addMouseListener(gameInputListener);
+        renderer.addMouseMotionListener(gameInputListener);
+        renderer.addMouseListener(overlayInputListener);
+        renderer.addMouseMotionListener(overlayInputListener);
 
         frame.add(renderer);
         frame.pack();
@@ -103,11 +111,14 @@ public class GameApp extends App implements Tickable {
         frame.setVisible(true);
     }
 
-    public void addInputListener(InputListener listener) {
-        rawInputListener.addInputListener(listener);
+    public RawInputListener getGameInputListener() {
+        return gameInputListener;
     }
-    public void removeInputListener(InputListener listener) {
-        rawInputListener.removeInputListener(listener);
+    public RawInputListener getOverlayInputListener() {
+        return overlayInputListener;
+    }
+    public EventBus getOverlayEventBus() {
+        return overlayEventBus;
     }
 
     private void makeSaveDirIn(File parent) {
@@ -138,6 +149,9 @@ public class GameApp extends App implements Tickable {
     @Override
     public void tick() {
         super.tick();
+
+        gameInputListener.tick();
+        overlayInputListener.tick();
 
         if (shouldTickGame()) game.tick();
         if (shouldTickOrRenderOverlay()) overlay.tick();
@@ -184,6 +198,33 @@ public class GameApp extends App implements Tickable {
         renderer.toggleDebug();
     }
 
+    private class OverlayInputListener implements InputListener {
+        @Override
+        public void keyPressed(KeyBinding key) {
+            overlayEventBus.post(new KeyPressedEvent(key));
+        }
+        @Override
+        public void keyDown(KeyBinding key) {
+            overlayEventBus.post(new KeyDownEvent(key));
+        }
+        @Override
+        public void keyReleased(KeyBinding key) {
+            overlayEventBus.post(new KeyReleasedEvent(key));
+        }
+        @Override
+        public void mousePressed(MouseButtonBinding button, int x, int y) {
+            // there are no "world coordinates" for screen overlay events, so use NaN
+            overlayEventBus.post(new MousePressedEvent(button, Double.NaN, Double.NaN, x, y));
+        }
+        @Override
+        public void mouseDown(MouseButtonBinding button, int x, int y) {
+            overlayEventBus.post(new MouseDownEvent(button, Double.NaN, Double.NaN, x, y));
+        }
+        @Override
+        public void mouseReleased(MouseButtonBinding button, int x, int y) {
+            overlayEventBus.post(new MouseReleasedEvent(button, Double.NaN, Double.NaN, x, y));
+        }
+    }
     private class WindowCloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent windowEvent) {

@@ -10,7 +10,7 @@ import com.cometkaizo.world.Vector;
 public abstract class Interactable extends CollidableEntity {
     public Interactable(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
-        game.getEventBus().register(KeyPressedEvent.class, this::onKeyPressed);
+        eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
     }
 
     private void onKeyPressed(KeyPressedEvent event) {

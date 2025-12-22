@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 
 public class GameSettings {
 
-    public Registry<InputBinding> inputBindings = InputBindings.INPUT_BINDINGS;
+    public Registry<InputBinding> inputBindings = InputBindings.GAME;
     public final int originalTileSize = 16;
     public final int renderScale = 8;
     public final int tileSize = originalTileSize * renderScale;

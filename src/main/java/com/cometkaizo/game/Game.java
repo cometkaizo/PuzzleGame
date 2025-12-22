@@ -259,11 +259,11 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
     public void setup() {
-        app.addInputListener(this);
+        app.getGameInputListener().addInputListener(this);
     }
 
     public void cleanup() {
-        app.removeInputListener(this);
+        app.getGameInputListener().removeInputListener(this);
     }
 
     public void end() {
@@ -284,6 +284,9 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
 
+    public GameApp getApp() {
+        return app;
+    }
 
     public GameSettings getSettings() {
         return settings;

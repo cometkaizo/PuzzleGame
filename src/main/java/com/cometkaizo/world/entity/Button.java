@@ -18,8 +18,8 @@ public class Button extends CollidableEntity implements AnimatedResettable {
     public Button(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
-        game.getEventBus().register(KeyPressedEvent.class, this::onKeyPressed);
-        game.getEventBus().register(KeyReleasedEvent.class, this::onKeyReleased);
+        eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
+        eventBus.register(KeyReleasedEvent.class, this::onKeyReleased);
     }
 
     private void onKeyPressed(KeyPressedEvent event) {

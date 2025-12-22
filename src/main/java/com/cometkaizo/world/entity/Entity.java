@@ -1,5 +1,7 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.app.GameApp;
+import com.cometkaizo.event.EventBus;
 import com.cometkaizo.game.Game;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
@@ -14,7 +16,9 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     protected Vector.MutableDouble position;
     protected Vector.ImmutableDouble oldPosition;
     protected boolean removed;
+    protected final GameApp app;
     protected final Game game;
+    protected final EventBus eventBus;
     protected Room.Layer layer;
     protected Room room;
     protected String name;
@@ -23,6 +27,8 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         this.room = layer.room;
         this.layer = layer;
         this.game = room.game;
+        this.app = game.getApp();
+        this.eventBus = game.getEventBus();
         this.originalArgs = args;
         this.originalPosition = Vector.immutableDouble(position);
         reset();
