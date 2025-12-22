@@ -12,8 +12,19 @@ public class Args {
     public Args(String s) {
         var parts = s.split(";");
         args = Arrays.copyOfRange(parts, 1, parts.length);
-        id = parts[0];
+        id = removeComments(parts[0]);
     }
+
+    /**
+     * Removes "comments" from the given string.
+     * A "comment" in the Google sheet is defined as any text enclosed with round brackets.
+     * Comments allow annotation of the blocks in the Google sheet.
+     * (Or we could use real Google sheet comments too, but those a more annoying)
+     */
+    public static String removeComments(String str) {
+        return str.replaceAll(" ?\\(.*\\)", ""); // regex to check for comments and remove them
+    }
+
     public String next() {
         if (index == args.length) return "";
         return args[index ++];

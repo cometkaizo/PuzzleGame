@@ -7,6 +7,7 @@ import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.util.CollectionUtils;
+import com.cometkaizo.util.MathUtils;
 import com.cometkaizo.world.block.Block;
 import com.cometkaizo.world.block.BlockTypes;
 import com.cometkaizo.world.entity.*;
@@ -287,7 +288,9 @@ public class Room implements Tickable, Renderable, Resettable {
                             if (e.hasName()) named.put(e.getName(), e);
                         } else {
 //                            throw new IllegalArgumentException("No such block or entity: " + id + " at (" + (lines.size() - r) + ":" + (c + 1) + ") (r:c, not ctrl + g)");
-                            Main.log("No such block or entity: " + id + " at (" + (lines.size() - r) + ":" + (c + 1) + ") (r:c, not ctrl + g)");
+                            Main.err("No such block or entity: " + id +
+                                    " at (" + (lines.size() - r) + "," + (c + 1) + ")" +
+                                    " or (" + MathUtils.toSheetCol(c) + (lines.size() - r) + ")");
                         }
                     }
                 }
