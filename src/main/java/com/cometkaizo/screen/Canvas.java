@@ -2,10 +2,12 @@ package com.cometkaizo.screen;
 
 import com.cometkaizo.util.MathUtils;
 import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.entity.BoundingBox;
 
 import java.awt.*;
 
 public class Canvas {
+    private boolean debug = true;
     private int screenWidth, screenHeight;
     private double cameraX, cameraY;
     private double coordToScreen;
@@ -74,6 +76,33 @@ public class Canvas {
         g.setColor(oCr);
     }
 
+    /// Renders the bounding box in red for debug purposes
+    public void renderDebugBoundingBox(BoundingBox boundingBox, Color color) {
+        if (!debug) return;
+        var oldColor = g.getColor();
+        g.setColor(color);
+        g.fillRect(
+                toScreenX(boundingBox.getX()),
+                toScreenY(boundingBox.getY() + boundingBox.getHeight()),
+                toScreenLength(boundingBox.getWidth()),
+                toScreenLength(boundingBox.getHeight())
+        );
+        g.setColor(oldColor);
+    }
+    /// Renders the block at the position in red for debug purposes
+    public void renderDebugBlock(Vector.Int position, Color color) {
+        if (!debug) return;
+        var oldColor = g.getColor();
+        g.setColor(color);
+        g.fillRect(
+                toScreenX(position.getX()),
+                toScreenY(position.getY() + 1),
+                toScreenLength(1),
+                toScreenLength(1)
+        );
+        g.setColor(oldColor);
+    }
+
     private boolean isNotVisible(double x, double y, double width, double height) {
         return x >= screenWidth || y >= screenHeight ||
                 x + width <= 0 || y + height <= 0;
@@ -109,6 +138,13 @@ public class Canvas {
 
     public int getHeight() {
         return screenHeight;
+    }
+
+    public boolean isDebug() {
+        return debug;
+    }
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     void startRender(Graphics2D g, Vector.Double prevCameraPos, Vector.Double cameraPos, int width, int height, double partialTick) {

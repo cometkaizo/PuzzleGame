@@ -68,8 +68,12 @@ public class GameRenderer extends JPanel {
         canvas.endRender();
     }
 
-    private void renderPauseMenu(Graphics2D g, Dimension size) {
+    private void renderOverlay(Graphics2D g, Dimension size) {
         // todo
+    }
+
+    public void toggleDebug() {
+        canvas.setDebug(!canvas.isDebug());
     }
 
     public record Settings(

@@ -180,6 +180,10 @@ public class GameApp extends App implements Tickable {
         this.game = game;
     }
 
+    public void toggleDebug() {
+        renderer.toggleDebug();
+    }
+
     private class WindowCloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent windowEvent) {

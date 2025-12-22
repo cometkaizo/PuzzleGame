@@ -1,9 +1,12 @@
 package com.cometkaizo.world.block;
 
+import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 import com.cometkaizo.world.entity.Entity;
+
+import java.awt.*;
 
 public class WallBlock extends Block {
 
@@ -22,6 +25,11 @@ public class WallBlock extends Block {
     public void reset() {
         super.reset();
         textureVariation = originalArgs.next(null);
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+        canvas.renderDebugBlock(position, Color.RED);
     }
 
     @Override

@@ -17,6 +17,7 @@ public class InputBindings {
     public static final Supplier<KeyBinding> UP = INPUT_BINDINGS.register("up", app -> new KeyBinding("Up", VK_W));
     public static final Supplier<KeyBinding> DOWN = INPUT_BINDINGS.register("down", app -> new KeyBinding("Down", VK_S));
     public static final Supplier<KeyBinding> INTERACT = INPUT_BINDINGS.register("interact", app -> new KeyBinding("Interact", VK_E));
+    public static final Supplier<KeyBinding> TOGGLE_DEBUG = INPUT_BINDINGS.register("toggle_debug", app -> new KeyBinding("Toggle Debug", VK_Z));
     public static final Supplier<MouseButtonBinding> THROW = INPUT_BINDINGS.register("throw", app -> new MouseButtonBinding("Throw", BUTTON1));
 
 }

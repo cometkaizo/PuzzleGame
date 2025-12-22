@@ -6,6 +6,7 @@ import com.cometkaizo.app.GameDriver;
 import com.cometkaizo.event.EventBus;
 import com.cometkaizo.event.SimpleEventBus;
 import com.cometkaizo.game.event.*;
+import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.InputListener;
 import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.input.MouseButtonBinding;
@@ -76,6 +77,7 @@ public class Game implements Tickable, Renderable, InputListener {
         this.eventBus = new SimpleEventBus();
         eventBus.register(PlayerDeathEvent.class, this::onPlayerDeath);
         eventBus.register(RoomSwitchEvent.class, this::onRoomSwitch);
+        eventBus.register(KeyPressedEvent.class, this::toggleDebug);
 
         try {
             world = new World(this, Path.of("/world"));
@@ -102,6 +104,10 @@ public class Game implements Tickable, Renderable, InputListener {
     private void onRoomSwitch(RoomSwitchEvent event) {
         if (event.player() != player) throw new IllegalStateException("Different players: " + player + " and " + event.player());
         this.room = event.to();
+    }
+
+    private void toggleDebug(KeyPressedEvent click) {
+        if (click.input() == InputBindings.TOGGLE_DEBUG.get()) app.toggleDebug();
     }
 
 
