@@ -15,7 +15,7 @@ public abstract class Collectible extends Interactable {
     protected int collectTime = -1;
 
     public Collectible(Room.Layer layer, Vector.MutableDouble position, Args args) {
-        super(layer, position.add(0.5, 0D), args);
+        super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
