@@ -148,7 +148,8 @@ public class Player extends CollidableEntity {
     }
 
     private boolean isAboveGround() {
-        return room.ground.containsSolid(boundingBox, this);
+        return true;
+        //        return room.ground.containsSolid(boundingBox, this);
     }
 
     private boolean isJumping() {
