@@ -15,13 +15,12 @@ public abstract class Overlay implements Tickable, Renderable {
     public Overlay(GameApp app) {
         this.app = app;
         eventBus = app.getOverlayEventBus();
-        eventBus.register(KeyPressedEvent.class, this::maybeClose);
-        eventBus.register(MousePressedEvent.class, this::onClick);
+        eventBus.register(this, KeyPressedEvent.class, this::maybeClose);
+        eventBus.register(this, MousePressedEvent.class, this::onClick);
     }
 
     public void cleanup() {
-        eventBus.unregister(KeyPressedEvent.class, this::maybeClose);
-        eventBus.unregister(MousePressedEvent.class, this::onClick);
+        eventBus.unregister(this);
     }
 
     private void maybeClose(KeyPressedEvent click) {

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class SimpleEventBus implements EventBus {
-    private final Map<Class<? extends Event>, List<Consumer<?>>> listeners = new HashMap<>(3);
+    private final Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners = new HashMap<>(3);
 
     public SimpleEventBus() {
 
@@ -15,7 +15,9 @@ public class SimpleEventBus implements EventBus {
 
     @Override
     public void post(Event event) {
-        listeners.forEach((type, listeners) -> tryListen(type, listeners, event));
+        listeners.forEach((_, ls) ->
+                ls.forEach((type, l) ->
+                        tryListen(type, l, event)));
     }
 
     @SuppressWarnings("unchecked")
@@ -26,14 +28,13 @@ public class SimpleEventBus implements EventBus {
     }
 
     @Override
-    public <T extends Event> void register(Class<? extends T> type, Consumer<? super T> listener) {
-        listeners.computeIfAbsent(type, k -> new ArrayList<>(1)).add(listener);
+    public <T extends Event> void register(Object key, Class<? extends T> type, Consumer<? super T> listener) {
+        listeners.computeIfAbsent(key, _ -> new HashMap<>()).computeIfAbsent(type, _ -> new ArrayList<>(1)).add(listener);
     }
 
     @Override
-    public <T extends Event> void unregister(Class<? extends T> type, Consumer<? super T> listener) {
-        var list = listeners.get(type);
-        if (list != null) list.remove(listener);
+    public void unregister(Object key) {
+        listeners.remove(key);
     }
 
 }
