@@ -7,6 +7,14 @@ import java.util.List;
 public class StringUtils {
 
     public static List<String> createLines(String text, FontMetrics font, int width) {
+        var lines = new ArrayList<String>();
+        for (String existingLine : text.split("\n")) {
+            lines.addAll(createLinesNoNewline(existingLine, font, width));
+        }
+        return lines;
+    }
+
+    private static List<String> createLinesNoNewline(String text, FontMetrics font, int width) {
         String[] words = text.split(" ");
 
         List<String> lines = new ArrayList<>();
