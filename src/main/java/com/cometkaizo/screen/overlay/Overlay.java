@@ -3,6 +3,7 @@ package com.cometkaizo.screen.overlay;
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.event.EventBus;
 import com.cometkaizo.game.event.KeyPressedEvent;
+import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.world.Tickable;
@@ -15,10 +16,12 @@ public abstract class Overlay implements Tickable, Renderable {
         this.app = app;
         eventBus = app.getOverlayEventBus();
         eventBus.register(KeyPressedEvent.class, this::maybeClose);
+        eventBus.register(MousePressedEvent.class, this::onClick);
     }
 
     public void cleanup() {
         eventBus.unregister(KeyPressedEvent.class, this::maybeClose);
+        eventBus.unregister(MousePressedEvent.class, this::onClick);
     }
 
     private void maybeClose(KeyPressedEvent click) {
@@ -26,10 +29,17 @@ public abstract class Overlay implements Tickable, Renderable {
         if (click.input() == InputBindings.OVERLAY_CLOSE.get()) app.setOverlay(null);
     }
 
+    protected void onClick(MousePressedEvent click) { }
+
     public boolean shouldTickGame() {
         return true;
     }
     public boolean shouldRenderGame() {
         return true;
+    }
+
+    @Override
+    public void tick() {
+
     }
 }
