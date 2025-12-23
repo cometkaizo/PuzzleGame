@@ -55,10 +55,9 @@ public abstract class Collectible extends Interactable {
         var oT = g.getTransform();
         var oC = g.getComposite();
 
-        int screenX = canvas.toScreenX(canvas.lerp(getOldX(), getX()) + 0.5);
+        int screenX = canvas.toScreenX(canvas.lerp(getOldX(), getX()) + 1);
         int screenY = canvas.toScreenY(canvas.lerp(getOldY(), getY()) + 0.5);
 
-        double angle = 0;
         double translateX = 0, translateY = 0;
         double alpha = 1;
 
@@ -76,8 +75,6 @@ public abstract class Collectible extends Interactable {
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
             g.translate(translateX, translateY);
             g.translate(screenX, screenY);
-            if (angle != 0)
-                g.rotate(angle);
             g.translate(-screenX, -screenY);
         }
 
