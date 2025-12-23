@@ -1,6 +1,7 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.overlay.CombinationLockOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -17,7 +18,7 @@ public class CombinationPuzzleBox extends Interactable {
 
     @Override
     protected void interact() {
-        // todo: check if player has the key with the matching name in their inventory
+        app.setOverlay(new CombinationLockOverlay(app, correctCombination, digitOptions));
     }
 
     @Override
