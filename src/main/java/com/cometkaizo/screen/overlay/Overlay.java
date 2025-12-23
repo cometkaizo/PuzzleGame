@@ -5,8 +5,11 @@ import com.cometkaizo.event.EventBus;
 import com.cometkaizo.game.event.KeyPressedEvent;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.input.InputBindings;
+import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.world.Tickable;
+
+import java.awt.*;
 
 public abstract class Overlay implements Tickable, Renderable {
     protected final GameApp app;
@@ -40,6 +43,11 @@ public abstract class Overlay implements Tickable, Renderable {
     @Override
     public void tick() {
 
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+        canvas.fillScreen(new Color(0, 0, 0, 255));
     }
 
     /// helper method to get the mouse x position
