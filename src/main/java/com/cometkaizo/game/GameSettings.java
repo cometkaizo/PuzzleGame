@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 
 public class GameSettings {
 
-    public final int originalTileSize = 16;
-    public final int renderScale = 8;
+    public final int originalTileSize = 32;
+    public final int renderScale = 4;
     public final int tileSize = originalTileSize * renderScale;
     public final double widthInTiles = 10;
     public final double heightInTiles = 6;
