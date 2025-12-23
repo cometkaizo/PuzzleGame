@@ -1,13 +1,11 @@
 package com.cometkaizo.event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class SimpleEventBus implements EventBus {
     private final Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners = new HashMap<>(3);
+    private final Set<Object> pendingRemoval = new HashSet<>(3);
 
     public SimpleEventBus() {
 
@@ -15,6 +13,11 @@ public class SimpleEventBus implements EventBus {
 
     @Override
     public void post(Event event) {
+        if (!pendingRemoval.isEmpty()) {
+            pendingRemoval.forEach(listeners::remove);
+            pendingRemoval.clear();
+        }
+
         listeners.forEach((_, ls) ->
                 ls.forEach((type, l) ->
                         tryListen(type, l, event)));
@@ -34,7 +37,7 @@ public class SimpleEventBus implements EventBus {
 
     @Override
     public void unregister(Object key) {
-        listeners.remove(key);
+        pendingRemoval.add(key);
     }
 
 }
