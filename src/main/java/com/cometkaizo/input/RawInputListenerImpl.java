@@ -110,6 +110,9 @@ public class RawInputListenerImpl implements RawInputListener {
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+
+        if (prevInactive) return;
+        inputListeners.forEach(l -> l.mouseMoved(e.getX(), e.getY()));
     }
 
     private boolean inactive() {

@@ -8,5 +8,6 @@ public interface InputListener {
     void mousePressed(MouseButtonBinding button, int x, int y);
     void mouseDown(MouseButtonBinding button, int x, int y);
     void mouseReleased(MouseButtonBinding button, int x, int y);
+    void mouseMoved(int x, int y);
 
 }

@@ -250,6 +250,11 @@ public class Game implements Tickable, Renderable, InputListener {
         eventBus.post(new MouseReleasedEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
 
+    @Override
+    public void mouseMoved(int x, int y) {
+        eventBus.post(new MouseMovedEvent(toCoordX(x), toCoordY(y), x, y));
+    }
+
     public double toCoordX(int screenX) {
         return cameraPosition.x + (screenX - app.getPanelSize().width / 2D) / (double) settings.tileSize;
     }

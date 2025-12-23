@@ -224,6 +224,10 @@ public class GameApp extends App implements Tickable {
         public void mouseReleased(MouseButtonBinding button, int x, int y) {
             overlayEventBus.post(new MouseReleasedEvent(button, Double.NaN, Double.NaN, x, y));
         }
+        @Override
+        public void mouseMoved(int x, int y) {
+            overlayEventBus.post(new MouseMovedEvent(Double.NaN, Double.NaN, x, y));
+        }
     }
     private class WindowCloseListener extends WindowAdapter {
         @Override
