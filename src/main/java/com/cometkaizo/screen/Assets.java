@@ -17,8 +17,10 @@ public class Assets {
     public static Image texture(String path) {
         return TEXTURES.computeIfAbsent("/assets/" + path + ".png", p -> {
             var image = ImageUtils.readImageOrNull(p);
-            if (image == null) return ImageUtils.readImage("/assets/unknown.png");
-            else return image;
+            if (image == null) {
+                Main.err("no texture at " + p);
+                return ImageUtils.readImage("/assets/unknown.png");
+            } else return image;
         });
     }
     public static Font font(String path, int size) {
