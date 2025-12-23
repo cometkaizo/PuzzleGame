@@ -21,6 +21,9 @@ public class Assets {
             else return image;
         });
     }
+    public static Font font(String path, int size) {
+        return font(path).deriveFont(Font.PLAIN, size);
+    }
     public static Font font(String path) {
         return FONTS.computeIfAbsent("/assets/gui/font/" + path + ".ttf", p -> {
             try {
