@@ -383,6 +383,8 @@ public class Player extends CollidableEntity {
         return deathTime == -1;
     }
 
+    /// Called when the player interacts with an object. Paired with canInteract() 
+    /// to ensure that only one object is interacted with per key click
     public void onInteract() {
         interactTime = interactDuration;
         dialogueInteractTime = dialogueInteractDuration;
