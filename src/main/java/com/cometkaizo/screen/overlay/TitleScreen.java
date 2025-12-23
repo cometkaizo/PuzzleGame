@@ -13,17 +13,12 @@ public class TitleScreen extends Overlay {
     private static final Font TITLE_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 70);
     private static final String TITLE = "Puzzle Game";
     private final List<Button> buttons = List.of(
-            new Button("New Game", 30, this::newGame, w -> w / 2 - 100, h -> h / 2 - 100, _ -> 200, _ -> 50),
-            new Button("Load Game", 30, this::loadGame, w -> w / 2 - 100, h -> h / 2 - 40, _ -> 200, _ -> 50)
+            new Button("New Game", 30, this::newGame, w -> w / 2 - 12, h -> h / 2 - 12, _ -> 25, _ -> 6),
+            new Button("Load Game", 30, this::loadGame, w -> w / 2 - 12, h -> h / 2 - 5, _ -> 25, _ -> 6)
     );
 
     public TitleScreen(GameApp app) {
         super(app);
-        eventBus.register(MousePressedEvent.class, this::onClick);
-    }
-    @Override
-    public void cleanup() {
-        eventBus.unregister(MousePressedEvent.class, this::onClick);
     }
 
     // button functionality
@@ -38,7 +33,8 @@ public class TitleScreen extends Overlay {
         } else return false;
     }
 
-    private void onClick(MousePressedEvent click) {
+    @Override
+    protected void onClick(MousePressedEvent click) {
         for (var button : buttons) {
             if (button.onClick(click)) break;
         }
