@@ -89,8 +89,8 @@ public class Room implements Tickable, Renderable, Resettable {
         background.render(canvas);
         ground.render(canvas);
         walls.render(canvas);
-        if (player != null) player.render(canvas);
         foreground.render(canvas);
+        if (player != null) player.render(canvas);
     }
 
     public Object getBlockOrEntity(String name) {
