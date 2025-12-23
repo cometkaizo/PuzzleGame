@@ -1,14 +1,9 @@
 package com.cometkaizo.game;
 
-import com.cometkaizo.input.InputBinding;
-import com.cometkaizo.input.InputBindings;
-import com.cometkaizo.registry.Registry;
-
 import java.lang.reflect.Field;
 
 public class GameSettings {
 
-    public Registry<InputBinding> inputBindings = InputBindings.GAME;
     public final int originalTileSize = 16;
     public final int renderScale = 8;
     public final int tileSize = originalTileSize * renderScale;
