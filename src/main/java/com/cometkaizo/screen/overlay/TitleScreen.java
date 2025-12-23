@@ -22,22 +22,18 @@ public class TitleScreen extends Overlay {
     }
 
     // button functionality
-    private boolean newGame() {
+    private void newGame() {
         app.setOverlay(null);
-        return true;
     }
-    private boolean loadGame() {
+    private void loadGame() {
         if (app.loadGame()) {
             app.setOverlay(null);
-            return true;
-        } else return false;
+        }
     }
 
     @Override
     protected void onClick(MousePressedEvent click) {
-        for (var button : buttons) {
-            if (button.onClick(click)) break;
-        }
+        for (var button : buttons) button.onClick(click);
     }
 
     @Override

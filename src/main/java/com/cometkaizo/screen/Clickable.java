@@ -4,15 +4,14 @@ import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.world.Tickable;
 
 import java.awt.*;
-import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
 public class Clickable implements Tickable, Renderable {
-    protected BooleanSupplier action;
+    protected Runnable action;
     protected int lastX, lastY, lastW, lastH;
     protected IntUnaryOperator x, y, w, h;
 
-    public Clickable(BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+    public Clickable(Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         this.action = action;
         this.x = x;
         this.y = y;
@@ -20,10 +19,10 @@ public class Clickable implements Tickable, Renderable {
         this.h = h;
     }
 
-    public boolean onClick(MousePressedEvent click) {
-        if (contains(click.screenX(), click.screenY()))
-            return action.getAsBoolean();
-        return false;
+    public void onClick(MousePressedEvent click) {
+        if (contains(click.screenX(), click.screenY())) {
+            action.run();
+        }
     }
 
     public boolean contains(int x, int y) {

@@ -1,7 +1,6 @@
 package com.cometkaizo.screen;
 
 import java.awt.*;
-import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
 public class Button extends Clickable {
@@ -9,15 +8,10 @@ public class Button extends Clickable {
     protected Font font;
     protected Color color = new Color(0, 0, 0);
 
-    public Button(String message, int size, BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+    public Button(String message, int size, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         super(action, x, y, w, h);
         this.message = message;
         this.font = Assets.font("BoldPixels", size);
-        this.action = action;
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
     }
 
     @Override
