@@ -19,7 +19,7 @@ public class CombinationLockOverlay extends Overlay {
     private boolean open;
 
     private final List<Clickable> clickables = List.of(
-            new Clickable(this::open, w -> w / 2 - 19, h -> h / 2 - 32, _ -> 38, _ -> 16),
+            new Clickable(this::open, w -> w / 2 - 38, h -> h / 2 - 64, _ -> 76, _ -> 32),
             newDigitClickable(0),
             newDigitClickable(1),
             newDigitClickable(2),
@@ -27,7 +27,7 @@ public class CombinationLockOverlay extends Overlay {
     );
 
     private Clickable newDigitClickable(int id) {
-        return new Clickable(() -> changeDigit(id), w -> w / 2 + 9, h -> h / 2 - 8 + id * 9, _ -> 19, _ -> 8);
+        return new Clickable(() -> changeDigit(id), w -> w / 2 + 18, h -> h / 2 - 16 + id * 18, _ -> 38, _ -> 16);
     }
 
     public CombinationLockOverlay(GameApp app, String correctCombination, String[] digitOptions, Runnable actionOnOpen) {
@@ -61,11 +61,11 @@ public class CombinationLockOverlay extends Overlay {
 
     private void renderCurrentCombination(Canvas canvas) {
         String currentCombo = currentCombination();
-        double yOffset = -2.5 + (open ? 14 : 0);
+        double yOffset = -5 + (open ? 28 : 0);
         double scale = canvas.renderScale();
         for (int i = 0; i < 4; i ++) {
-            int x = (int) (canvas.halfWidth() + 17 * scale);
-            int y = (int) (canvas.halfHeight() + yOffset*scale + (i*9) * scale);
+            int x = (int) (canvas.halfWidth() + 34 * scale);
+            int y = (int) (canvas.halfHeight() + yOffset*scale + (i*18) * scale);
             canvas.renderString("" + currentCombo.charAt(i), font, color, x, y, false, false);
         }
     }

@@ -13,8 +13,8 @@ public class TitleScreen extends Overlay {
     private static final Font TITLE_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 70);
     private static final String TITLE = "Puzzle Game";
     private final List<Button> buttons = List.of(
-            new Button("New Game", 30, this::newGame, w -> w / 2 - 12, h -> h / 2 - 12, _ -> 25, _ -> 6),
-            new Button("Load Game", 30, this::loadGame, w -> w / 2 - 12, h -> h / 2 - 5, _ -> 25, _ -> 6)
+            new Button("New Game", 30, this::newGame, w -> w / 2 - 24, h -> h / 2 - 24, _ -> 50, _ -> 12),
+            new Button("Load Game", 30, this::loadGame, w -> w / 2 - 24, h -> h / 2 - 10, _ -> 50, _ -> 12)
     );
 
     public TitleScreen(GameApp app) {
