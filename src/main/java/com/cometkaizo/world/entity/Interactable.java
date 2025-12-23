@@ -17,6 +17,7 @@ public abstract class Interactable extends CollidableEntity {
         KeyBinding input = event.input();
         if (input == InputBindings.INTERACT.get() && canBeInteracted()) {
             interact();
+            room.player.onInteract();
         }
     }
 
