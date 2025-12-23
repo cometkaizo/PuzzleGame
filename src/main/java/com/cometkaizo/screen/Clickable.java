@@ -11,7 +11,6 @@ public class Clickable implements Tickable, Renderable {
     protected BooleanSupplier action;
     protected int lastX, lastY, lastW, lastH;
     protected IntUnaryOperator x, y, w, h;
-    protected boolean hovered;
 
     public Clickable(BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         this.action = action;
