@@ -270,4 +270,11 @@ public class GameApp extends App implements Tickable {
     public Dimension getPanelSize() {
         return renderer.getSize();
     }
+
+    public int getMouseX() {
+        return renderer.getMouseX();
+    }
+    public int getMouseY() {
+        return renderer.getMouseY();
+    }
 }

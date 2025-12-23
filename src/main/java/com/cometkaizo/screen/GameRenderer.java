@@ -7,6 +7,7 @@ import com.cometkaizo.world.Vector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class GameRenderer extends JPanel {
 
@@ -14,6 +15,7 @@ public class GameRenderer extends JPanel {
     private final GameApp app;
     private final Dimension size;
     private double partialTick;
+    private int mouseX, mouseY;
 
     public GameRenderer(Settings settings, GameApp app) {
         this.app = app;
@@ -76,12 +78,26 @@ public class GameRenderer extends JPanel {
         canvas.setDebug(!canvas.isDebug());
     }
 
+    private Game game() {
+        return app.getGame();
+    }
+
+    @Override
+    protected void processMouseMotionEvent(MouseEvent e) {
+        super.processMouseMotionEvent(e);
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    public int getMouseX() {
+        return mouseX;
+    }
+    public int getMouseY() {
+        return mouseY;
+    }
+
     public record Settings(
             Dimension size,
             Color backgroundColor
     ) {}
-
-    private Game game() {
-        return app.getGame();
-    }
 }

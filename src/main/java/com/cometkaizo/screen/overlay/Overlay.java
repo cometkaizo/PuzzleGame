@@ -42,4 +42,13 @@ public abstract class Overlay implements Tickable, Renderable {
     public void tick() {
 
     }
+
+    /// helper method to get the mouse x position
+    protected int mouseX() {
+        return app.getMouseX();
+    }
+    /// helper method to get the mouse y position
+    protected int mouseY() {
+        return app.getMouseY();
+    }
 }
