@@ -18,7 +18,7 @@ public class MayanCalendarOverlay extends Overlay {
     public static final Image[] NUMBER_SYMBOLS = IntStream.range(0, 21).mapToObj(i -> Assets.texture("gui/mayan_calendar/number/" + i)).toArray(Image[]::new);
     public static final Image[] TZOLKIN_SYMBOLS = IntStream.range(0, 20).mapToObj(i -> Assets.texture("gui/mayan_calendar/tzolkin_symbol/" + i)).toArray(Image[]::new);
     public static final Image[] HAAB_SYMBOLS = IntStream.range(0, 19).mapToObj(i -> Assets.texture("gui/mayan_calendar/haab_symbol/" + i)).toArray(Image[]::new);
-    public static final int NUMBER_SIZE = 10;
+    public static final int NUMBER_SIZE = 9;
     public static final int SYMBOL_SIZE = 16;
 
     private final Cog big = new BigCog(), med = new MediumCog(), small = new SmallCog();
@@ -134,12 +134,12 @@ public class MayanCalendarOverlay extends Overlay {
         private void renderNumbers(Canvas canvas) {
             var g = canvas.getGraphics();
             int yOffset = yOffset(canvas);
-            int top = canvas.halfHeight() - canvas.scale(97) + yOffset;
+            int top = canvas.halfHeight() - canvas.scale(95) + yOffset;
 
             int numberSize = canvas.scale(NUMBER_SIZE);
             int yInterval = SYMBOL_SIZE + 7;
 
-            int x = canvas.halfWidth() + canvas.scale(22);
+            int x = canvas.halfWidth() + canvas.scale(23);
             for (int cnt = 0; cnt < LENGTH; cnt ++) {
                 int id = symbolIdAt(cnt);
                 int num = numberIndex(id % DAYS_PER_MONTH);
@@ -168,11 +168,35 @@ public class MayanCalendarOverlay extends Overlay {
     }
     class MediumCog extends Cog {
         public MediumCog() {
-            super("medium_cog", 20);
+            super("medium_cog", TZOLKIN_SYMBOLS.length);
         }
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
+            var g = canvas.getGraphics();
+            var oldTransform = g.getTransform();
+            int yOffset = yOffset(canvas);
+            double twoPi = 2 * Math.PI;
+            double angleOffset = twoPi * rotPercent();
+            int symbolSize = canvas.scale(SYMBOL_SIZE);
+
+            int centerX = canvas.scale(canvas.halfPixelWidth() - 51.5);
+            int centerY = canvas.scale(canvas.halfPixelHeight() + 0.5) + yOffset;
+            canvas.renderDebugRect(centerX, centerY, 1, 1, Color.GREEN);
+
+            for (int cnt = 0; cnt < maxRot; cnt ++) {
+                double percent = (double) cnt / maxRot;
+                double angle = twoPi * percent + angleOffset;
+
+                int x = centerX + (int) (Math.cos(angle) * canvas.scale(53));
+                int y = centerY + (int) (Math.sin(angle) * canvas.scale(53));
+
+                g.rotate(angle, x, y);
+
+                g.drawImage(TZOLKIN_SYMBOLS[cnt], x, y - symbolSize / 2, symbolSize, symbolSize, null);
+
+                g.setTransform(oldTransform);
+            }
         }
     }
     class SmallCog extends Cog {
@@ -182,6 +206,30 @@ public class MayanCalendarOverlay extends Overlay {
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
+            var g = canvas.getGraphics();
+            var oldTransform = g.getTransform();
+            int yOffset = yOffset(canvas);
+            double twoPi = 2 * Math.PI;
+            double angleOffset = twoPi * rotPercent();
+            int numberSize = canvas.scale(NUMBER_SIZE);
+
+            int centerX = canvas.scale(canvas.halfPixelWidth() - 30.5);
+            int centerY = canvas.scale(canvas.halfPixelHeight() + 0.5) + yOffset;
+            canvas.renderDebugRect(centerX, centerY, 1, 1, Color.GREEN);
+
+            for (int cnt = 0; cnt < maxRot; cnt ++) {
+                double percent = (double) cnt / maxRot;
+                double angle = twoPi * percent + angleOffset;
+
+                int x = centerX + (int) (Math.cos(angle) * canvas.scale(17.5));
+                int y = centerY + (int) (Math.sin(angle) * canvas.scale(17.5));
+
+                g.rotate(angle, x, y);
+
+                g.drawImage(NUMBER_SYMBOLS[cnt], x, y - numberSize / 2, numberSize, numberSize, null);
+
+                g.setTransform(oldTransform);
+            }
         }
     }
     abstract class Cog implements Tickable, Renderable {
@@ -235,6 +283,11 @@ public class MayanCalendarOverlay extends Overlay {
 
         public boolean isRotating() {
             return rotProgressCount != 0;
+        }
+        protected double rotPercent() {
+            double main = (double) rot / maxRot;
+            double step = (1D / maxRot) * (rotForwards ? -rotProgressPercent() : rotProgressPercent());
+            return main + step;
         }
         protected double rotProgressPercent() {
             return (double) rotProgressCount / maxRotProgressCount;
