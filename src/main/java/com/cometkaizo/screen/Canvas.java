@@ -38,6 +38,10 @@ public class Canvas {
         renderImage(image, toScreenX(x), toScreenY(y), deltaXFactor, deltaYFactor);
     }
 
+    public void renderCenteredImage(Image image) {
+        renderImage(image, halfWidth(), halfHeight(), -0.5, -0.5);
+    }
+
     public void renderImage(Image image, int x, int y) {
         renderImage(image, x, y, 0, 0);
     }
@@ -74,6 +78,10 @@ public class Canvas {
 
         g.setFont(oF);
         g.setColor(oCr);
+    }
+
+    public void renderDebugString(String str, Color color, float x, float y) {
+        if (isDebug()) renderString(str, Assets.font("BoldPixels", 24), color, x, y, false, false);
     }
 
     /// Renders the bounding box in red for debug purposes
@@ -141,6 +149,11 @@ public class Canvas {
         return screenHeight / 2 - (int) ((coordY - originY) * coordToScreen);
     }
 
+    /// Scales the number of pixel-art pixels to the length of actual screen pixels
+    public int scale(double pixels) {
+        return (int) (pixels * renderScale);
+    }
+    /// Converts a world-space length in blocks to screen-length in pixels
     public int toScreenLength(double coordLen) {
         return (int) (coordLen * coordToScreen);
     }
@@ -202,5 +215,11 @@ public class Canvas {
     }
     public int getPixelHeight() {
         return (int) (screenHeight / renderScale);
+    }
+    public int halfPixelWidth() {
+        return (int) (screenWidth / renderScale / 2);
+    }
+    public int halfPixelHeight() {
+        return (int) (screenHeight / renderScale / 2);
     }
 }

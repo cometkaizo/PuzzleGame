@@ -7,6 +7,7 @@ public class EntityTypes {
     public static final Map<String, Entity.Reader> ENTITIES = Map.of(
             "b", Button::new,
             "letter", Letter::new,
+            "mayan calendar", MayanCalendar::new,
             "p", Painting::new,
             "z", CombinationPuzzleBox::new,
             "d", Door::new,
