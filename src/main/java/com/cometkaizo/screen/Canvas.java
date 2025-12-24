@@ -6,6 +6,14 @@ import com.cometkaizo.world.entity.BoundingBox;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-24
+ * Description:
+ * A convenience wrapper class for Graphics2D which provides the ability to use common operations such as rendering
+ * using world-space coordinates (in blocks) or rendering centered text. When required functionality is too specific
+ * and does not exist within this class, the {@link #getGraphics()} method can be used to acquire the raw Graphics2D instance.
+ */
 public class Canvas {
     private boolean debug = true;
     private int screenWidth, screenHeight;
