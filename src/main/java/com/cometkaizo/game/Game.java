@@ -14,6 +14,7 @@ import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.*;
 import com.cometkaizo.world.entity.Collectible;
+import com.cometkaizo.world.entity.Door;
 import com.cometkaizo.world.entity.Player;
 
 import java.awt.*;
@@ -45,6 +46,7 @@ public class Game implements Tickable, Renderable, InputListener {
     private final int endFadeInDuration = 100, endFadeInFinishDuration = 50, endFadeOutDuration = 100,
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
+    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor;
 
     /// Reads in a game from a previous save file
     public Game(GameApp app, Path path) throws IOException {
@@ -87,10 +89,16 @@ public class Game implements Tickable, Renderable, InputListener {
             if (state.playerPos == null) state.playerPos = Vector.mutableDouble(room.getFirstCheckpoint().pos());
 
             player = room.player = new Player(room.walls, state.playerPos, new Args(""));
+
             this.cameraPosition = Vector.mutable(0D, 0D);
             this.prevCameraPosition = Vector.mutable(0D, 0D);
             this.targetCameraPosition = Vector.mutable(0D, 0D);
             teleportCamera();
+
+            paintingsDoor = (Door) room.getBlockOrEntity("d_paintings");
+            sculpturesDoor = (Door) room.getBlockOrEntity("d_sculptures");
+            modernDoor = (Door) room.getBlockOrEntity("d_modern");
+            artifactsDoor = (Door) room.getBlockOrEntity("d_artifacts");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

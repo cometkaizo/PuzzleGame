@@ -32,8 +32,14 @@ public class MayanCalendarOverlay extends Overlay {
             new Clickable(() -> focus(big), w -> w / 2 + 20, h -> h / 2 - 75, _ -> 30, _ -> 151)
     );
 
-    public MayanCalendarOverlay(GameApp app) {
+    private final int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
+
+    public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctModernCombo, int[] correctArtifactsCombo) {
         super(app);
+        this.correctPaintingsCombo = correctPaintingsCombo;
+        this.correctSculpturesCombo = correctSculpturesCombo;
+        this.correctModernCombo = correctModernCombo;
+        this.correctArtifactsCombo = correctArtifactsCombo;
     }
 
     private void increment() {
@@ -48,8 +54,23 @@ public class MayanCalendarOverlay extends Overlay {
     private boolean open() {
         if (isFocusing()) return false;
 
+        if (isCurrentCombo(correctPaintingsCombo)) {
+            app.getGame().paintingsDoor.open();
+        } else if (isCurrentCombo(correctSculpturesCombo)) {
+            app.getGame().sculpturesDoor.open();
+        } else if (isCurrentCombo(correctModernCombo)) {
+            app.getGame().modernDoor.open();
+        } else if (isCurrentCombo(correctArtifactsCombo)) {
+            app.getGame().artifactsDoor.open();
+        }
+
         return true;
     }
+
+    private boolean isCurrentCombo(int[] combo) {
+        return combo[0] == small.rot && combo[1] == med.rot && combo[2] == big.rot;
+    }
+
     private void decrement() {
         if (big.isRotating() || med.isRotating() || small.isRotating()) return;
         if (isFocusing()) focused.decrement();
@@ -119,8 +140,8 @@ public class MayanCalendarOverlay extends Overlay {
             int x = canvas.halfWidth() + canvas.scale(33);
             for (int cnt = 0; cnt < LENGTH; cnt ++) {
                 int id = symbolIdAt(cnt);
-                int y = canvas.halfHeight() - canvas.scale(100) + cnt * canvas.scale(yInterval) + yOffset;
-                y = rotProgressDeltaY(canvas, yInterval, y);
+                int y = canvas.halfHeight() + canvas.scale(84) - cnt * canvas.scale(yInterval) + yOffset;
+                y += rotProgressDeltaY(canvas, yInterval);
 
                 canvas.renderDebugString("" + id, Color.GREEN, x, y);
                 g.drawImage(SYMBOLS[id], x, y, symbolSizeInt, symbolSizeInt, null);
@@ -128,13 +149,13 @@ public class MayanCalendarOverlay extends Overlay {
         }
 
         private int symbolIdAt(int cnt) {
-            return symbolIndex(cnt - rot - 4);
+            return symbolIndex(cnt + rot - 4);
         }
 
         private void renderNumbers(Canvas canvas) {
             var g = canvas.getGraphics();
             int yOffset = yOffset(canvas);
-            int top = canvas.halfHeight() - canvas.scale(95) + yOffset;
+            int bottom = canvas.halfHeight() + canvas.scale(88) + yOffset;
 
             int numberSize = canvas.scale(NUMBER_SIZE);
             int yInterval = SYMBOL_SIZE + 7;
@@ -144,19 +165,18 @@ public class MayanCalendarOverlay extends Overlay {
                 int id = symbolIdAt(cnt);
                 int num = numberIndex(id % DAYS_PER_MONTH);
 
-                int y = top + cnt * canvas.scale(yInterval);
-                y = rotProgressDeltaY(canvas, yInterval, y);
+                int y = bottom - cnt * canvas.scale(yInterval);
+                y += rotProgressDeltaY(canvas, yInterval);
 
                 g.drawImage(NUMBER_SYMBOLS[num], x, y, numberSize, numberSize, null);
             }
         }
 
-        private int rotProgressDeltaY(Canvas canvas, int yInterval, int y) {
+        private int rotProgressDeltaY(Canvas canvas, int yInterval) {
             int progressDeltaY = canvas.scale(rotProgressPercent() * yInterval);
 
-            if (rotForwards) y -= progressDeltaY;
-            else y += progressDeltaY;
-            return y;
+            if (rotForwards) return -progressDeltaY;
+            else return progressDeltaY;
         }
 
         private int symbolIndex(int i) {
@@ -186,7 +206,7 @@ public class MayanCalendarOverlay extends Overlay {
 
             for (int cnt = 0; cnt < maxRot; cnt ++) {
                 double percent = (double) cnt / maxRot;
-                double angle = twoPi * percent + angleOffset;
+                double angle = -twoPi * percent + angleOffset;
 
                 int x = centerX + (int) (Math.cos(angle) * canvas.scale(53));
                 int y = centerY + (int) (Math.sin(angle) * canvas.scale(53));
@@ -219,7 +239,7 @@ public class MayanCalendarOverlay extends Overlay {
 
             for (int cnt = 0; cnt < maxRot; cnt ++) {
                 double percent = (double) cnt / maxRot;
-                double angle = twoPi * percent + angleOffset;
+                double angle = -twoPi * percent + angleOffset;
 
                 int x = centerX + (int) (Math.cos(angle) * canvas.scale(17.5));
                 int y = centerY + (int) (Math.sin(angle) * canvas.scale(17.5));

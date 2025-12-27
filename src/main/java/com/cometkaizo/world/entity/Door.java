@@ -18,6 +18,9 @@ public class Door extends Interactable {
     @Override
     protected void interact() {
         // todo: check if player has the key with the matching name in their inventory
+        open();
+    }
+    public void open() {
         open = true;
     }
 
@@ -38,7 +41,7 @@ public class Door extends Interactable {
 
     @Override
     public void render(Canvas canvas) {
-        canvas.renderDebugBoundingBox(boundingBox, Color.GREEN);
+        canvas.renderDebugBoundingBox(boundingBox, open ? Color.GREEN : Color.PINK);
     }
 
     @Override

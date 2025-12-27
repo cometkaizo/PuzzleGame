@@ -7,8 +7,10 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class MayanCalendar extends Interactable {
+    private int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
 
     public MayanCalendar(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -17,12 +19,19 @@ public class MayanCalendar extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new MayanCalendarOverlay(app));
+        app.setOverlay(new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo));
     }
 
     @Override
     public void reset() {
         super.reset();
+        correctPaintingsCombo = nextMayanCombo(originalArgs);
+        correctSculpturesCombo = nextMayanCombo(originalArgs);
+        correctModernCombo = nextMayanCombo(originalArgs);
+        correctArtifactsCombo = nextMayanCombo(originalArgs);
+    }
+    private int[] nextMayanCombo(Args args) {
+        return Arrays.stream(args.next(" ").split(" ")).mapToInt(Integer::parseInt).toArray();
     }
 
     @Override
