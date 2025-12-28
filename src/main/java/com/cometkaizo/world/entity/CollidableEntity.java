@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -10,6 +11,7 @@ public abstract class CollidableEntity extends MovableEntity {
     protected BoundingBox boundingBox;
     protected boolean collidedHorizontally;
     protected boolean collidedVertically;
+    protected Vector.ImmutableDouble oldBoundingBoxPos = Vector.immutable(0D, 0D);
 
     public CollidableEntity(Room.Layer layer, Vector.MutableDouble position, Args args) {
         // being able to put stuff before super() in java 25 is amazing
@@ -85,5 +87,18 @@ public abstract class CollidableEntity extends MovableEntity {
 
     public boolean isFloating() {
         return !room.ground.containsSolid(boundingBox, this);
+    }
+
+    @Override
+    protected void updateOldPosition() {
+        super.updateOldPosition();
+        this.oldBoundingBoxPos = Vector.immutableDouble(boundingBox.position);
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+        var texture = getTexture();
+        if (texture == null) return;
+        canvas.renderImage(texture, canvas.lerp(oldPosition.x, getX()), canvas.lerp(oldBoundingBoxPos.y, boundingBox.getBottom()), getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
 }
