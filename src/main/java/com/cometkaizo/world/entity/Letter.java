@@ -14,7 +14,7 @@ public class Letter extends Interactable {
             
             As we have agreed, you may take care of the museum until I return. You know that this museum is everything to me.
             
-            I am writing from Egypt. The fools have refused my generous offer for the final artifact in this collection, but they will not escape me. I shall be finding them in person to discuss the matter further. Three drums shall mark the end of an era.
+            I am writing from Egypt. The fools have refused my generous offer for the final artifact in this collection, but they will not escape me. I shall be finding them in person to discuss the matter further. Three drums shall mark the end of the era.
             
             Sincerely,
             Your father
