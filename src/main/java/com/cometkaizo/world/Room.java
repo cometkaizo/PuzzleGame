@@ -96,6 +96,7 @@ public class Room implements Tickable, Renderable, Resettable {
         walls.render(canvas);
         foreground.render(canvas);
         if (player != null) player.render(canvas);
+        cameraLocks.forEach(l -> l.render(canvas));
     }
 
     public Object getBlockOrEntity(String name) {
@@ -617,7 +618,7 @@ public class Room implements Tickable, Renderable, Resettable {
         }
     }
 
-    public static class CameraLock {
+    public static class CameraLock implements Renderable {
         protected final int left, right, top, bottom;
         protected final BoundingBox activationArea;
 
@@ -628,7 +629,7 @@ public class Room implements Tickable, Renderable, Resettable {
             int right = left + width;
             int top = bottom + height;
             this.activationArea = new BoundingBox(Vector.mutable((double) left - leftRange, bottom - bottomRange),
-                    Vector.immutable((double) (right + rightRange) - (left - leftRange) + 1, (top + topRange) - (bottom - bottomRange) + 1));
+                    Vector.immutable((double) (right + rightRange) - (left - leftRange), (top + topRange) - (bottom - bottomRange)));
             this.left = left;
             this.right = right;
             this.top = top;
@@ -640,6 +641,11 @@ public class Room implements Tickable, Renderable, Resettable {
         }
         public boolean isActive(Vector.Double pos) {
             return activationArea.contains(pos);
+        }
+
+        @Override
+        public void render(Canvas canvas) {
+            canvas.renderDebugBoundingBox(activationArea, Color.ORANGE);
         }
     }
 }
