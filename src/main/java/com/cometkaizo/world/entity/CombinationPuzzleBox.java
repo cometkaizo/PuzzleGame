@@ -32,6 +32,7 @@ public class CombinationPuzzleBox extends Interactable {
     private String correctCombination;
     private String[] digitOptions;
     private int w, h;
+    private int variant;
     private String message;
 
     private boolean open;
@@ -65,8 +66,8 @@ public class CombinationPuzzleBox extends Interactable {
         correctCombination = originalArgs.next("");
         digitOptions = originalArgs.next("").split(" ");
 
-        int messageVariant = originalArgs.nextInt(1) - 1;
-        message = MESSAGES[messageVariant];
+        variant = originalArgs.nextInt(1);
+        message = MESSAGES[variant - 1];
 
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
     }
@@ -84,11 +85,12 @@ public class CombinationPuzzleBox extends Interactable {
 
     @Override
     public void render(Canvas canvas) {
+        super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.DARK_GRAY);
     }
 
     @Override
     protected String getTexturePath() {
-        return "combination_puzzle_box/" + w + "x" + h;
+        return "combination_puzzle_box/" + variant;
     }
 }
