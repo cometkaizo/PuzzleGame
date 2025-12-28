@@ -10,9 +10,9 @@ public class Args {
     public String[] args;
     public int index;
     public Args(String s) {
-        var parts = s.split(";");
+        var parts = removeComments(s).split(";");
         args = Arrays.copyOfRange(parts, 1, parts.length);
-        id = removeComments(parts[0]);
+        id = parts[0];
     }
 
     /**
@@ -22,7 +22,7 @@ public class Args {
      * (Or we could use real Google sheet comments too, but those a more annoying)
      */
     public static String removeComments(String str) {
-        return str.replaceAll(" ?\\(.*\\)", ""); // regex to check for comments and remove them
+        return str.replaceAll(" ?\\(.*?\\)", ""); // regex to check for comments and remove them
     }
 
     public String next() {
