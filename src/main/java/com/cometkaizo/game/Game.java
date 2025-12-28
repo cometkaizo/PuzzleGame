@@ -99,6 +99,8 @@ public class Game implements Tickable, Renderable, InputListener {
             sculpturesDoor = (Door) room.getBlockOrEntity("d_sculptures");
             modernDoor = (Door) room.getBlockOrEntity("d_modern");
             artifactsDoor = (Door) room.getBlockOrEntity("d_artifacts");
+            if (paintingsDoor == null || sculpturesDoor == null || modernDoor == null || artifactsDoor == null)
+                throw new IllegalStateException("Not all doors are present");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
