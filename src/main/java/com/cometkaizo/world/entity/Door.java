@@ -18,7 +18,7 @@ public class Door extends Interactable {
     @Override
     protected void interact() {
         // todo: check if player has the key with the matching name in their inventory
-        open();
+        if (!keyName.isEmpty()) open();
     }
     public void open() {
         open = true;
