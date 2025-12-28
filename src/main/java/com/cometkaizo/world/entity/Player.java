@@ -9,6 +9,7 @@ import com.cometkaizo.input.MouseButtonBinding;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Dialogue;
+import com.cometkaizo.util.MathUtils;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -264,7 +265,7 @@ public class Player extends CollidableEntity {
         motion.x = Math.min(Math.max(motion.x, -maxVelocity), maxVelocity);
         motion.y = Math.min(Math.max(motion.y, -maxVelocity), maxVelocity);
 
-        facingRight = motion.x >= 0;
+        if (!MathUtils.almostEquals(motion.x, 0)) facingRight = motion.x > 0;
 
         if (walkTime % 5 == 0) Assets.sound("step").play();
     }
