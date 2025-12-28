@@ -35,13 +35,6 @@ public class World implements PathSerializable, Tickable, Renderable {
         read(directoryPath);
     }
 
-    public World(Game game, String namespace, String name, Path directoryPath) throws IOException {
-        this.game = game;
-        read(directoryPath);
-        this.namespace = namespace;
-        this.name = name;
-    }
-
 
     void addRoom(Room room) {
         rooms.put(room.getNamespace(), room);
