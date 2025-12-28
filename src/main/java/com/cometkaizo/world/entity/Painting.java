@@ -16,16 +16,8 @@ public class Painting extends Interactable {
         super.reset();
         variant = originalArgs.next("1");
 
-        // I could separate direction and length into two arguments but this looks cleaner on the Google sheet
-        String sizeCode = originalArgs.next("r1");
-        if (sizeCode.charAt(0) == 'r') {
-            w = Integer.parseInt(sizeCode.substring(1));
-            h = 1;
-        } else {
-            w = 1;
-            h = Integer.parseInt(sizeCode.substring(1));
-        }
-
+        w = originalArgs.nextInt(1);
+        h = originalArgs.nextInt(1);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
     }
 
