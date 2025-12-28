@@ -623,7 +623,7 @@ public class Room implements Tickable, Renderable, Resettable {
         protected final BoundingBox activationArea;
 
         public CameraLock(Args args, int r, int c) {
-            this(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0));
+            this(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(5), args.nextInt(3), args.nextInt(5), args.nextInt(3));
         }
         public CameraLock(int left, int bottom, int width, int height, int leftRange, int topRange, int rightRange, int bottomRange) {
             int right = left + width;
