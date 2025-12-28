@@ -214,6 +214,7 @@ public class MayanCalendarOverlay extends Overlay {
                 g.rotate(angle, x, y);
 
                 g.drawImage(TZOLKIN_SYMBOLS[cnt], x, y - symbolSize / 2, symbolSize, symbolSize, null);
+                canvas.renderDebugString("" + cnt, Color.GREEN, x, y);
 
                 g.setTransform(oldTransform);
             }
@@ -247,6 +248,7 @@ public class MayanCalendarOverlay extends Overlay {
                 g.rotate(angle, x, y);
 
                 g.drawImage(NUMBER_SYMBOLS[cnt], x, y - numberSize / 2, numberSize, numberSize, null);
+                canvas.renderDebugString("" + cnt, Color.GREEN, x, y);
 
                 g.setTransform(oldTransform);
             }
