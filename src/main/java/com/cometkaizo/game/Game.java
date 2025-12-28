@@ -101,8 +101,8 @@ public class Game implements Tickable, Renderable, InputListener {
             artifactsDoor = (Door) room.getBlockOrEntity("d_artifacts");
             if (paintingsDoor == null || sculpturesDoor == null || modernDoor == null || artifactsDoor == null)
                 throw new IllegalStateException("Not all doors are present");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException("Game failed to load", e);
         }
     }
 

@@ -2,6 +2,7 @@ package com.cometkaizo.world;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.game.LoadException;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
@@ -49,10 +50,14 @@ public class Room implements Tickable, Renderable, Resettable {
         this.name = path.getFileName().toString();
         this.namespace = name;
 
-        this.ground = new Layer("ground", Main.getResource(path.resolve("ground" + SAVE_EXTENSION).toString()));
-        this.walls = new Layer("walls", Main.getResource(path.resolve("walls" + SAVE_EXTENSION).toString()));
-        this.background = new Layer("background", Main.getResource(path.resolve("background" + SAVE_EXTENSION).toString()));
-        this.foreground = new Layer("foreground", Main.getResource(path.resolve("foreground" + SAVE_EXTENSION).toString()));
+        try {
+            this.ground = new Layer("ground", Main.getResource(path.resolve("ground" + SAVE_EXTENSION).toString()));
+            this.walls = new Layer("walls", Main.getResource(path.resolve("walls" + SAVE_EXTENSION).toString()));
+            this.background = new Layer("background", Main.getResource(path.resolve("background" + SAVE_EXTENSION).toString()));
+            this.foreground = new Layer("foreground", Main.getResource(path.resolve("foreground" + SAVE_EXTENSION).toString()));
+        } catch (Exception e) {
+            throw new LoadException("Room layers failed to load", e);
+        }
 
         checkpoints = walls.checkpoints;
         cameraLocks = background.cameraLocks;

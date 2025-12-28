@@ -2,6 +2,7 @@ package com.cometkaizo.world;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.game.LoadException;
 import com.cometkaizo.io.PathSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Canvas;
@@ -74,6 +75,8 @@ public class World implements PathSerializable, Tickable, Renderable {
             for (var roomDir : in.nextLine().split(";")) {
                 addRoom(new Room(game, this, path.resolve(roomDir)));
             }
+        } catch (Exception e) {
+            throw new LoadException("World failed to load", e);
         }
     }
 
