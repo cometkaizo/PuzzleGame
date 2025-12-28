@@ -1,11 +1,12 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.overlay.PaintingOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 public class Painting extends Interactable {
-    private String variant;
+    private String variant, label;
     private int w, h;
     public Painting(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -15,6 +16,7 @@ public class Painting extends Interactable {
     public void reset() {
         super.reset();
         variant = originalArgs.next("1");
+        label = originalArgs.next("Untitled Artwork");
 
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
@@ -23,7 +25,7 @@ public class Painting extends Interactable {
 
     @Override
     protected void interact() {
-
+        app.setOverlay(new PaintingOverlay(app, variant, label));
     }
 
     @Override
