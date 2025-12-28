@@ -251,57 +251,39 @@ public class Room implements Tickable, Renderable, Resettable {
             cameraLocks = new ArrayList<>();
             triggers = new ArrayList<>();
 
-            for (int r = 0; r < lines.size(); r ++) {
+            for (int r = 0; r < lines.size(); r ++) { // for each row index r
                 var line = lines.get(r);
                 var row = new ArrayList<Block>();
 
-                int c = -1;
-                String[] split = line.split(",", -1);
+                int c = -1; // for each column index c
+                String[] split = line.split(",", -1); // split the line into cells (separated by , in a csv file)
                 for (String s : split) {
                     c ++;
-                    Args args = new Args(s);
-                    String id = args.id();
+
+                    Args args = new Args(s); // parse the current cell into an Args instance for easy reading
+                    String id = args.id(); // get id of the object in this cell
 
                     // special values
-                    if (RESPAWN_ID.equals(id)) {
-                        var checkpoint = new Checkpoint(r, c, args.nextInt(0), args.nextInt(0), args.nextInt(4), args.nextInt(4), args.next());
-                        checkpoints.add(checkpoint);
-                        if (!checkpoint.name.isEmpty()) named.put(checkpoint.name, checkpoint);
-                        row.add(BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY));
-                        continue;
-                    } else if (CAMERA_LOCK_ID.equals(id)) {
-                        cameraLocks.add(CameraLock.of(args, r, c));
-                        row.add(BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY));
-                        continue;
-                    } else if (TRIGGER_ID.equals(id)) {
-                        triggers.add(new Trigger(r, c, args.nextInt(0), args.nextInt(0), args.nextInt(4), args.nextInt(4), args.nextInt(-1)));
-                        row.add(BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY));
+                    if (readSpecialValue(id, r, c, args)) {
+                        row.add(newAirBlock(c, r));
                         continue;
                     }
 
-                    // blocks and entities
-                    if (BlockTypes.BLOCKS.containsKey(id)) {
-                        var b = BlockTypes.BLOCKS.get(id).apply(this, Vector.immutable(c, r), args);
-                        row.add(b);
-                        if (b.hasName()) named.put(b.getName(), b);
-                    } else {
-                        row.add(BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY));
+                    // blocks
+                    if (readBlock(id, c, r, args, row)) continue;
 
-                        if (EntityTypes.ENTITIES.containsKey(id)) {
-                            var e = EntityTypes.ENTITIES.get(id).apply(this, Vector.mutable((double) c, r), args);
-                            entities.add(e);
-                            if (e.hasName()) named.put(e.getName(), e);
-                        } else {
-                            Main.err(name + " - unknown object id: " + id +
-                                    " at (" + (lines.size() - r) + "," + (c + 1) + ")" +
-                                    " or (" + MathUtils.toSheetCol(c) + (lines.size() - r) + ")");
-                        }
-                    }
+                    // entities
+                    if (readEntity(id, c, r, args)) continue;
+
+                    // err
+                    Main.err(getUnknownObjectIdMsg(name, id, lines, r, c));
                 }
 
+                // add the row of blocks to the 2D list
                 blocks.add(row);
             }
 
+            // convert list to array
             this.blocks = new Block[blocks.size()][];
             for (int r = 0; r < blocks.size(); r++) {
                 var row = blocks.get(r);
@@ -309,6 +291,61 @@ public class Room implements Tickable, Renderable, Resettable {
             }
 
             in.close();
+        }
+
+        private static String getUnknownObjectIdMsg(String name, String id, List<String> lines, int r, int c) {
+            return name + " - unknown object id: " + id +
+                    " at (" + (lines.size() - r) + "," + (c + 1) + ")" +
+                    " or (" + MathUtils.toSheetCol(c) + (lines.size() - r) + ")";
+        }
+
+        private boolean readSpecialValue(String id, int r, int c, Args args) {
+            switch (id) {
+                case RESPAWN_ID -> {
+                    var checkpoint = new Checkpoint(r, c, args.nextInt(0), args.nextInt(0), args.nextInt(4), args.nextInt(4), args.next());
+                    checkpoints.add(checkpoint);
+                    if (!checkpoint.name.isEmpty()) named.put(checkpoint.name, checkpoint);
+                    return true;
+                }
+                case CAMERA_LOCK_ID -> {
+                    cameraLocks.add(CameraLock.of(args, r, c));
+                    return true;
+                }
+                case TRIGGER_ID -> {
+                    triggers.add(new Trigger(r, c, args.nextInt(0), args.nextInt(0), args.nextInt(4), args.nextInt(4), args.nextInt(-1)));
+                    return true;
+                }
+                case null, default -> {
+                }
+            }
+            return false;
+        }
+
+        private boolean readBlock(String id, int c, int r, Args args, ArrayList<Block> row) {
+            if (BlockTypes.BLOCKS.containsKey(id)) {
+                var b = BlockTypes.BLOCKS.get(id).apply(this, Vector.immutable(c, r), args);
+                row.add(b);
+                if (b.hasName()) named.put(b.getName(), b);
+
+                return true;
+            }
+
+            row.add(newAirBlock(c, r)); // add an air block if no known block id is found
+            return false;
+        }
+
+        private boolean readEntity(String id, int c, int r, Args args) {
+            if (EntityTypes.ENTITIES.containsKey(id)) {
+                var e = EntityTypes.ENTITIES.get(id).apply(this, Vector.mutable((double) c, r), args);
+                entities.add(e);
+                if (e.hasName()) named.put(e.getName(), e);
+                return true;
+            }
+            return false;
+        }
+
+        private Block newAirBlock(int c, int r) {
+            return BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY);
         }
 
         public void calcAllowedMovement(Vector.Double from, Vector.Double to, CollidableEntity entity, Vector.MutableDouble result, boolean canBlip) {
