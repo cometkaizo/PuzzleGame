@@ -72,11 +72,11 @@ public class Room implements Tickable, Renderable, Resettable {
     }
 
     public void lockCamera(Vector.MutableDouble cameraPos) {
-        var closestLockPos = CollectionUtils.findMin(cameraLocks, l ->
-                l.isActive(player.getPosition()) ? Double.MIN_VALUE : // if force activate, return minimal value to override all other camera locks
-                        l.restrict(cameraPos).distanceSqr(player.getPosition())
-        );
-        if (closestLockPos != null) cameraPos.set(closestLockPos.restrict(cameraPos));
+        var closestLockPos = cameraLocks.stream()
+                .filter(l -> l.isActive(player.getPosition())) // filter for active camera locks
+                .min(Comparator.comparingDouble(l -> l.restrict(cameraPos).distanceSqr(player.getPosition()))); // find minimum distance camera lock
+
+        closestLockPos.ifPresent(cameraLock -> cameraPos.set(cameraLock.restrict(cameraPos)));
     }
 
 
@@ -308,7 +308,7 @@ public class Room implements Tickable, Renderable, Resettable {
                     return true;
                 }
                 case CAMERA_LOCK_ID -> {
-                    cameraLocks.add(CameraLock.of(args, r, c));
+                    cameraLocks.add(new CameraLock(args, r, c));
                     return true;
                 }
                 case TRIGGER_ID -> {
@@ -617,65 +617,29 @@ public class Room implements Tickable, Renderable, Resettable {
         }
     }
 
-    public abstract static class CameraLock {
+    public static class CameraLock {
+        protected final int left, right, top, bottom;
         protected final BoundingBox activationArea;
 
-        protected CameraLock(int x, int y, int left, int right, int up, int down) {
-            this.activationArea = new BoundingBox(Vector.mutable((double) x - left, y - down), Vector.immutable((double) left + 1 + right, up + 1 + down));
+        public CameraLock(Args args, int r, int c) {
+            this(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0));
+        }
+        public CameraLock(int left, int bottom, int width, int height, int leftRange, int topRange, int rightRange, int bottomRange) {
+            int right = left + width;
+            int top = bottom + height;
+            this.activationArea = new BoundingBox(Vector.mutable((double) left - leftRange, bottom - bottomRange),
+                    Vector.immutable((double) (right + rightRange) - (left - leftRange) + 1, (top + topRange) - (bottom - bottomRange) + 1));
+            this.left = left;
+            this.right = right;
+            this.top = top;
+            this.bottom = bottom;
         }
 
-        public abstract Vector.ImmutableDouble restrict(Vector.Double pos);
+        public Vector.ImmutableDouble restrict(Vector.Double pos) {
+            return Vector.immutable(clamp(pos.getX(), left, right), clamp(pos.getY(), bottom, top));
+        }
         public boolean isActive(Vector.Double pos) {
             return activationArea.contains(pos);
-        }
-
-        public static CameraLock of(Args args, int r, int c) {
-            return switch (args.next()) {
-                case "p" -> new Point(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0));
-                case "h" -> new Horizontal(c, r, args.nextSheetCol(0), args.nextSheetCol(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0));
-                case "v" -> new Vertical(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0), args.nextInt(0));
-                default -> throw new IllegalStateException("Unexpected value: " + args.next());
-            };
-        }
-
-        public static class Point extends CameraLock {
-            protected final Vector.ImmutableDouble point;
-            public Point(int x, int y, int left, int right, int up, int down) {
-                super(x, y, left, right, up, down);
-                this.point = Vector.immutable((double)x, y);
-            }
-            @Override
-            public Vector.ImmutableDouble restrict(Vector.Double pos) {
-                return point;
-            }
-        }
-        public static class Horizontal extends CameraLock {
-            protected final double y, leftEndpoint, rightEndpoint;
-            public Horizontal(int x, int y, int leftEndpoint, int rightEndpoint, int left, int right, int up, int down) {
-                super(x, y, left, right, up, down);
-                this.y = y + 0.5;
-                this.leftEndpoint = leftEndpoint;
-                this.rightEndpoint = rightEndpoint;
-            }
-            @Override
-            public Vector.ImmutableDouble restrict(Vector.Double pos) {
-                double a = pos.getX();
-                return Vector.immutable(clamp(a, leftEndpoint, rightEndpoint), y);
-            }
-        }
-        public static class Vertical extends CameraLock {
-            protected final int x, bottomEndpoint, topEndpoint;
-            public Vertical(int x, int y, int bottomEndpoint, int topEndpoint, int left, int right, int up, int down) {
-                super(x, y, left, right, up, down);
-                this.x = x;
-                this.bottomEndpoint = bottomEndpoint;
-                this.topEndpoint = topEndpoint;
-            }
-            @Override
-            public Vector.ImmutableDouble restrict(Vector.Double pos) {
-                double a = pos.getY();
-                return Vector.immutable(x, clamp(a, bottomEndpoint, topEndpoint));
-            }
         }
     }
 }
