@@ -10,7 +10,7 @@
 ,,(instructions from galleries in order A - E are what is necessary for mayan calendar),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;;d_basement;4;1,,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w
-,w,,p;;1;r2,,,,z;;2;1;NOON;YUZJGNEF RHCKOUGM BVOCEGMI ZKPNLHOE,,,,p;;2;r2,,,,p;;3;r2,,,,p;;4;r2,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
+,w,,p;;1;r2,,,,z;;2;1;NOON;YUZJGNEF RHCKOUGM BVOCEGMI ZKPNLHOE;1,,,,p;;2;r2,,,,p;;3;r2,,,,p;;4;r2,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,,,,,,,(in empty frame),,,,,,,,gallery A (time),,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,,,,,,,,,,,,,,,,,,,,,gallery E,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,cupid & psyche,,,,,,,,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,p;;1;d6,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,lady justice (scales),,,,,,,,,,the thinker,,,,,,,
@@ -19,9 +19,9 @@
 ,,,,,,,,,w,gallery D,,,,,,w,,,,,,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,(puzzle box from paintings),z,w
 ,,z,,,,,,,,,,,,,,w,,,,,,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,z,w
 ,,,,,,,,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,w
-,w,,p;;1;r2,,,p;;1;r3,,,w,,,,,,,(no backing),,,,,z,w,,,,,w,,,,,,,mayan calendar (lock for every door),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
+,w,,p;;1;r2,,,p;;1;r3,,,w,,,,,,,(no backing),,,,,z,w,,,,,w,,,,,,,mayan calendar (lock for every door);;1 2 (Breath) 303 (3 Drum),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
 ,w,w,w,w,w,w,w,w,w,,,,,,,p;;1;d4,,,,,,w,,,,,w,,,,,,sign,(1. intro letter),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
-,w,p;;1;d2,(painting of puzzle box in sculptures),,,,,,,,,,,,,,,,,,,d;;d_painting;1;2,,,,,,,,,,,,(2. sequence of spins + 'five days pass'),,,,,,,,,,,,,d;;d_sculpture;1;2,,,,,,,,,,mirror,,,,,,statue of rah,,,,,
+,w,p;;1;d2,(painting of puzzle box in sculptures),,,,,,,,,,,,,,,,,,,d;d_paintings;d_paintings;1;2,,,,,,,,,,,,(2. sequence of spins + 'five days pass'),,,,,,,,,,,,,d;d_sculptures;d_sculptures;1;2,,,,,,,,,,mirror,,,,,,statue of rah,,,,,
 ,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,(difficulty increases),(3. _),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,w,,,,,,(mayan symbol on each of these puzzles),(4. _),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
 ,w,p;;1;d2,(painting of sculture),,,,,,,,,,,,,,,,,,p;;1;d2,w,,,,,w,,,,,,,(5. each digit is in each room),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
@@ -30,14 +30,14 @@
 ,w,,p;;1;r2,,,p;;1;r2,,,w,,,,,,,w,,p;;1;r3,,,,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,,,,,,,,w,gallery B (pointing),,,,,,,,,,,,w,,,,,,,w,w,,,,,,,,,w,w,,,,,,,w,,,,Mephistopheles and Margaretta,,,,,,,,,,venus de milo,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,p;;1;d3,w,,,,,,,,,w,w,,,,,w,w,,,,,,,,,w,,,,(double-sided statue from India),,,,,,,,,,,,,,,,,
-,,,,z;;2;1;1247;0123456789 0123456789 0123456789 0123456789,,,,,,,,,,,gallery C (directions),w,z;;1;2;WEST;BKWNLEO PJUNEOA MNEOSCH QWEHWTL,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,(designed to be viewed with mirror),,,,,,,,,,,,,,,,,
+,,,,z;;2;1;1247;0123456789 0123456789 0123456789 0123456789;2,,,,,,,,,,,gallery C (directions),w,z;;1;2;WEST;BKWNLEO PJUNEOA MNEOSCH QWEHWTL;3,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,(designed to be viewed with mirror),,,,,,,,,,,,,,,,,
 ,,,,,,,,,w,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,,,,,,,,w,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,,,p;;1;r2,,,,,w,,,,,,,w,,p;;1;r3,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
-,w,w,w,w,w,w,w,w,w,w,d;;d_modern;2;1,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;;d_artifact;2;1,,w,w,w,w,w,w,w,w,w,w
+,w,w,w,w,w,w,w,w,w,w,d;d_modern;d_modern;2;1,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_library;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_artifacts;d_artifacts;2;1,,w,w,w,w,w,w,w,w,w,w
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,w,w,,,,,,,,,,,,,,,,,,,,,w
-,w,,,pacman,,,,,,,,,,,,,,,,,,,,,,,,d;;h_modern;1;2,,,,,,,,,,,,,d;;h_artifact;1;2,,,,,,,,,,rosetta stone,,,,,,,,,,,,organ,,,,,w
+,w,,,pacman,,,,,,,,,,,,,,,,,,,,,,,,d;h_modern;h_modern;1;2,,,,,,,,,,,,,d;h_artifacts;h_artifacts;1;2,,,,,,,,,,rosetta stone,,,,,,,,,,,,organ,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,sign,morse code 1,,,,,,,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,w,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,w,,,,,w,,,w,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
