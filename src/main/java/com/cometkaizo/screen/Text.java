@@ -19,14 +19,16 @@ public class Text implements Renderable {
     private final Color color;
     private final IntUnaryOperator x, y;
     private final int w;
+    private final boolean center;
 
-    public Text(String message, Font font, Color color, IntUnaryOperator x, IntUnaryOperator y, int w) {
+    public Text(String message, Font font, Color color, IntUnaryOperator x, IntUnaryOperator y, int w, boolean center) {
         this.message = message;
         this.font = font;
         this.color = color;
         this.x = x;
         this.y = y;
         this.w = w;
+        this.center = center;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class Text implements Renderable {
             canvas.renderString(line, font, color,
                     (float) (x.applyAsInt(canvas.getPixelWidth()) * canvas.renderScale()),
                     (float) (y.applyAsInt(canvas.getPixelHeight()) * canvas.renderScale() + lineOffset),
-                    false, false);
+                    center, false);
         }
     }
 
