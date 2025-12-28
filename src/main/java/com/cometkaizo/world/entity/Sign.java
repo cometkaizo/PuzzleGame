@@ -45,4 +45,9 @@ public class Sign extends Interactable {
             this(title, "");
         }
     }
+
+    @Override
+    public boolean isSolid(Entity entity) {
+        return true;
+    }
 }
