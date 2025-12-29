@@ -82,7 +82,6 @@ public class Room implements Tickable, Renderable, Resettable {
 
     @Override
     public void tick() {
-        if (player != null) player.tick(); // this must be first in order for certain movement things to work (e.g., moving platform ground motion)
         ground.tick();
         walls.tick();
         background.tick();
@@ -95,7 +94,6 @@ public class Room implements Tickable, Renderable, Resettable {
         ground.render(canvas);
         walls.render(canvas);
         foreground.render(canvas);
-        if (player != null) player.render(canvas);
         cameraLocks.forEach(l -> l.render(canvas));
     }
 
@@ -125,7 +123,6 @@ public class Room implements Tickable, Renderable, Resettable {
 
     @Override
     public void reset() {
-        if (player != null) player.reset();
         ground.reset();
         walls.reset();
         background.reset();
@@ -134,6 +131,12 @@ public class Room implements Tickable, Renderable, Resettable {
 
     public List<Block> getGroundBeneath(CollidableEntity entity) {
         return ground.getBlocksWithin(entity.getBoundingBox(), b -> b.isSolid(entity));
+    }
+
+    public void setPlayer(Player player) {
+        if (this.player != null) walls.removeEntity(player);
+        this.player = player;
+        walls.addEntity(player); // the player exists on the "walls" layer
     }
 
 
@@ -233,6 +236,7 @@ public class Room implements Tickable, Renderable, Resettable {
         public final Room room = Room.this;
         public final Block[][] blocks;
         public final List<Entity> entities = new ArrayList<>();
+        private List<Entity> entitiesSortedByY = new ArrayList<>(); // list of entities sorted by largest y to lowest y, updated every tick, maintained for rendering order
         public final Map<String, Object> named = new HashMap<>();
         public final List<Checkpoint> checkpoints;
         public final List<CameraLock> cameraLocks;
@@ -546,6 +550,9 @@ public class Room implements Tickable, Renderable, Resettable {
             if (x < 0 || x >= row.length) return Optional.empty();
             return Optional.of(row[x]);
         }
+        public Optional<Class<? extends Block>> getBlockType(int x, int y) {
+            return getBlock(x, y).map(Block::getClass);
+        }
 
         public boolean containsSolid(BoundingBox boundingBox, Entity entity) {
             return !getBlocksWithin(boundingBox, block -> block.isSolid(entity)).isEmpty() ||
@@ -559,15 +566,26 @@ public class Room implements Tickable, Renderable, Resettable {
         @Override
         public void tick() {
             entities.forEach(Tickable::tick);
+
+            var entitiesSortedByY = new ArrayList<>(entities);
+            entitiesSortedByY.sort(Comparator.comparingDouble(Entity::getRenderY).reversed());
+            this.entitiesSortedByY = entitiesSortedByY;
         }
 
         @Override
         public void render(Canvas canvas) {
-            canvas.renderImage(baseImage, -14D, -10D, 0, -1);
+            int nextRenderEntityId = 0;
+            // render blocks from the top row down
             for (int r = blocks.length - 1; r >= 0; r--) {
+                // render all entities that are in this row's 1 block y range
+                while (nextRenderEntityId < entitiesSortedByY.size() &&
+                        entitiesSortedByY.get(nextRenderEntityId).getRenderY() > r) {
+                    entitiesSortedByY.get(nextRenderEntityId ++).render(canvas);
+                }
+                // render the row of the blocks
                 for (var b : blocks[r]) b.render(canvas);
             }
-            entities.forEach((entity) -> entity.render(canvas));
+            canvas.renderImage(baseImage, -14D, -10D, 0, -1);
         }
 
         public void reset() {
@@ -578,6 +596,11 @@ public class Room implements Tickable, Renderable, Resettable {
         public <T extends Entity> T addEntity(T entity) {
             entities.add(entity);
             if (entity.hasName()) named.put(entity.getName(), entity);
+            return entity;
+        }
+        public <T extends Entity> T removeEntity(T entity) {
+            entities.remove(entity);
+            if (entity.hasName()) named.remove(entity.getName(), entity);
             return entity;
         }
 

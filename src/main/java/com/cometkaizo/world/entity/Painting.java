@@ -32,4 +32,10 @@ public class Painting extends Interactable {
     protected String getTexturePath() {
         return "painting/" + variant;
     }
+
+    @Override
+    public double getRenderY() {
+        if (h == 1) return boundingBox.getTop() - 0.1;
+        else return super.getRenderY();
+    }
 }

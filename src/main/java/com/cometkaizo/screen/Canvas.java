@@ -19,12 +19,14 @@ public class Canvas {
     private int screenWidth, screenHeight;
     private double cameraX, cameraY;
     private double coordToScreen;
+    private double unscaledTileSize;
     private double renderScale;
     private Graphics2D g;
     private double partialTick;
 
-    public Canvas(double coordToScreen, double cameraX, double cameraY, double renderScale, Graphics2D g) {
-        this.coordToScreen = coordToScreen;
+    public Canvas(double cameraX, double cameraY, double unscaledTileSize, double renderScale, Graphics2D g) {
+        this.unscaledTileSize = unscaledTileSize;
+        this.coordToScreen = unscaledTileSize * renderScale;
         this.cameraX = cameraX;
         this.cameraY = cameraY;
         this.renderScale = renderScale;
@@ -68,6 +70,28 @@ public class Canvas {
                 (int) actualY,
                 (int) width,
                 (int) height,
+                null);
+    }
+
+    public void blitImage(Image image, double srcX, double srcY, double destX, double destY, double w, double h) {
+        blitImage(image, toUnscaledScreenLength(srcX), toUnscaledScreenLength(srcY), toScreenX(destX), toScreenY(destY), toUnscaledScreenLength(w), toUnscaledScreenLength(h));
+    }
+
+    public void blitImage(Image image, int srcX, int srcY, int destX, int destY, int w, int h) {
+        int scaledW = scale(w);
+        int scaledH = scale(h);
+
+        if (isNotVisible(destX, destY, scaledW, scaledH)) return;
+
+        g.drawImage(image,
+                destX,
+                destY,
+                destX + (int) scaledW,
+                destY + (int) scaledH,
+                srcX,
+                srcY,
+                srcX + w,
+                srcY + h,
                 null);
     }
 
@@ -164,6 +188,10 @@ public class Canvas {
     /// Converts a world-space length in blocks to screen-length in pixels
     public int toScreenLength(double coordLen) {
         return (int) (coordLen * coordToScreen);
+    }
+    /// Converts a world-space length in blocks to unscaled screen-length in pixels (i.e. renderScale is not applied)
+    private int toUnscaledScreenLength(double coordLen) {
+        return (int) (coordLen * unscaledTileSize);
     }
 
     public Graphics2D getGraphics() {

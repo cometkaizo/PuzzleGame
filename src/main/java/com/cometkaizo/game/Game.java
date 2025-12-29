@@ -88,7 +88,8 @@ public class Game implements Tickable, Renderable, InputListener {
             if (room.getCheckpoints().isEmpty()) throw new IllegalStateException("No respawn position");
             if (state.playerPos == null) state.playerPos = Vector.mutableDouble(room.getFirstCheckpoint().pos());
 
-            player = room.player = new Player(room.walls, state.playerPos, new Args(""));
+            player = new Player(room.walls, state.playerPos, new Args(""));
+            room.setPlayer(player);
 
             this.cameraPosition = Vector.mutable(0D, 0D);
             this.prevCameraPosition = Vector.mutable(0D, 0D);

@@ -1,6 +1,8 @@
 package com.cometkaizo.world.block;
 
+import com.cometkaizo.screen.AtlasTexture;
 import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.ConnectorAtlasTexture;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -29,12 +31,17 @@ public class WallBlock extends Block {
 
     @Override
     public void render(Canvas canvas) {
+        super.render(canvas);
         canvas.renderDebugBlock(position, Color.RED);
     }
 
     @Override
     protected String getTexturePath() {
-        return textureVariation == null ? null : "wall";
+        return "wall/" + ((isConnectedE() && isConnectedW() && getX()%2 == 0) ? "2" : "1");
     }
 
+    @Override
+    protected AtlasTexture getAtlasTexture() {
+        return ConnectorAtlasTexture.get(this);
+    }
 }

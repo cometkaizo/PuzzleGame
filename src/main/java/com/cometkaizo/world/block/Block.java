@@ -3,6 +3,7 @@ package com.cometkaizo.world.block;
 import com.cometkaizo.io.DataSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Assets;
+import com.cometkaizo.screen.AtlasTexture;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.world.*;
@@ -18,6 +19,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     protected final Args originalArgs;
     public String name;
     public final Vector.ImmutableInt position;
+    private Boolean connectedN, connectedE, connectedS, connectedW;
 
     public Block(Room.Layer layer, Vector.ImmutableInt position, Args args) {
         this.room = layer.room;
@@ -37,21 +39,27 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
 
     @Override
     public void render(Canvas canvas) {
-        var texture = getTexture();
-        if (texture == null) return;
-        canvas.renderImage(texture, (double) getX(), getY(), getTextureDeltaXFactor(), getTextureDeltaYFactor());
+        var atlas = getTextureAtlas();
+        if (atlas == null) return;
+        var texture = getAtlasTexture();
+        canvas.blitImage(atlas,
+                texture.x(), texture.y(), // src
+                getX(), getY() + getHeight(), // dest
+                1, texture.hasYExtension() ? getHeight() : 1 // w and h
+        );
     }
-    protected double getTextureDeltaXFactor() {
-        return 0;
-    }
-    protected double getTextureDeltaYFactor() {
-        return -1;
-    }
+
     protected abstract String getTexturePath();
-    private Image getTexture() {
+    private Image getTextureAtlas() {
         var texturePath = getTexturePath();
         if (texturePath == null) return null;
         return Assets.texture("block/" + texturePath);
+    }
+    protected double getHeight() {
+        return 2.5;
+    }
+    protected AtlasTexture getAtlasTexture() {
+        return AtlasTexture.SINGLE_BLOCK;
     }
 
     public String getNamespace() {
@@ -89,5 +97,30 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     @Override
     public void read(CompoundData data) {
 
+    }
+
+    public boolean isConnectedN() {
+        if (connectedN == null) {
+            connectedN = layer.getBlockType(getX(), getY() + 1).orElse(null) == getClass();
+        }
+        return connectedN;
+    }
+    public boolean isConnectedE() {
+        if (connectedE == null) {
+            connectedE = layer.getBlockType(getX() + 1, getY()).orElse(null) == getClass();
+        }
+        return connectedE;
+    }
+    public boolean isConnectedS() {
+        if (connectedS == null) {
+            connectedS = layer.getBlockType(getX(), getY() - 1).orElse(null) == getClass();
+        }
+        return connectedS;
+    }
+    public boolean isConnectedW() {
+        if (connectedW == null) {
+            connectedW = layer.getBlockType(getX() - 1, getY()).orElse(null) == getClass();
+        }
+        return connectedW;
     }
 }

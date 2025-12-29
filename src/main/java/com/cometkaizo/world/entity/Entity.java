@@ -55,7 +55,15 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     public void render(Canvas canvas) {
         var texture = getTexture();
         if (texture == null) return;
-        canvas.renderImage(texture, canvas.lerp(oldPosition.x, getX()), canvas.lerp(oldPosition.y, getY()), getTextureDeltaXFactor(), getTextureDeltaYFactor());
+        int x = canvas.toScreenX(canvas.lerp(oldPosition.x, getX())) + getTextureDeltaX();
+        int y = canvas.toScreenY(canvas.lerp(oldPosition.y, getY())) + getTextureDeltaY();
+        canvas.renderImage(texture, x, y, getTextureDeltaXFactor(), getTextureDeltaYFactor());
+    }
+    protected int getTextureDeltaX() {
+        return 0;
+    }
+    protected int getTextureDeltaY() {
+        return 0;
     }
     protected double getTextureDeltaXFactor() {
         return 0;
@@ -70,13 +78,13 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         return Assets.texture("entity/" + texturePath);
     }
 
+
     public boolean hasName() {
         return name != null && !name.isBlank();
     }
     public String getName() {
         return name;
     }
-
 
 
     public void onAddedTo(Room room) {
@@ -111,6 +119,11 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     }
 
     public double getY() {
+        return position.y;
+    }
+
+    /// The y-value at which this entity is compared to other entities to determine which is rendered in front
+    public double getRenderY() {
         return position.y;
     }
 

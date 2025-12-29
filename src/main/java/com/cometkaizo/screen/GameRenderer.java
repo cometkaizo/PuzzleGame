@@ -22,9 +22,9 @@ public class GameRenderer extends JPanel {
 
         GameSettings gameSettings = game().getSettings();
 
-        canvas = new Canvas(gameSettings.tileSize,
-                game().getCameraPosition().x,
+        canvas = new Canvas(game().getCameraPosition().x,
                 game().getCameraPosition().y,
+                gameSettings.unscaledTileSize,
                 gameSettings.renderScale,
                 null);
 
