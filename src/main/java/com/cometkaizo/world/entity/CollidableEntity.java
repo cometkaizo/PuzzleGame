@@ -99,6 +99,8 @@ public abstract class CollidableEntity extends MovableEntity {
     public void render(Canvas canvas) {
         var texture = getTexture();
         if (texture == null) return;
-        canvas.renderImage(texture, canvas.lerp(oldPosition.x, getX()), canvas.lerp(oldBoundingBoxPos.y, boundingBox.getBottom()), getTextureDeltaXFactor(), getTextureDeltaYFactor());
+        int x = canvas.toScreenX(canvas.lerp(oldPosition.x, getX())) + canvas.scale(getTextureDeltaX());
+        int y = canvas.toScreenY(canvas.lerp(oldBoundingBoxPos.y, boundingBox.getBottom())) + canvas.scale(getTextureDeltaY());
+        canvas.renderImage(texture, x, y, getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
 }

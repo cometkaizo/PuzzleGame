@@ -55,8 +55,8 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     public void render(Canvas canvas) {
         var texture = getTexture();
         if (texture == null) return;
-        int x = canvas.toScreenX(canvas.lerp(oldPosition.x, getX())) + getTextureDeltaX();
-        int y = canvas.toScreenY(canvas.lerp(oldPosition.y, getY())) + getTextureDeltaY();
+        int x = canvas.toScreenX(canvas.lerp(oldPosition.x, getX())) + canvas.scale(getTextureDeltaX());
+        int y = canvas.toScreenY(canvas.lerp(oldPosition.y, getY())) + canvas.scale(getTextureDeltaY());
         canvas.renderImage(texture, x, y, getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
     protected int getTextureDeltaX() {

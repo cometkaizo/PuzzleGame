@@ -114,4 +114,13 @@ public class CombinationPuzzleBox extends Interactable {
     protected String getTexturePath() {
         return "combination_puzzle_box/" + variant;
     }
+
+    @Override
+    protected int getTextureDeltaX() {
+        return -2;
+    }
+    @Override
+    protected int getTextureDeltaY() {
+        return 2;
+    }
 }
