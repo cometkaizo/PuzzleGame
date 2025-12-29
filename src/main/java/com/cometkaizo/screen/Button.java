@@ -1,5 +1,7 @@
 package com.cometkaizo.screen;
 
+import com.cometkaizo.app.GameApp;
+
 import java.awt.*;
 import java.util.function.IntUnaryOperator;
 
@@ -8,8 +10,8 @@ public class Button extends Clickable {
     protected Font font;
     protected Color color = new Color(0, 0, 0);
 
-    public Button(String message, int size, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
-        super(action, x, y, w, h);
+    public Button(GameApp app, String message, int size, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+        super(app, action, x, y, w, h);
         this.message = message;
         this.font = Assets.font("BoldPixels", size);
     }

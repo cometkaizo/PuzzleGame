@@ -1,5 +1,6 @@
 package com.cometkaizo.screen;
 
+import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.world.Tickable;
 
@@ -8,19 +9,21 @@ import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
 public class Clickable implements Tickable, Renderable {
+    protected final GameApp app;
     protected BooleanSupplier action;
     protected int lastX, lastY, lastW, lastH;
     protected IntUnaryOperator x, y, w, h;
 
-    public Clickable(BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+    public Clickable(GameApp app, BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+        this.app = app;
         this.action = action;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
     }
-    public Clickable(Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
-        this(() -> {
+    public Clickable(GameApp app, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
+        this(app, () -> {
             action.run();
             return true;
         }, x, y, w, h);
@@ -31,6 +34,10 @@ public class Clickable implements Tickable, Renderable {
             return action.getAsBoolean();
         }
         return false;
+    }
+
+    public boolean isHovered() {
+        return contains(app.getMouseX(), app.getMouseY());
     }
 
     public boolean contains(int x, int y) {
@@ -50,9 +57,9 @@ public class Clickable implements Tickable, Renderable {
     }
 
     private void updatePosAndSize(Canvas canvas) {
-        lastX = (int) (x.applyAsInt(canvas.getPixelWidth()) * canvas.renderScale());
-        lastY = (int) (y.applyAsInt(canvas.getPixelHeight()) * canvas.renderScale());
-        lastW = (int) (w.applyAsInt(canvas.getPixelWidth()) * canvas.renderScale());
-        lastH = (int) (h.applyAsInt(canvas.getPixelHeight()) * canvas.renderScale());
+        lastX = canvas.scale(x.applyAsInt(canvas.getPixelWidth()));
+        lastY = canvas.scale(y.applyAsInt(canvas.getPixelHeight()));
+        lastW = canvas.scale(w.applyAsInt(canvas.getPixelWidth()));
+        lastH = canvas.scale(h.applyAsInt(canvas.getPixelHeight()));
     }
 }

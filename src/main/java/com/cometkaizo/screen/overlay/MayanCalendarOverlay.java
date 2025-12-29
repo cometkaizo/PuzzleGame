@@ -24,12 +24,12 @@ public class MayanCalendarOverlay extends Overlay {
     private final Cog big = new BigCog(), med = new MediumCog(), small = new SmallCog();
     private Cog focused = null;
     private final List<Clickable> clickables = List.of(
-            new Clickable(this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23),
-            new Clickable(this::open, w -> w / 2 + 62, h -> h / 2 - 11, _ -> 23, _ -> 23),
-            new Clickable(this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23),
-            new Clickable(() -> focus(small), w -> w / 2 - 58, h -> h / 2 - 27, _ -> 55, _ -> 55),
-            new Clickable(() -> focus(med), w -> w / 2 - 119, h -> h / 2 - 67, _ -> 135, _ -> 135),
-            new Clickable(() -> focus(big), w -> w / 2 + 20, h -> h / 2 - 75, _ -> 30, _ -> 151)
+            new Clickable(app, this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23),
+            new Clickable(app, this::open, w -> w / 2 + 62, h -> h / 2 - 11, _ -> 23, _ -> 23),
+            new Clickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23),
+            new Clickable(app, () -> focus(small), w -> w / 2 - 58, h -> h / 2 - 27, _ -> 55, _ -> 55),
+            new Clickable(app, () -> focus(med), w -> w / 2 - 119, h -> h / 2 - 67, _ -> 135, _ -> 135),
+            new Clickable(app, () -> focus(big), w -> w / 2 + 20, h -> h / 2 - 75, _ -> 30, _ -> 151)
     );
 
     private final int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;

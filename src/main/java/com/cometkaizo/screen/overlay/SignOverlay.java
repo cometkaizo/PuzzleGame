@@ -19,7 +19,7 @@ public class SignOverlay extends Overlay {
                 174, false);
         this.desc = new Text(desc, Assets.font("BoldPixels", 20), Color.BLACK,
                 w -> w / 2 - 87,
-                h -> h / 2 - 30,
+                h -> h / 2 - 45,
                 174, false);
         this.variant = variant;
     }

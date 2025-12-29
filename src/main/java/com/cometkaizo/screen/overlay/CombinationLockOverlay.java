@@ -5,6 +5,7 @@ import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Clickable;
+import com.cometkaizo.screen.ImageClickable;
 
 import java.awt.*;
 import java.util.List;
@@ -17,24 +18,32 @@ public class CombinationLockOverlay extends Overlay {
     private final Runnable actionOnOpen;
     private final int[] selectedDigits = new int[4];
     private boolean open;
+    private final String overlayVariant;
 
-    private final List<Clickable> clickables = List.of(
-            new Clickable(this::open, w -> w / 2 - 38, h -> h / 2 - 64, _ -> 76, _ -> 32),
-            newDigitClickable(0),
-            newDigitClickable(1),
-            newDigitClickable(2),
-            newDigitClickable(3)
-    );
+    private final Clickable handleClickable;
+    private final List<Clickable> digitClickables;
 
-    private Clickable newDigitClickable(int id) {
-        return new Clickable(() -> changeDigit(id), w -> w / 2 + 18, h -> h / 2 - 16 + id * 18, _ -> 38, _ -> 16);
-    }
-
-    public CombinationLockOverlay(GameApp app, String correctCombination, String[] digitOptions, Runnable actionOnOpen) {
+    public CombinationLockOverlay(GameApp app, String correctCombination, String[] digitOptions, Runnable actionOnOpen, String overlayVariant) {
         super(app);
         this.correctCombination = correctCombination;
         this.digitOptions = digitOptions;
         this.actionOnOpen = actionOnOpen;
+        this.overlayVariant = overlayVariant;
+
+        handleClickable = new ImageClickable(this.app, this::open,
+                w -> w / 2 - 38, h -> h / 2 - 64 - getYOffset(), _ -> 76, _ -> 32,
+                "gui/combination_lock/" + this.overlayVariant + "/pull", -4, -4);
+        digitClickables = List.of(
+                newDigitClickable(0),
+                newDigitClickable(1),
+                newDigitClickable(2),
+                newDigitClickable(3)
+        );
+    }
+    private Clickable newDigitClickable(int id) {
+        return new ImageClickable(app, () -> changeDigit(id),
+                w -> w / 2 + 18, h -> h / 2 - 16 + id * 18 + getYOffset(),
+                _ -> 38, _ -> 16, "gui/combination_lock/" + overlayVariant + "/digit", -4, -4);
     }
 
     private void open() {
@@ -53,35 +62,24 @@ public class CombinationLockOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderImage(getTexture(), canvas.halfWidth(), canvas.halfHeight(), -0.5, -0.5);
+        handleClickable.render(canvas);
+        canvas.renderImage(Assets.texture("gui/combination_lock/" + overlayVariant + "/body"), canvas.halfWidth(), canvas.halfHeight() + canvas.scale(getYOffset()), -0.5, -0.5);
 
-        clickables.forEach(c -> c.render(canvas));
+        digitClickables.forEach(c -> c.render(canvas));
         renderCurrentCombination(canvas);
     }
 
     private void renderCurrentCombination(Canvas canvas) {
         String currentCombo = currentCombination();
-        double yOffset = -5 + (open ? 28 : 0);
-        double scale = canvas.renderScale();
+        int yOffset = -5 + getYOffset();
         for (int i = 0; i < 4; i ++) {
-            int x = (int) (canvas.halfWidth() + 34 * scale);
-            int y = (int) (canvas.halfHeight() + yOffset*scale + (i*18) * scale);
+            int x = canvas.halfWidth() + canvas.scale(34);
+            int y = canvas.halfHeight() + canvas.scale(yOffset + i*18);
             canvas.renderString("" + currentCombo.charAt(i), font, color, x, y, false, false);
         }
     }
-
-    private Image getTexture() {
-        // get the texture variant depending on which interactable area is hovered over
-        String variant;
-        if (open) variant = "open";
-        else if (clickables.get(0).contains(mouseX(), mouseY())) variant = "pull";
-        else if (clickables.get(1).contains(mouseX(), mouseY())) variant = "1";
-        else if (clickables.get(2).contains(mouseX(), mouseY())) variant = "2";
-        else if (clickables.get(3).contains(mouseX(), mouseY())) variant = "3";
-        else if (clickables.get(4).contains(mouseX(), mouseY())) variant = "4";
-        else variant = "0"; // no area is hovered over
-
-        return Assets.texture("gui/combination_lock/" + variant);
+    private int getYOffset() {
+        return open ? 28 : 0;
     }
 
     private String currentCombination() {
@@ -94,11 +92,13 @@ public class CombinationLockOverlay extends Overlay {
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
-        clickables.forEach(c -> c.onClick(click));
+        handleClickable.onClick(click);
+        digitClickables.forEach(c -> c.onClick(click));
     }
 
     @Override
     public void tick() {
-        clickables.forEach(Clickable::tick);
+        handleClickable.tick();
+        digitClickables.forEach(Clickable::tick);
     }
 }
