@@ -9,6 +9,7 @@ public class BlockTypes {
             "", AirBlock::new,
             "g", GroundBlock::new,
             "w", WallBlock::new,
+            "b", BarrierBlock::new,
             "l", LeafBlock::new,
             "gl", GroundLeafBlock::new
     );
