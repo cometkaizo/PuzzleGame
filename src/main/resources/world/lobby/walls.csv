@@ -1,7 +1,7 @@
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -10,24 +10,24 @@
 ,,(instructions from galleries in order A - E are what is necessary for mayan calendar),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;;d_basement;4;1,,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w
-,w,,p;;1;Morning in a Pine Forest by Ivan Shishkin;2;1,,,,z;;2;1;NOON;YUZJGNEF RHCKOUGM BVOCEGMI ZKPNLHOE;2,,,sign;;3,p;;2;A Sunday Afternoon on the Island of La Grande Jatte by Georges Seurat;2;1,,,,p;;3;San Giorgio Maggiore at Dusk by Claude Monet;2;1,,,,p;;4;The Starry Night by Vincent Van Gogh;2;1,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
+,w,,p;;1;Morning in a Pine Forest by Ivan Shishkin;2;1,,,,z;;2;1;NOON;YUZJGNEF RHCKOUGM BVOCEGMI ZKPNLHOE;2;;notsolid,,,sign;;3,p;;2;A Sunday Afternoon on the Island of La Grande Jatte by Georges Seurat;2;1,,,,p;;3;San Giorgio Maggiore at Dusk by Claude Monet;2;1,,,,p;;4;The Starry Night by Vincent Van Gogh;2;1,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,,,,,,,(in empty frame),,,,,,,,gallery B (time),,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,cupid and psyche,,,,,,,,,,,,w
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,lady justice (scales),,,,,,,,,,the thinker,,,,,,,
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,w,w,,,,,w,w,,,,,,,,,w,,,,(weighing),,,,,,,,,,,,,,,,,
 ,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,,w,w,,,,,,,,,w,w,,,,,,,w,,,,,,,,,,,,,,,,,,,,,
-,w,w,w,w,w,w,w,w,w,,,,,,,w,w,w,w,w,w,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,(puzzle box from paintings),z,w
+,w,w;;3,w,w,w,w,w,w,w,,,,,,,w,w,w,w,w,w,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,(puzzle box from paintings),z,w
 ,w,,p;;17;The Adoration of the Shepherds by Guido Reni;5;1,,,,,,w,sign;;2,gallery A,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,z,w
 ,,,,,,,,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,w
-,,,,,,,,,,,,,,,,(no backing),,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,w,,,,,,,p;;18;1;4,,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
-,w,,,,z;;1;1;0001;0123456789 0123456789 0123456789 0123456789;1;year,,,,w,p;;9;1;2,(painting of puzzle box in sculptures),,,,,,,,,,,d;d_paintings;d_paintings;1;2,,,,,,,,,,,,,,,,,,,,,,,,,d;d_sculptures;d_sculptures;1;2,,,,,,,,,,mirror,,,,,,statue of rah,,,,,
+,,,,,z;;1;1;0001;0123456789 0123456789 0123456789 0123456789;1;year,,,,,,,,,,,(no backing),,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,w,,,,,,,p;;18;___;1;4,,,,,,w,,,,,w,,,,,,,,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
+,w,,,,,,,,w,p;;9;___;1;2,(painting of puzzle box in sculptures),,,,,,,,,,,d;d_paintings;d_paintings;1;2,,,,,,,,,,,,,,,,,,,,,,,,,d;d_sculptures;d_sculptures;1;2,,,,,,,,,,mirror,,,,,,statue of rah,,,,,
 ,w,w,w,w,w,w,w,w,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,w,,p;;5;Composition 2 by Piet Mondrian;2;1,,,,p;;6;Composition A by Piet Mondrian;2;1,,w,,,,,,,,,,,,,w,,,,,w,,,,,,,mayan calendar (lock for every door);;1 1 (Breath) 303 (3 Drum);7 11 26,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,w,,,,,,,,,,,,p;;19;1;2,w,,,,,w,,,,,,sign;;1,(1. intro letter),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
+,w,,p;;5;Composition 2 by Piet Mondrian;2;1,,,p;;6;Composition A by Piet Mondrian;2;1,,,w,,,,,,,,,,,,,w,,,,,w,,,,,,,mayan calendar (lock for every door);;1 1 (Breath) 303 (3 Drum);7 11 26,,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,w,,,,,,,,,,,,p;;19;___;1;2,w,,,,,w,,,,,,sign;;1,(1. intro letter),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,
 ,,z;;1;1;1499;0123456789 0123456789 0123456789 0123456789;5;colors,,,,,,,w,sign;;6,,,,,,,,,,,,w,,,,,w,,,,,,,(2. sequence of spins + 'five days pass'),,,,,,,,w,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,,,,,,,,,,,,,,,,w,w,w,w,w,w,w,,,,,,w,,,,,(difficulty increases),(3. _),,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
-,w,,p;;7;Composition III with Blue Yellow and White by Piet Mondrian;2;1,,,p;;8;Composition with Blue by Piet Mondrian;3;1,,,,gallery E,,,,,sign;;5,w,,p;;14;Portrait Of Tsar Alexander I Of Russia by George Dawe;3;1,,,,w,,,,,,w,,,,,(mayan symbol on each of these puzzles),(4. _),,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
+,w,,p;;7;Composition III with Blue Yellow and White by Piet Mondrian;2;1,,,p;;8;Composition with Blue by Piet Mondrian;2;1,,,,gallery E,,,,,sign;;5,w,,p;;14;Portrait Of Tsar Alexander I Of Russia by George Dawe;3;1,,,,w,,,,,,w,,,,,(mayan symbol on each of these puzzles),(4. _),,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w
 ,w,w,w,w,w,w,w,w,w,,,,,,,,,,,,,w,,,,,,,w,w,,,,(5. each digit is in each room),,,,,w,w,,,,,,,w,,,,mephistopheles and margaretta,,,,,,,,,,venus de milo,,,,,,,
 ,w,,p;;11;Shepherd Boy Pointing At Tobias And The Angel by Abraham Bloemaert;2;1,,,p;;12;Kosciuszko On Horseback by Wojciech Kossak;2;1,,,w,sign;;4,,,,,,,,,,,p;;15;The Great Wave Off Kanagawa by Katsushika Hokusai;1;3,w,,,,,,,,,w,w,,,,,w,w,,,,,,,,,w,,,,(double-sided statue from India),,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,gallery D (directions),w,z;;1;2;WEST;BKWNLEO PJUNEOA MNEOSCH QWEHWTL;4,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,(designed to be viewed with mirror),,,,,,,,,,,,,,,,,

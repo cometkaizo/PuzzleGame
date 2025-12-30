@@ -65,6 +65,10 @@ public class BoundingBox {
         return new BoundingBox(Vector.mutable(getLeft() - amount, getBottom() - amount),
                 Vector.immutable(getWidth() + amount * 2, getHeight() + amount * 2));
     }
+    public BoundingBox expanded(double u, double r, double d, double l) {
+        return new BoundingBox(Vector.mutable(getLeft() - l, getBottom() - d),
+                Vector.immutable(getWidth() + (r + l), getHeight() + (d + u)));
+    }
 
     @Override
     public String toString() {

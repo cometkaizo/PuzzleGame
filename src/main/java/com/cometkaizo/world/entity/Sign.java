@@ -50,4 +50,14 @@ public class Sign extends Interactable {
     public boolean isSolid(Entity entity) {
         return true;
     }
+
+    @Override
+    protected int getTextureDeltaX() {
+        return -2;
+    }
+
+    @Override
+    protected int getTextureDeltaY() {
+        return 2;
+    }
 }

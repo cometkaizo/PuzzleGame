@@ -4,6 +4,7 @@ import com.cometkaizo.screen.overlay.PaintingOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.block.WallBlock;
 
 public class Painting extends Interactable {
     private String variant, label;
@@ -29,13 +30,25 @@ public class Painting extends Interactable {
     }
 
     @Override
+    protected boolean canBeInteracted() {
+        // expand interaction hitbox up by 0.8 blocks so that paintings with walls below them can be interacted from farther up
+        return room.player.canInteract() && boundingBox.expanded(0.8, 0, 0, 0).expanded(0.1).intersects(room.player.boundingBox);
+    }
+
+    @Override
     protected String getTexturePath() {
         return "painting/" + variant;
     }
 
     @Override
     public double getRenderY() {
-        if (h == 1) return boundingBox.getTop() - 0.1;
-        else return super.getRenderY();
+        if (w != 1) {
+            // prevent the player from rendering below this painting if it's up against a wall
+            boolean hasWallAbove = layer.isBlockType((int) getX(), (int) getY() + 1, WallBlock.class);
+            if (hasWallAbove) return boundingBox.getTop() - 0.1;
+            boolean hasWallBelow = layer.isBlockType((int) getX(), (int) getY() - 1, WallBlock.class);
+            if (hasWallBelow) return boundingBox.getBottom() - 0.1;
+        }
+        return super.getRenderY();
     }
 }

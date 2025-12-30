@@ -56,7 +56,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         return Assets.texture("block/" + texturePath);
     }
     protected double getHeight() {
-        return 2.5;
+        return 1;
     }
     protected AtlasTexture getAtlasTexture() {
         return AtlasTexture.SINGLE_BLOCK;

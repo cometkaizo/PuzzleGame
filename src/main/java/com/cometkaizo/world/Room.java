@@ -553,6 +553,9 @@ public class Room implements Tickable, Renderable, Resettable {
         public Optional<Class<? extends Block>> getBlockType(int x, int y) {
             return getBlock(x, y).map(Block::getClass);
         }
+        public boolean isBlockType(int x, int y, Class<? extends Block> type) {
+            return getBlockType(x, y).orElse(null) == type;
+        }
 
         public boolean containsSolid(BoundingBox boundingBox, Entity entity) {
             return !getBlocksWithin(boundingBox, block -> block.isSolid(entity)).isEmpty() ||
@@ -603,7 +606,6 @@ public class Room implements Tickable, Renderable, Resettable {
             if (entity.hasName()) named.remove(entity.getName(), entity);
             return entity;
         }
-
     }
 
     public record Checkpoint(Vector.ImmutableDouble pos, BoundingBox activationArea, String name) {

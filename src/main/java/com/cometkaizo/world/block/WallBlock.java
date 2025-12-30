@@ -37,11 +37,16 @@ public class WallBlock extends Block {
 
     @Override
     protected String getTexturePath() {
-        return "wall/" + ((isConnectedE() && isConnectedW() && getX()%2 == 0) ? "2" : "1");
+        return "wall/" + ((isConnectedE() && isConnectedW() && !isConnectedS() && getX()%2 == 0) ? "2" : "1");
     }
 
     @Override
     protected AtlasTexture getAtlasTexture() {
         return ConnectorAtlasTexture.get(this);
+    }
+
+    @Override
+    protected double getHeight() {
+        return 2.5;
     }
 }
