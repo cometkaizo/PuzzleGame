@@ -14,9 +14,14 @@ import java.awt.*;
 public abstract class Overlay implements Tickable, Renderable {
     protected final GameApp app;
     protected final EventBus eventBus;
+    protected Overlay prev;
 
     public Overlay(GameApp app) {
+        this(app, null);
+    }
+    public Overlay(GameApp app, Overlay prev) {
         this.app = app;
+        this.prev = prev;
         eventBus = app.getOverlayEventBus();
         eventBus.register(this, KeyPressedEvent.class, this::maybeClose);
         eventBus.register(this, MousePressedEvent.class, this::onClick);
@@ -26,9 +31,9 @@ public abstract class Overlay implements Tickable, Renderable {
         eventBus.unregister(this);
     }
 
-    private void maybeClose(KeyPressedEvent click) {
+    protected void maybeClose(KeyPressedEvent click) {
         if (!shouldTickGame()) return; // do not close if there is no game beneath this overlay
-        if (click.input() == InputBindings.OVERLAY_CLOSE.get()) app.setOverlay(null);
+        if (click.input() == InputBindings.OVERLAY_CLOSE.get()) app.setOverlay(prev);
     }
 
     protected void onClick(MousePressedEvent click) { }
