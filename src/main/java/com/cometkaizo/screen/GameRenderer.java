@@ -50,7 +50,7 @@ public class GameRenderer extends JPanel {
         Dimension size = getSize(this.size);
 
         if (app.shouldRenderGame()) renderGame(g, size);
-        if (app.shouldTickOrRenderOverlay()) renderTitleScreen(g, size);
+        if (app.shouldTickOrRenderOverlay()) renderOverlay(g, size);
     }
 
     private void renderGame(Graphics2D g, Dimension size) {
@@ -61,17 +61,12 @@ public class GameRenderer extends JPanel {
         canvas.endRender();
     }
 
-    // todo: change this to overlay system which supports both title screens and pause menus + puzzle interfaces
-    private void renderTitleScreen(Graphics2D g, Dimension size) {
+    private void renderOverlay(Graphics2D g, Dimension size) {
         canvas.startRender(g, Vector.immutable(0D, 0D), Vector.immutable(0D, 0D), size.width, size.height, partialTick);
 
         app.getOverlay().render(canvas);
 
         canvas.endRender();
-    }
-
-    private void renderOverlay(Graphics2D g, Dimension size) {
-        // todo
     }
 
     public void toggleDebug() {
