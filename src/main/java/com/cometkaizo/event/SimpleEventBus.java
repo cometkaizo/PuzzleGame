@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 public class SimpleEventBus implements EventBus {
     private final Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners = new HashMap<>(3);
     private final Set<Object> pendingRemoval = new HashSet<>(3);
+    private final Set<PendingAddition<?>> pendingAddition = new HashSet<>(10);
 
     public SimpleEventBus() {
 
@@ -16,6 +17,10 @@ public class SimpleEventBus implements EventBus {
         if (!pendingRemoval.isEmpty()) {
             pendingRemoval.forEach(listeners::remove);
             pendingRemoval.clear();
+        }
+        if (!pendingAddition.isEmpty()) {
+            pendingAddition.forEach(p -> p.add(listeners));
+            pendingAddition.clear();
         }
 
         listeners.forEach((_, ls) ->
@@ -32,12 +37,18 @@ public class SimpleEventBus implements EventBus {
 
     @Override
     public <T extends Event> void register(Object key, Class<? extends T> type, Consumer<? super T> listener) {
-        listeners.computeIfAbsent(key, _ -> new HashMap<>()).computeIfAbsent(type, _ -> new ArrayList<>(1)).add(listener);
+        pendingAddition.add(new PendingAddition<>(key, type, listener));
     }
 
     @Override
     public void unregister(Object key) {
         pendingRemoval.add(key);
+    }
+
+    private record PendingAddition<T extends Event>(Object key, Class<? extends T> type, Consumer<? super T> listener) {
+        public void add(Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners) {
+            listeners.computeIfAbsent(key, _ -> new HashMap<>()).computeIfAbsent(type, _ -> new ArrayList<>(1)).add(listener);
+        }
     }
 
 }
