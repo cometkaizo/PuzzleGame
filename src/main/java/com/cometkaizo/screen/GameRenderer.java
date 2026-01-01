@@ -65,8 +65,15 @@ public class GameRenderer extends JPanel {
         canvas.startRender(g, Vector.immutable(0D, 0D), Vector.immutable(0D, 0D), size.width, size.height, partialTick);
 
         app.getOverlay().render(canvas);
+        renderDebugMousePos();
 
         canvas.endRender();
+    }
+
+    private void renderDebugMousePos() {
+        int mouseXFromCenter = (int) ((mouseX - canvas.halfWidth()) / canvas.renderScale());
+        int mouseYFromCenter = (int) ((mouseY - canvas.halfHeight()) / canvas.renderScale());
+        canvas.renderDebugString(mouseXFromCenter + ", " + mouseYFromCenter, Color.PINK, 10, 34);
     }
 
     public void toggleDebug() {
