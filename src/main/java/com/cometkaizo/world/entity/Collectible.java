@@ -45,11 +45,6 @@ public abstract class Collectible extends Interactable {
     }
 
     @Override
-    public boolean canCollideWhenMoving() {
-        return false;
-    }
-
-    @Override
     public void render(Canvas canvas) {
         var g = canvas.getGraphics();
         var oT = g.getTransform();
