@@ -19,16 +19,17 @@ public class Text implements Renderable {
     private final Color color;
     private final IntUnaryOperator x, y;
     private final int w;
-    private final boolean center;
+    private final boolean centerX, centerY;
 
-    public Text(String message, Font font, Color color, IntUnaryOperator x, IntUnaryOperator y, int w, boolean center) {
+    public Text(String message, Font font, Color color, IntUnaryOperator x, IntUnaryOperator y, int w, boolean centerX, boolean centerY) {
         this.message = message;
         this.font = font;
         this.color = color;
         this.x = x;
         this.y = y;
         this.w = w;
-        this.center = center;
+        this.centerX = centerX;
+        this.centerY = centerY;
     }
 
     @Override
@@ -37,17 +38,20 @@ public class Text implements Renderable {
         // access to a Canvas instance (or we could pass in a Game instance to constructor)
         if (lines == null) initLines(canvas);
 
+        int totalHeight = font.getSize() * lines.size();
+        int yOffset = centerY ? -totalHeight / 2 : 0;
+
         for (int lineId = 0; lineId < lines.size(); lineId++) {
             String line = lines.get(lineId);
             int lineOffset = font.getSize() * (lineId + 1);
             canvas.renderString(line, font, color,
                     (float) (x.applyAsInt(canvas.getPixelWidth()) * canvas.renderScale()),
-                    (float) (y.applyAsInt(canvas.getPixelHeight()) * canvas.renderScale() + lineOffset),
-                    center, false);
+                    (float) (y.applyAsInt(canvas.getPixelHeight()) * canvas.renderScale() + lineOffset) + yOffset,
+                    centerX, false);
         }
     }
 
     private void initLines(Canvas canvas) {
-        lines = StringUtils.createLines(message, canvas.getGraphics().getFontMetrics(font), (int) (w * canvas.renderScale()));
+        lines = StringUtils.createLines(message, canvas.getGraphics().getFontMetrics(font), canvas.scale(w));
     }
 }
