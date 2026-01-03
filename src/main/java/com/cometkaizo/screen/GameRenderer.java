@@ -16,6 +16,7 @@ public class GameRenderer extends JPanel {
     private final Dimension size;
     private double partialTick;
     private int mouseX, mouseY;
+    private boolean mouseDown;
 
     public GameRenderer(Settings settings, GameApp app) {
         this.app = app;
@@ -91,11 +92,26 @@ public class GameRenderer extends JPanel {
         mouseY = e.getY();
     }
 
+    @Override
+    protected void processMouseEvent(MouseEvent e) {
+        super.processMouseEvent(e);
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            if (e.getID() == MouseEvent.MOUSE_PRESSED) {
+                mouseDown = true;
+            } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+                mouseDown = false;
+            }
+        }
+    }
+
     public int getMouseX() {
         return mouseX;
     }
     public int getMouseY() {
         return mouseY;
+    }
+    public boolean isMouseDown() {
+        return mouseDown;
     }
 
     public record Settings(
