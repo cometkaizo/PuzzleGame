@@ -10,10 +10,10 @@ public class Sign extends Interactable {
     public static final Content[] CONTENT = {
             new Content("Mayan Calendar", "The ancient Mayans used a system of interlocking cycles to track time. Each day, all cycles are incremented by one."),
             new Content("Gallery A"),
-            new Content("Gallery B", "The artworks on this wall contemplate the everyday cycle of rebirth"),
+            new Content("Gallery B", "Wall of time-honored classics"),
             new Content("Gallery C"),
             new Content("Gallery D", "China called itself the \"Central Kingdom\""),
-            new Content("Gallery E", "Colorful squares have hidden values. These paintings are the sum of their parts."),
+            new Content("Gallery E", "Colorful squares have hidden values. With exacting mathematical method, Piet Mondrian produces paintings which are precisely the sum of their parts."),
     };
 
     private String title, desc;
