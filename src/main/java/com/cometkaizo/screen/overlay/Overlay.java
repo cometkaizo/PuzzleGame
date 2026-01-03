@@ -23,6 +23,10 @@ public abstract class Overlay implements Tickable, Renderable {
         this.app = app;
         this.prev = prev;
         eventBus = app.getOverlayEventBus();
+    }
+
+    /// Called whenever this overlay becomes visible on the screen
+    public void setup() {
         eventBus.register(this, KeyPressedEvent.class, this::maybeClose);
         eventBus.register(this, MousePressedEvent.class, this::onClick);
     }
@@ -33,7 +37,10 @@ public abstract class Overlay implements Tickable, Renderable {
 
     protected void maybeClose(KeyPressedEvent click) {
         if (!shouldTickGame()) return; // do not close if there is no game beneath this overlay
-        if (click.input() == InputBindings.OVERLAY_CLOSE.get()) app.setOverlay(prev);
+        if (click.input() == InputBindings.OVERLAY_CLOSE.get()) close();
+    }
+    public void close() {
+        app.setOverlay(prev);
     }
 
     protected void onClick(MousePressedEvent click) { }
