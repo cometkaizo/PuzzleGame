@@ -50,7 +50,7 @@ public class GameApp extends App implements Tickable {
         this.settings = settings;
         this.commandGroup = commandGroup;
         this.game = new Game(this, new GameSettings());
-        this.overlay = new TitleScreen(this);
+        setOverlay(new TitleScreen(this));
     }
 
     public GameApp() {
@@ -62,7 +62,7 @@ public class GameApp extends App implements Tickable {
                 () -> new TPCommand(this)
         );
         this.game = new Game(this, new GameSettings());
-        this.overlay = new TitleScreen(this);
+        setOverlay(new TitleScreen(this));
     }
 
     public void parseInput(String input) {
@@ -256,6 +256,7 @@ public class GameApp extends App implements Tickable {
     public void setOverlay(Overlay overlay) {
         if (this.overlay != null) this.overlay.cleanup();
         this.overlay = overlay;
+        if (this.overlay != null) this.overlay.setup();
     }
     public boolean shouldTickGame() {
         return game != null && (overlay == null || overlay.shouldTickGame());
@@ -276,5 +277,8 @@ public class GameApp extends App implements Tickable {
     }
     public int getMouseY() {
         return renderer.getMouseY();
+    }
+    public boolean isMouseDown() {
+        return renderer.isMouseDown();
     }
 }
