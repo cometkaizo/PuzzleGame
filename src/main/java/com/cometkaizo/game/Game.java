@@ -46,7 +46,7 @@ public class Game implements Tickable, Renderable, InputListener {
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor;
-    private Inventory inventory;
+    private final Inventory inventory = new Inventory();
 
     /// Reads in a game from a previous save file
     public Game(GameApp app, Path path) throws IOException {
