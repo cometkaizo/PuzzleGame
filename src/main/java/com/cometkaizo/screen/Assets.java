@@ -44,23 +44,23 @@ public class Assets {
         int outlineColor = color.getRGB();
         for (int x = 0; x < w; x ++) {
             for (int y = 0; y < h; y ++) {
-                if (isTransparent(origImage, x, y)) {
-                    if (!isTransparent(origImage, x-1, y) ||
-                            !isTransparent(origImage, x, y-1) ||
-                            !isTransparent(origImage, x+1, y) ||
-                            !isTransparent(origImage, x, y+1)) {
+                if (isTranslucent(origImage, x, y)) {
+                    if (!isTranslucent(origImage, x-1, y) ||
+                            !isTranslucent(origImage, x, y-1) ||
+                            !isTranslucent(origImage, x+1, y) ||
+                            !isTranslucent(origImage, x, y+1)) {
                         image.setRGB(x, y, outlineColor);
                     }
                 }
             }
         }
     }
-    private static boolean isTransparent(BufferedImage img, int x, int y) {
+    private static boolean isTranslucent(BufferedImage img, int x, int y) {
         if (x < 0 || x >= img.getWidth() || y < 0 || y >= img.getHeight()) return true;
         int pixel = img.getRGB(x, y);
         // alpha is stored in the 8 bits at the far left
         int alpha = (pixel >> 24) & 0xff;
-        return alpha == 0;
+        return alpha < 255;
     }
 
     public static Font font(String path, int size) {
