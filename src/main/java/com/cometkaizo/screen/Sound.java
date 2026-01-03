@@ -3,6 +3,7 @@ package com.cometkaizo.screen;
 import com.cometkaizo.Main;
 
 import javax.sound.sampled.*;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
@@ -21,16 +22,49 @@ public class Sound {
             throw new RuntimeException(e);
         }
     }
-    public void play() {
-        if (!PLAYED_THIS_TICK.add(this)) return;
+    public Sound(InputStream in, float deltaPitchInSemitones) {
+        try {
+            var origAudio = AudioSystem.getAudioInputStream(in);
+            var origFormat = origAudio.getFormat();
+            // modify format
+            this.format = new AudioFormat(
+                    origFormat.getEncoding(),
+                    origFormat.getSampleRate() * pitchMultiplier(deltaPitchInSemitones),
+                    origFormat.getSampleSizeInBits(),
+                    origFormat.getChannels(),
+                    origFormat.getFrameSize(),
+                    origFormat.getFrameRate() * pitchMultiplier(deltaPitchInSemitones),
+                    origFormat.isBigEndian());
+
+            byte[] data = origAudio.readAllBytes();
+            var stream = new ByteArrayInputStream(data);
+
+            var audio = new AudioInputStream(stream, format, data.length / format.getFrameSize()); // read audio with new format
+            this.audio = audio.readAllBytes();
+        } catch (UnsupportedAudioFileException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /// calculates the sample rate multiplier for the given amount of semitones up or down in pitch
+    private float pitchMultiplier(double semitones) {
+        return (float) Math.pow(2, semitones / 12); // 2^(1/12) is the multiplier for 1 semitone up, 2^(2/12) for 2 semitones, etc.
+    }
+
+    public Clip play() {
+        return play(-15);
+    }
+    public Clip play(float volume) {
+        if (!PLAYED_THIS_TICK.add(this)) return null;
         try {
             var clip = AudioSystem.getClip();
             clip.open(format, audio, 0, audio.length);
 
-            trySetVolume(clip, -15);
+            trySetVolume(clip, volume);
             clip.start();
-        } catch (Exception e){
+            return clip;
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
 

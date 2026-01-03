@@ -85,6 +85,16 @@ public class Assets {
             }
         });
     }
+    public static Sound sound(String path, float deltaPitchInSemitones) {
+        String fullPath = "/assets/sound/" + path + ".wav";
+        return SOUNDS.computeIfAbsent(fullPath + " with delta pitch: " + deltaPitchInSemitones, _ -> {
+            try (var in = new BufferedInputStream(Main.getResource(fullPath))) {
+                return new Sound(in, deltaPitchInSemitones);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     public static BufferedImage copy(Image image) {
         var copy = new BufferedImage(

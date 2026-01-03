@@ -1,6 +1,5 @@
 package com.cometkaizo.screen.overlay;
 
-import com.cometkaizo.Main;
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.screen.Assets;
@@ -10,6 +9,7 @@ import com.cometkaizo.screen.ImageClickable;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.Queue;
 import java.util.function.IntUnaryOperator;
 
 public class OrganOverlay extends Overlay {
@@ -99,8 +99,7 @@ public class OrganOverlay extends Overlay {
         public final String writing;
 
         public Key(boolean white, int key, IntUnaryOperator x, IntUnaryOperator y) {
-            super(OrganOverlay.this.app, () -> {}, x, y, _ -> white ? 7 : 4, _ -> white ? 32 : 19,
-                    null, -2, 0);
+            super(OrganOverlay.this.app, () -> {}, x, y, _ -> white ? 7 : 4, _ -> white ? 32 : 19, null, -2, 0);
             this.white = white;
             this.texturePath = () -> "gui/organ/key" + (isPressed() ? "_pressed/" : "/") + (white ? "white" : "black");
             this.key = key;
@@ -164,7 +163,6 @@ public class OrganOverlay extends Overlay {
 
         private void tickSound() {
             if (hasFallenOut()) return;
-            // todo: continue sound if hold
             if (isPressed() && !wasPressedLastTick) {
                 onFirstPress();
             }
@@ -172,8 +170,12 @@ public class OrganOverlay extends Overlay {
         }
 
         private void onFirstPress() {
-            Main.log("play organ sound");
+            play();
             pressKey(this);
+        }
+        // todo: make playing each pitch actually work
+        private void play() {
+            int semitonesAboveC3 = key;
         }
     }
 
