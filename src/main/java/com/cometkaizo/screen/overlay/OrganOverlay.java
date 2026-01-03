@@ -25,6 +25,7 @@ public class OrganOverlay extends Overlay {
     private List<Key>[] whiteKeys = new List[HEIGHT_IN_KEYS];
     private List<Key>[] blackKeys = new List[HEIGHT_IN_KEYS];
     private Key lastHoveredWhiteKey, lastHoveredBlackKey;
+    // todo: make the loose key not play audio, or play it weirdly
     private Queue<String> lastPressedKeys = new ArrayDeque<>();
 
     public boolean keyFallenOut;
