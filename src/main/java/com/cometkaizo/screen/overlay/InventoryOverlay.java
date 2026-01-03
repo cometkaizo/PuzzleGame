@@ -65,26 +65,30 @@ public class InventoryOverlay extends Overlay {
     }
 
     private int xOffset() {
-        return -(Slot.SIZE * WIDTH_IN_ITEMS + Slot.PADDING * (WIDTH_IN_ITEMS - 1)) / 2;
+        return -(Slot.SIZE * WIDTH_IN_ITEMS + Slot.X_PADDING * (WIDTH_IN_ITEMS - 1)) / 2;
     }
     private int yOffset() {
-        return -(Slot.SIZE * rowCount + Slot.PADDING * (rowCount - 1)) / 2;
+        return -(Slot.SIZE * rowCount + Slot.X_PADDING * (rowCount - 1)) / 2;
     }
 
     class Slot extends ImageClickable {
         public static final int SIZE = 38;
-        public static final int PADDING = 4;
+        public static final int X_PADDING = 4, Y_PADDING = 30;
+        public final Item item;
 
         public Slot(int r, int c, Item item) {
             super(InventoryOverlay.this.app, item == null ? () -> {} : () -> onClick.accept(item),
-                    w -> w/2 + xOffset() + c * (SIZE + PADDING), h -> h/2 + yOffset() + r * (SIZE + PADDING),
-                    _ -> SIZE, _ -> SIZE, item == null ? () -> null : item::getTexturePath, 3, 3);
+                    w -> w/2 + xOffset() + c * (SIZE + X_PADDING), h -> h/2 + yOffset() + r * (SIZE + X_PADDING),
+                    _ -> SIZE, _ -> SIZE, () -> "gui/item/slot", -2, -2);
+            this.item = item;
         }
 
         @Override
         public void render(Canvas canvas) {
-            canvas.renderImage(Assets.texture("gui/item/slot"), lastX - 2, lastY - 2);
             super.render(canvas);
+            if (item == null) return;
+            canvas.renderImage(item.getTexture(), lastX + canvas.scale(3), lastY + canvas.scale(3));
+            canvas.renderString(item.getName(), Assets.font("BoldPixels", 24), Color.WHITE, lastX + lastW / 2F, lastY + lastH + 25, true, false);
         }
     }
 
