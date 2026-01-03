@@ -16,7 +16,7 @@ public class LetterOverlay extends Overlay {
         content = new Text(message, Assets.font("BoldPixels", 20), Color.BLACK,
                 w -> w / 2 - 48,
                 h -> h / 2 - 60,
-                94, false);
+                94, false, false);
         this.letterVariant = letterVariant;
     }
 

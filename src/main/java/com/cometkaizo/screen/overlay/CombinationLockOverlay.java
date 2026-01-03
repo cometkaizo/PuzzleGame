@@ -32,7 +32,7 @@ public class CombinationLockOverlay extends Overlay {
 
         handleClickable = new ImageClickable(this.app, this::open,
                 w -> w / 2 - 38, h -> h / 2 - 64 - getYOffset(), _ -> 76, _ -> 32,
-                "gui/combination_lock/" + this.overlayVariant + "/pull", -4, -4);
+                () -> "gui/combination_lock/" + this.overlayVariant + "/pull", -4, -4);
         digitClickables = List.of(
                 newDigitClickable(0),
                 newDigitClickable(1),
@@ -43,7 +43,7 @@ public class CombinationLockOverlay extends Overlay {
     private Clickable newDigitClickable(int id) {
         return new ImageClickable(app, () -> changeDigit(id),
                 w -> w / 2 + 18, h -> h / 2 - 16 + id * 18 + getYOffset(),
-                _ -> 38, _ -> 16, "gui/combination_lock/" + overlayVariant + "/digit", -4, -4);
+                _ -> 38, _ -> 16, () -> "gui/combination_lock/" + overlayVariant + "/digit", -4, -4);
     }
 
     private void open() {

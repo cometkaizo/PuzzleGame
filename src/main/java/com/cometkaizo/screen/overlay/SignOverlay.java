@@ -13,14 +13,14 @@ public class SignOverlay extends Overlay {
 
     public SignOverlay(GameApp app, String title, String desc, String variant) {
         super(app);
-        this.title = new Text(title, Assets.font("BoldPixels", 40), Color.BLACK,
+        this.title = new Text(title, Assets.font("BoldPixels", 70), Color.BLACK,
                 w -> w / 2 - 87,
                 h -> h / 2 - 60,
-                174, false);
-        this.desc = new Text(desc, Assets.font("BoldPixels", 20), Color.BLACK,
+                174, false, false);
+        this.desc = new Text(desc, Assets.font("BoldPixels", 30), Color.BLACK,
                 w -> w / 2 - 87,
-                h -> h / 2 - 45,
-                174, false);
+                h -> h / 2 - 38,
+                174, false, false);
         this.variant = variant;
     }
 

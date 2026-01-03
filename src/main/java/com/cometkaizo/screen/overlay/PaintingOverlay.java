@@ -16,7 +16,7 @@ public class PaintingOverlay extends Overlay {
         content = new Text(label, Assets.font("BoldPixels", 30), Color.WHITE,
                 w -> w / 2,
                 h -> h / 2 + 75,
-                280, true);
+                280, true, false);
         this.variant = variant;
     }
 
