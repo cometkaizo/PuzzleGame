@@ -18,7 +18,7 @@ public class NarrationOverlay extends Overlay {
         content = new Text(message, Assets.font("BoldPixels", 50), Color.WHITE,
                 w -> w / 2,
                 h -> h / 2,
-                100, true, true);
+                160, true, true);
     }
 
     @Override
