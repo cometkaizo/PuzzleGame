@@ -4,8 +4,8 @@ import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
-public class LadyJusticeSculpture extends Interactable {
-    public LadyJusticeSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
+public class AnubisSculpture extends Interactable {
+    public AnubisSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 2D));
     }
