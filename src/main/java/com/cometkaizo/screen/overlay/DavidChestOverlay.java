@@ -14,8 +14,8 @@ public class DavidChestOverlay extends Overlay {
 
     private final Clickable keyhole;
 
-    public DavidChestOverlay(GameApp app, Runnable openHeartAction, Overlay prev) {
-        super(app, prev);
+    public DavidChestOverlay(GameApp app, Runnable openHeartAction, Overlay next) {
+        super(app, next);
         this.openHeartAction = openHeartAction;
         keyhole = new ImageClickable(this.app, this::tryOpenHeart, w -> w/2 - 9, h -> h/2 - 22, _ -> 16, _ -> 16, () -> "gui/sculpture/david/keyhole", 0, 0);
     }

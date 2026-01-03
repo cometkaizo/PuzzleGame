@@ -13,8 +13,8 @@ public class NarrationOverlay extends Overlay {
     public NarrationOverlay(GameApp app, String message) {
         this(app, message, null);
     }
-    public NarrationOverlay(GameApp app, String message, Overlay prev) {
-        super(app, prev);
+    public NarrationOverlay(GameApp app, String message, Overlay next) {
+        super(app, next);
         content = new Text(message, Assets.font("BoldPixels", 50), Color.WHITE,
                 w -> w / 2,
                 h -> h / 2,

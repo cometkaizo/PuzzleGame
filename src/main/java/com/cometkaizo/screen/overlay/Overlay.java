@@ -14,14 +14,14 @@ import java.awt.*;
 public abstract class Overlay implements Tickable, Renderable {
     protected final GameApp app;
     protected final EventBus eventBus;
-    protected Overlay prev;
+    protected Overlay next;
 
     public Overlay(GameApp app) {
         this(app, null);
     }
-    public Overlay(GameApp app, Overlay prev) {
+    public Overlay(GameApp app, Overlay next) {
         this.app = app;
-        this.prev = prev;
+        this.next = next;
         eventBus = app.getOverlayEventBus();
     }
 
@@ -40,7 +40,7 @@ public abstract class Overlay implements Tickable, Renderable {
         if (click.input() == InputBindings.OVERLAY_CLOSE.get()) close();
     }
     public void close() {
-        app.setOverlay(prev);
+        app.setOverlay(next);
     }
 
     protected void onClick(MousePressedEvent click) { }

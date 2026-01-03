@@ -20,8 +20,8 @@ public class LeverLockOverlay extends Overlay {
     private final Clickable submitClickable;
     private final List<Clickable> leverClickables;
 
-    public LeverLockOverlay(GameApp app, boolean[][] correctCombination, Runnable actionOnOpen, Overlay prev) {
-        super(app, prev);
+    public LeverLockOverlay(GameApp app, boolean[][] correctCombination, Runnable actionOnOpen, Overlay next) {
+        super(app, next);
         this.correctCombination = correctCombination;
         this.actionOnOpen = actionOnOpen;
 

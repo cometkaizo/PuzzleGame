@@ -31,8 +31,8 @@ public class InventoryOverlay extends Overlay {
     public InventoryOverlay(GameApp app, Overlay prev) {
         this(app, _ -> {}, prev);
     }
-    public InventoryOverlay(GameApp app, Consumer<Item> onClick, Overlay prev) {
-        super(app, prev);
+    public InventoryOverlay(GameApp app, Consumer<Item> onClick, Overlay next) {
+        super(app, next);
         this.onClick = onClick;
         var inventory = app.getGame().getInventory();
         rowCount = max(1, ceilDiv(inventory.size(), WIDTH_IN_ITEMS));
