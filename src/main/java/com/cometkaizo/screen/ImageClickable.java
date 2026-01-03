@@ -29,10 +29,13 @@ public class ImageClickable extends Clickable {
     public void render(Canvas canvas) {
         super.render(canvas);
         var texture = getTexture();
+        if (texture == null) return;
         canvas.renderImage(texture, lastX + canvas.scale(textureXOffset), lastY + canvas.scale(textureYOffset));
     }
 
     public Image getTexture() {
-        return isHovered() ? Assets.textureOutlined(texturePath.get()) : Assets.texture(texturePath.get());
+        String texturePath = this.texturePath.get();
+        if (texturePath == null) return null;
+        return isHovered() ? Assets.textureOutlined(texturePath) : Assets.texture(texturePath);
     }
 }
