@@ -11,4 +11,6 @@ public abstract class Item {
         if (texturePath == null) return null;
         return Assets.texture("gui/item/" + texturePath);
     }
+
+    public abstract String getName();
 }
