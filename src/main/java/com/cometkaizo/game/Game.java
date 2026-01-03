@@ -6,6 +6,7 @@ import com.cometkaizo.app.GameDriver;
 import com.cometkaizo.event.EventBus;
 import com.cometkaizo.event.SimpleEventBus;
 import com.cometkaizo.game.event.*;
+import com.cometkaizo.game.item.Inventory;
 import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.InputListener;
 import com.cometkaizo.input.KeyBinding;
@@ -25,8 +26,6 @@ import java.util.Set;
 
 public class Game implements Tickable, Renderable, InputListener {
     public static final String GAME_STATE_FILENAME = "state.txt";
-    private static final Font TIMER_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 30);
-    private static final Color TIMER_COLOR = new Color(154, 48, 26);
     private final GameApp app;
     private final GameSettings settings;
     private final GameState state;
@@ -47,6 +46,7 @@ public class Game implements Tickable, Renderable, InputListener {
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor;
+    private Inventory inventory;
 
     /// Reads in a game from a previous save file
     public Game(GameApp app, Path path) throws IOException {
@@ -183,25 +183,7 @@ public class Game implements Tickable, Renderable, InputListener {
         if (room != null) room.render(canvas);
 //        for (var c : collectedCollectibles) c.renderOverlay(canvas);
         if (ended) renderEndScreen(canvas);
-        renderTimer(canvas);
         if (getDialogue() != null) getDialogue().render(canvas);
-    }
-
-    private void renderTimer(Canvas canvas) {
-        var g = canvas.getGraphics();
-        var oF = g.getFont();
-        var oCr = g.getColor();
-
-        g.setFont(TIMER_FONT);
-        g.setColor(TIMER_COLOR);
-
-        double milliseconds = (double) tick % GameDriver.TPS / GameDriver.TPS;
-        long seconds = tick / GameDriver.TPS;
-        long minutes = seconds / 60;
-        g.drawString("%02d:%02d.%03d".formatted(minutes, seconds % 60, (int) (milliseconds * 1000)), canvas.getWidth() - 180, 60);
-
-        g.setFont(oF);
-        g.setColor(oCr);
     }
 
     private void renderEndScreen(Canvas canvas) {
@@ -356,5 +338,9 @@ public class Game implements Tickable, Renderable, InputListener {
 
     public GameState getState() {
         return state;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }
