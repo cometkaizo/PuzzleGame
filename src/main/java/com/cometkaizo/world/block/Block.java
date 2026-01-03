@@ -12,8 +12,6 @@ import com.cometkaizo.world.entity.Entity;
 import java.awt.*;
 
 public abstract class Block implements Renderable, DataSerializable, Resettable {
-    public static final String TYPE_KEY = "type";
-    public static final String POSITION_KEY = "position";
     public final Room room;
     public final Room.Layer layer;
     protected final Args originalArgs;
