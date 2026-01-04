@@ -36,6 +36,10 @@ public class ImageClickable extends Clickable {
     public Image getTexture() {
         String texturePath = this.texturePath.get();
         if (texturePath == null) return null;
-        return isHovered() ? Assets.textureOutlined(texturePath) : Assets.texture(texturePath);
+        return isOutlined() ? Assets.textureOutlined(texturePath) : Assets.texture(texturePath);
+    }
+
+    protected boolean isOutlined() {
+        return isHovered();
     }
 }
