@@ -22,6 +22,7 @@ public class Sign extends Interactable {
             new Content("Chess Board 2", "The white rook attacks the black rook.\n\nThe black rook attacks the royal couple and no longer sees the white rook.\n\nThe white knight jumps directly in front of the queen.\n\nWhat can the queen see?"),
             new Content("Chess Board 3", "The truth is hidden in what is not there."),
             new Content("Chess Board 4", "???"),
+            new Content("Chess Board", "Maps are great. When you're lost, they let you CHECK WHERE you are."),
     };
 
     private String title, desc;
