@@ -15,6 +15,11 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: A world containing a list of rooms
+ */
 public class World implements PathSerializable, Tickable, Renderable {
     public static final String INFO_FILE_NAME = "world.info";
     public static final String NAMESPACE_KEY = "namespace";

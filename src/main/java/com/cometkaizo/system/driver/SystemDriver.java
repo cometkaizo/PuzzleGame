@@ -12,6 +12,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Controls the setup, cleanup, and ticking of applications
+ */
 public abstract class SystemDriver {
 
     private final App app;

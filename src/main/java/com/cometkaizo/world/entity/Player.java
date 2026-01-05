@@ -14,7 +14,11 @@ import com.cometkaizo.world.Vector;
 
 import java.awt.*;
 import java.util.Objects;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Player entity which is controlled by the user
+ */
 public class Player extends MovableEntity {
 
     protected Vector.MutableDouble lastMotion = Vector.mutable(0D, 0D);

@@ -8,7 +8,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable statue of David sculpture
+ */
 public class DavidSculpture extends Interactable {
     public static final String OPEN_HEART_MSG = """
             You insert the organ key into the heart and turn it.""";

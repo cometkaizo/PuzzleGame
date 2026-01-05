@@ -7,6 +7,11 @@ import com.cometkaizo.screen.Text;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for paintings
+ */
 public class PaintingOverlay extends Overlay {
     private final boolean litUp;
     private final Text content;

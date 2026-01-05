@@ -2,14 +2,19 @@ package com.cometkaizo.game;
 
 import java.lang.reflect.Field;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Settings for the game
+ */
 public class GameSettings {
 
-    public final int unscaledTileSize = 32;
-    public final int renderScale = 4;
-    public final int tileSize = unscaledTileSize * renderScale;
-    public final double widthInTiles = 10;
-    public final double heightInTiles = 6;
-    public final double cameraPaddingInTiles = 2;
+    public int unscaledTileSize = 32;
+    public int renderScale = 4;
+    public int tileSize = unscaledTileSize * renderScale;
+    public double widthInTiles = 10;
+    public double heightInTiles = 6;
+    public double cameraPaddingInTiles = 2;
 
 
     public String toString() {

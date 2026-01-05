@@ -8,7 +8,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable combination puzzle box
+ */
 public class CombinationPuzzleBox extends Interactable {
     private static final String[] MESSAGES = {
             """

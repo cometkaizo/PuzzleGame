@@ -5,6 +5,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 import com.cometkaizo.world.entity.Entity;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Ground block
+ */
 public class GroundBlock extends Block {
 
     public GroundBlock(Room.Layer layer, Vector.ImmutableInt position, Args args) {

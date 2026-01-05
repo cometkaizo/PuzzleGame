@@ -8,7 +8,11 @@ import com.cometkaizo.world.entity.Entity;
 
 import java.awt.*;
 
-// Invisible solid block
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Invisible solid block
+ */
 public class BarrierBlock extends Block {
 
     public BarrierBlock(Room.Layer layer, Vector.ImmutableInt position, Args args) {

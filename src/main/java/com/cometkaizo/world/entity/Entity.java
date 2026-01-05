@@ -9,7 +9,11 @@ import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.world.*;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: An Entity is an object which is not bound to the grid as blocks are
+ */
 public abstract class Entity implements Tickable, Renderable, Resettable {
     protected final Args originalArgs;
     protected Vector.ImmutableDouble originalPosition;

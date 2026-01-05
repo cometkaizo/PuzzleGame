@@ -2,6 +2,11 @@ package com.cometkaizo.screen;
 
 import com.cometkaizo.world.Light;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Textures describing the "directional textures" tilemap
+ */
 public enum DirectionAtlasTexture implements AtlasTexture {
     N(1, 0), NE(2, 0), E(2, 1), SE(2, 2), S(1, 2), SW(0, 2), W(0, 1), NW(0, 0);
 

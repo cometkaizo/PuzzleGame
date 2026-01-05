@@ -6,7 +6,11 @@ import com.cometkaizo.screen.overlay.OrganOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable organ
+ */
 public class Organ extends Interactable {
     public static final String KEY_FALL_OUT_MSG = """
             One of the keys on the organ shakes loose. You take it as it falls out.""";

@@ -4,6 +4,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-22
+ * Description: Useful string-related methods
+ */
 public class StringUtils {
 
     public static List<String> createLines(String text, FontMetrics font, int width) {

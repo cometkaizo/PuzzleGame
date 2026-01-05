@@ -4,7 +4,11 @@ import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: An entity with a bounding box
+ */
 public abstract class CollidableEntity extends Entity {
     protected BoundingBox boundingBox;
 

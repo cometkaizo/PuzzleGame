@@ -11,6 +11,11 @@ import java.awt.event.MouseEvent;
 
 import static com.cometkaizo.app.GameDriver.TPS;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Class for rendering the game and screen overlay using Canvas
+ */
 public class GameRenderer extends JPanel {
 
     private final Canvas canvas;

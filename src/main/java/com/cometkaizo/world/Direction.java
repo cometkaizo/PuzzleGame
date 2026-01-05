@@ -1,5 +1,9 @@
 package com.cometkaizo.world;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A 2D cardinal direction
+ */
 public enum Direction {
     UP(Axis.Y, 0, 1),
     DOWN(Axis.Y, 0, -1),

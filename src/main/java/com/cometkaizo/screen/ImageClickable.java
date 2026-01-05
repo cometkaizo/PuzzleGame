@@ -7,6 +7,11 @@ import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A Clickable which has an image that has an outline when hovered
+ */
 public class ImageClickable extends Clickable {
     protected Supplier<String> texturePath;
     protected int textureXOffset, textureYOffset;

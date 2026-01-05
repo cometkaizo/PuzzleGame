@@ -1,7 +1,11 @@
 package com.cometkaizo.world.entity;
 
 import java.util.Map;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: List of all entity types and their type-codes
+ */
 public class EntityTypes {
 
     public static final Map<String, Entity.Reader> ENTITIES = Map.ofEntries(

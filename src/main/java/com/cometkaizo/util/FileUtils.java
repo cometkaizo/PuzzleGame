@@ -11,6 +11,11 @@ import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-21
+ * Description: Useful file-related methods
+ */
 @SuppressWarnings("unused")
 public class FileUtils {
 

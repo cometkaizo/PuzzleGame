@@ -9,6 +9,11 @@ import com.cometkaizo.screen.Canvas;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the title screen
+ */
 public class TitleScreen extends Overlay {
     private static final Font TITLE_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 70);
     private static final String TITLE = "Puzzle Game";

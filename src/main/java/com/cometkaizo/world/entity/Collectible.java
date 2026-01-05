@@ -8,8 +8,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
-// todo: make inventory system and connect it with these items
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable collectible item
+ */
 public abstract class Collectible extends Interactable {
 
     protected final int collectDuration = 5;

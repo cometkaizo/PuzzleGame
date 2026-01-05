@@ -8,6 +8,11 @@ import java.awt.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntUnaryOperator;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A 2D rectangle which performs an action when clicked
+ */
 public class Clickable implements Tickable, Renderable {
     protected final GameApp app;
     protected BooleanSupplier action;

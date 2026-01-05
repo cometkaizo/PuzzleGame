@@ -8,7 +8,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable door
+ */
 public class Door extends Interactable {
     private int w, h;
     private boolean open;

@@ -1,5 +1,10 @@
 package com.cometkaizo.input;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class represents a key binding
+ */
 public class KeyBinding implements InputBinding {
     public final String name;
     public int key;

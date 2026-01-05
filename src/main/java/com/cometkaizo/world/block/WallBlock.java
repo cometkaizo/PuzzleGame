@@ -10,6 +10,11 @@ import com.cometkaizo.world.entity.Entity;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Wall block
+ */
 public class WallBlock extends Block {
 
     protected String textureVariation;

@@ -8,7 +8,11 @@ import com.cometkaizo.world.Vector;
 
 import java.awt.*;
 import java.util.Arrays;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable mayan calendar
+ */
 public class MayanCalendar extends Interactable {
     private int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
 

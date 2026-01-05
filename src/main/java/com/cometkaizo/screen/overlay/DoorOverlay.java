@@ -8,6 +8,11 @@ import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Clickable;
 import com.cometkaizo.screen.ImageClickable;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for a door
+ */
 public class DoorOverlay extends Overlay {
     private final Class<? extends Item> type;
     private final Runnable openAction;

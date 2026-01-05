@@ -11,6 +11,11 @@ import com.cometkaizo.world.Tickable;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay which renders over the game and can contain menu elements such as buttons and text
+ */
 public abstract class Overlay implements Tickable, Renderable {
     protected final GameApp app;
     protected final EventBus eventBus;

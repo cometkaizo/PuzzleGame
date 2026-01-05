@@ -11,6 +11,11 @@ import java.util.stream.IntStream;
 
 import static java.lang.Math.floorMod;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the mayan calendar
+ */
 public class MayanCalendarOverlay extends Overlay {
     public static final Image[] NUMBER_SYMBOLS = IntStream.range(0, 21).mapToObj(i -> Assets.texture("gui/mayan_calendar/number/" + i)).toArray(Image[]::new);
     public static final Image[] TZOLKIN_SYMBOLS = IntStream.range(0, 20).mapToObj(i -> Assets.texture("gui/mayan_calendar/tzolkin_symbol/" + i)).toArray(Image[]::new);

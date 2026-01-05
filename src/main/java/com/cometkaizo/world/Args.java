@@ -3,7 +3,11 @@ package com.cometkaizo.world;
 import com.cometkaizo.util.MathUtils;
 
 import java.util.Arrays;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Arguments read in from Google Sheets, to be parsed by a block or entity
+ */
 public class Args {
     public static final Args EMPTY = new Args("");
     public String id;

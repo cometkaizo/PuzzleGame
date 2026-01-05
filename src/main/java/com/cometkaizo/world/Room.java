@@ -28,6 +28,11 @@ import java.util.stream.Stream;
 import static com.cometkaizo.util.MathUtils.almostEquals;
 import static java.lang.Math.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A room with a grid of blocks and entities
+ */
 public class Room implements Tickable, Renderable, Resettable {
 
     public static final String SAVE_EXTENSION = ".csv";

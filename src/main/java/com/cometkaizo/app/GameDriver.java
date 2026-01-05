@@ -6,10 +6,20 @@ import java.io.InputStream;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class controls ticking the game application
+ */
 public class GameDriver extends SystemDriver {
     private final GameApp app;
     public static final int RENDERS_PER_TICK = 3, FPS = 60, TPS = FPS / RENDERS_PER_TICK;
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: Constructs a new GameDriver with the given input stream
+     */
     public GameDriver(InputStream input) {
         super(new GameApp());
         this.app = (GameApp) getApp();

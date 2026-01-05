@@ -8,6 +8,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Useful image-related methods
+ */
 public class ImageUtils {
 
     /**

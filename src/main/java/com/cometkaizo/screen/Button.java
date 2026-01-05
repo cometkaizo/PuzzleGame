@@ -5,6 +5,11 @@ import com.cometkaizo.app.GameApp;
 import java.awt.*;
 import java.util.function.IntUnaryOperator;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A button that can be clicked on a screen overlay
+ */
 public class Button extends Clickable {
     protected String message;
     protected Font font;

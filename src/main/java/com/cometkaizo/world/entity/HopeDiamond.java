@@ -3,7 +3,11 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable hope diamond
+ */
 public class HopeDiamond extends Interactable {
     public HopeDiamond(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);

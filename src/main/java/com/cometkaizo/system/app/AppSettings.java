@@ -2,6 +2,11 @@ package com.cometkaizo.system.app;
 
 import java.lang.reflect.Field;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Settings for the application, with a dynamic toString function
+ */
 public class AppSettings {
 
 

@@ -7,6 +7,11 @@ import java.util.function.Supplier;
 import static java.awt.event.KeyEvent.*;
 import static java.awt.event.MouseEvent.BUTTON1;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Lists all input bindings
+ */
 public class InputBindings {
 
     public static final Registry<InputBinding> GAME = new Registry<>();

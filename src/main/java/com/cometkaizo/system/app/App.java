@@ -1,6 +1,13 @@
 package com.cometkaizo.system.app;
 
-public abstract class App {
+import com.cometkaizo.world.Tickable;
+
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-04
+ * Description: An application that can be setup and cleaned up, as well as ticked
+ */
+public abstract class App implements Tickable {
 
     private final AppSettings settings;
 

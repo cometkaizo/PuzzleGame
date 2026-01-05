@@ -9,7 +9,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: An entity which does something when interacted with by the player
+ */
 public abstract class Interactable extends CollidableEntity {
     public Interactable(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);

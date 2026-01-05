@@ -5,7 +5,11 @@ import com.cometkaizo.screen.overlay.ChessOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable chess board
+ */
 public class Chess extends Interactable {
     private String board;
     private String variant;

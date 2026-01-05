@@ -1,7 +1,11 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Describes the 2D rectangular bounding box of an entity
+ */
 public class BoundingBox {
     public Vector.MutableDouble position; // bottom left corner
     public Vector.ImmutableDouble size;

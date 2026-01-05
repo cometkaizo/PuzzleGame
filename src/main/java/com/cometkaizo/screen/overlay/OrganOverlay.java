@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.function.IntUnaryOperator;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the organ
+ */
 public class OrganOverlay extends Overlay {
     public static final int KEY_PIXEL_WIDTH = 7,
             WIDTH_IN_OCTAVES = 5,

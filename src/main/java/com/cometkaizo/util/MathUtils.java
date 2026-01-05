@@ -1,5 +1,10 @@
 package com.cometkaizo.util;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-22
+ * Description: Useful math-related methods
+ */
 public class MathUtils {
     public static double lerp(double a, double from, double to) {
         return from + (a * (to - from));

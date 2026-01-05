@@ -3,7 +3,11 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable morse code artifact
+ */
 public class MorseCodeArtifact extends Interactable {
     public MorseCodeArtifact(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);

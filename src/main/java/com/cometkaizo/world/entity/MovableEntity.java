@@ -6,7 +6,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import static com.cometkaizo.util.MathUtils.almostEquals;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: An entity which can move
+ */
 public abstract class MovableEntity extends CollidableEntity {
     protected Vector.MutableDouble motion = Vector.mutable(0D, 0D), groundMotion = Vector.mutable(0D, 0D);
     protected boolean collidedHorizontally;

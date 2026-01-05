@@ -30,6 +30,11 @@ import java.nio.file.Path;
 
 import static com.cometkaizo.util.FileUtils.exists;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class represents the game application.
+*/
 public class GameApp extends App implements Tickable {
     public static final String SAVE_DIR_NAME = "PuzzleGame";
 
@@ -47,14 +52,11 @@ public class GameApp extends App implements Tickable {
 
     private long tickTimeMillis;
 
-    public GameApp(GameAppSettings settings, CommandGroup commandGroup) {
-        super(settings);
-        this.settings = settings;
-        this.commandGroup = commandGroup;
-        this.game = new Game(this, new GameSettings());
-        setOverlay(new TitleScreen(this));
-    }
-
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: Constructs a new GameApp instance
+     */
     public GameApp() {
         super(new GameAppSettings());
         this.settings = (GameAppSettings) super.getSettings();
@@ -67,6 +69,11 @@ public class GameApp extends App implements Tickable {
         setOverlay(new TitleScreen(this));
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: Executes a command using the given input string
+     */
     public void parseInput(String input) {
         try {
             commandGroup.execute(input);
@@ -75,6 +82,11 @@ public class GameApp extends App implements Tickable {
         }
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: sets up the app
+     */
     @Override
     public void setup() {
         super.setup();
@@ -89,6 +101,11 @@ public class GameApp extends App implements Tickable {
         game.setup();
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: initializes the app window
+     */
     private void initWindow() {
         frame = new JFrame(settings.name);
 
@@ -113,16 +130,11 @@ public class GameApp extends App implements Tickable {
         frame.setVisible(true);
     }
 
-    public RawInputListener getGameInputListener() {
-        return gameInputListener;
-    }
-    public RawInputListener getOverlayInputListener() {
-        return overlayInputListener;
-    }
-    public EventBus getOverlayEventBus() {
-        return overlayEventBus;
-    }
-
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: initializes the save directory
+     */
     private void makeSaveDirIn(File parent) {
         try {
             if (exists(parent)) {
@@ -138,6 +150,11 @@ public class GameApp extends App implements Tickable {
         }
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: cleans up the app
+     */
     @Override
     public void cleanup() {
         super.cleanup();
@@ -148,6 +165,11 @@ public class GameApp extends App implements Tickable {
         frame.pack();
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: runs every tick to update the game
+     */
     @Override
     public void tick() {
         long start = System.nanoTime();
@@ -164,21 +186,41 @@ public class GameApp extends App implements Tickable {
         tickTimeMillis = (end - start) / 1_000;
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: renders the game with the given partial tick
+     */
     public void render(double partialTick) {
         renderer.setPartialTick(partialTick);
         renderer.setLastTickTime(tickTimeMillis);
         if (frame != null) frame.repaint();
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: saves the game to the given path
+     */
     public boolean saveGameTo(Path path) {
         Main.log("Saving game to '" + path + "'");
         return game.write(path);
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: saves the game to the default path
+     */
     public boolean saveGame() {
         return saveGameTo(saveDir.toPath().resolve(game.name));
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: loads the game from the given path
+     */
     public boolean loadGameFrom(Path path) {
         Main.log("Loading game from '" + path + "'");
         try {
@@ -191,10 +233,20 @@ public class GameApp extends App implements Tickable {
         }
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: loads the game from the default path
+     */
     public boolean loadGame() {
         return loadGameFrom(saveDir.toPath().resolve(game.name));
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: sets the current game
+     */
     private void setGame(Game game) {
         if (game == this.game) return;
         this.game.cleanup();
@@ -202,10 +254,20 @@ public class GameApp extends App implements Tickable {
         this.game = game;
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: toggles debug mode
+     */
     public void toggleDebug() {
         renderer.toggleDebug();
     }
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: listens to input events for the screen overlay
+     */
     private class OverlayInputListener implements InputListener {
         @Override
         public void keyPressed(KeyBinding key) {
@@ -237,6 +299,11 @@ public class GameApp extends App implements Tickable {
             overlayEventBus.post(new MouseMovedEvent(Double.NaN, Double.NaN, x, y));
         }
     }
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: listens for window closing
+     */
     private class WindowCloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent windowEvent) {
@@ -248,6 +315,18 @@ public class GameApp extends App implements Tickable {
                 Main.stop(0);
             }
         }
+    }
+
+    // SETTERS & GETTERS
+
+    public RawInputListener getGameInputListener() {
+        return gameInputListener;
+    }
+    public RawInputListener getOverlayInputListener() {
+        return overlayInputListener;
+    }
+    public EventBus getOverlayEventBus() {
+        return overlayEventBus;
     }
 
     @Override

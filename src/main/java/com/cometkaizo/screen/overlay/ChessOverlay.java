@@ -12,6 +12,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.IntUnaryOperator;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for chess
+ */
 public class ChessOverlay extends Overlay {
     private Piece[][] pieces = new Piece[8][8]; // row, column (row 0 is at top, col 0 is at left)
     private Cell[][] cells = new Cell[8][8];

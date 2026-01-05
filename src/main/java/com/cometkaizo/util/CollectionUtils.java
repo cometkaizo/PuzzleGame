@@ -6,6 +6,11 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: List of useful collections-related methods
+ */
 @SuppressWarnings("unused")
 public class CollectionUtils {
 

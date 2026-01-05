@@ -7,6 +7,11 @@ import com.cometkaizo.screen.Text;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for narration
+ */
 public class NarrationOverlay extends Overlay {
     private final Text content;
 

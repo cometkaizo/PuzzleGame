@@ -5,6 +5,11 @@ import com.cometkaizo.app.GameApp;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for auto chess
+ */
 public class AutoChessOverlay extends ChessOverlay {
     private Map<Move, Move> autoMoves = new HashMap<>();
     private long autoMoveTime = -1;
@@ -12,6 +17,7 @@ public class AutoChessOverlay extends ChessOverlay {
 
     public AutoChessOverlay(GameApp app, String pieces) {
         super(app, pieces);
+        // each auto move on the right is a reaction to the player move on the left
         putMove(new Move("a3", "a4"), new Move("c3", "c4"));
         putMove(new Move("a4", "a5"), new Move("c4", "c5"));
         putMove(new Move("a5", "a6"), new Move("c5", "c6"));
@@ -30,6 +36,7 @@ public class AutoChessOverlay extends ChessOverlay {
     }
 
     private void putMove(Move playerMove, Move autoMove) {
+        // add the moves and their inverses in case the player goes backwards
         autoMoves.put(playerMove, autoMove);
         autoMoves.put(playerMove.inverse(), autoMove.inverse());
     }
@@ -64,7 +71,7 @@ public class AutoChessOverlay extends ChessOverlay {
 
     @Override
     protected boolean canPickUp(Piece piece) {
-        return piece.white && autoMoveTime == -1; // can only pick up white pieces when not auto-moving
+        return piece.white && autoMoveTime == -1; // can only pick up white pieces, when not auto-moving
     }
 
     public record Move(int fromR, int fromC, int toR, int toC) {
@@ -74,6 +81,7 @@ public class AutoChessOverlay extends ChessOverlay {
                     8 - Integer.parseInt(to.substring(1)), to.charAt(0) - 'a');
         }
 
+        /// Returns the same move but backwards
         public Move inverse() {
             return new Move(toR, toC, fromR, fromC);
         }

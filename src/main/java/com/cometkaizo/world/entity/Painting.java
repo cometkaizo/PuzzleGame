@@ -6,7 +6,11 @@ import com.cometkaizo.world.Light;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 import com.cometkaizo.world.block.WallBlock;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable painting
+ */
 public class Painting extends Interactable {
     private String variant, label;
     private int w, h;

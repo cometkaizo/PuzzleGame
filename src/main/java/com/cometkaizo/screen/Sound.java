@@ -9,6 +9,11 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A playable sound
+ */
 public class Sound {
     private static final Set<Sound> PLAYED_THIS_TICK = new HashSet<>();
     protected final AudioFormat format;

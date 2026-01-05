@@ -10,6 +10,11 @@ import com.cometkaizo.screen.ImageClickable;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for combination lock
+ */
 public class CombinationLockOverlay extends Overlay {
     private final Font font = Assets.font("BoldPixels", 50);
     private final Color color = Color.BLACK;

@@ -4,6 +4,11 @@ import com.cometkaizo.io.DataSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.util.MathUtils;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A 2D (x, y) pair. Can be any number type, usually ints and doubles.
+ */
 @SuppressWarnings("unused")
 public interface Vector<T extends Number> extends DataSerializable {
     String X_KEY = "x";

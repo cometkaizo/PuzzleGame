@@ -4,7 +4,11 @@ import com.cometkaizo.screen.overlay.SignOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable sign
+ */
 public class Sign extends Interactable {
 
     public static final Content[] CONTENT = {

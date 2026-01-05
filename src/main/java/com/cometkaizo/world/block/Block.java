@@ -11,6 +11,11 @@ import com.cometkaizo.world.entity.Entity;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A single block in the world map
+ */
 public abstract class Block implements Renderable, DataSerializable, Resettable {
     public final Room room;
     public final Room.Layer layer;

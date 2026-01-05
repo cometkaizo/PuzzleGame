@@ -6,6 +6,11 @@ import com.cometkaizo.world.Tickable;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Dialogue box showing dialogue and a headshot
+ */
 public class Dialogue implements Tickable, Renderable {
     public static final Image TEXTURE = Assets.texture("gui/dialogue");
     private static final Font FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 36);

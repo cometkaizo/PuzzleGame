@@ -21,6 +21,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class represents a running game save
+ */
 public class Game implements Tickable, Renderable, InputListener {
     public static final String GAME_STATE_FILENAME = "state.txt";
     private final GameApp app;

@@ -16,6 +16,11 @@ import java.util.function.Consumer;
 import static java.lang.Math.ceilDiv;
 import static java.lang.Math.max;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the player inventory
+ */
 public class InventoryOverlay extends Overlay {
     private static final int WIDTH_IN_ITEMS = 3;
     private final List<Clickable> items = new ArrayList<>();

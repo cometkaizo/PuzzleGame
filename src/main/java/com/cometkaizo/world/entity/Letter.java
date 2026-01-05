@@ -4,7 +4,11 @@ import com.cometkaizo.screen.overlay.LetterOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable letter
+ */
 public class Letter extends Interactable {
 
     public static final String MESSAGE = """

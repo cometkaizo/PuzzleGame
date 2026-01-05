@@ -8,6 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Simple implementation for RawInputListener
+ */
 public class RawInputListenerImpl implements RawInputListener {
     private final Set<InputListener> inputListeners = new HashSet<>(1);
     private final Registry<InputBinding> keyBindings;

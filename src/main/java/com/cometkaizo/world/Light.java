@@ -5,12 +5,27 @@ import com.cometkaizo.screen.DirectionAtlasTexture;
 import com.cometkaizo.world.block.Block;
 import com.cometkaizo.world.entity.Entity;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Light block
+ */
 public class Light extends Block {
-    public Direction direction = Direction.W;
+    public Direction direction;
 
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: Constructs a light block on the given layer with the given position
+     */
     public Light(Room.Layer layer, Vector.Int pos) {
         this(layer, pos, Direction.W);
     }
+    /**
+     * Author: Andy Wang
+     * Date Modified: TODO
+     * Description: Constructs a light block on the given layer with the given position and direction
+     */
     public Light(Room.Layer layer, Vector.Int pos, Direction direction) {
         super(layer, Vector.immutableInt(pos), new Args("light"));
         this.direction = direction;

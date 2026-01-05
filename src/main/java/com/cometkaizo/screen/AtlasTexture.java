@@ -1,5 +1,10 @@
 package com.cometkaizo.screen;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: A single texture within a texture atlas (like a tilemap)
+ */
 public interface AtlasTexture {
     double x();
     double y();

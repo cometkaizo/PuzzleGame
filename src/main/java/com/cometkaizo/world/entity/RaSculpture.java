@@ -7,7 +7,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable sculpture of Ra
+ */
 public class RaSculpture extends Interactable {
     private Light.Direction direction = Light.Direction.W;
     private boolean emittingLight;

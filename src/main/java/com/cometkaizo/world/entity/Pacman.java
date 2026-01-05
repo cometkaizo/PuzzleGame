@@ -3,7 +3,11 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
-
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Interactable pacman arcade machine
+ */
 public class Pacman extends Interactable {
     public Pacman(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);

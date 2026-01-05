@@ -11,6 +11,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Stores all textures, fonts, and sounds in the game
+ */
 public class Assets {
     private static final Map<String, Image> TEXTURES = Collections.synchronizedMap(new HashMap<>());
     private static final Map<String, Font> FONTS = Collections.synchronizedMap(new HashMap<>());

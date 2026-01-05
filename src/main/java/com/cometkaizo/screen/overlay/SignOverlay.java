@@ -7,6 +7,11 @@ import com.cometkaizo.screen.Text;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for signs
+ */
 public class SignOverlay extends Overlay {
     private final Text title, desc;
     private final String variant;

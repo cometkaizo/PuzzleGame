@@ -8,6 +8,11 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Registry for something that depends on the game app (e.g., input bindings)
+ */
 public class Registry<T> {
 
     private GameApp app;

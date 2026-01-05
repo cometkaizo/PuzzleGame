@@ -2,6 +2,11 @@ package com.cometkaizo.screen;
 
 import com.cometkaizo.world.block.Block;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Atlas textures which describe the position of the "connected textures" tilemap
+ */
 public enum ConnectorAtlasTexture implements AtlasTexture {
     _XX_(0, 0, false, true, true, false),
     _XXX(1, 0, false, true, true, true),

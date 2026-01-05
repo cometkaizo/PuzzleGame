@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class represents the player's inventory of items
+ */
 public class Inventory implements Iterable<Item> {
     private List<Item> items = new ArrayList<>();
 

@@ -6,6 +6,11 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 import com.cometkaizo.world.entity.Entity;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Air block
+ */
 public class AirBlock extends Block {
 
     public AirBlock(Room.Layer layer, Vector.ImmutableInt position, Args args) {

@@ -1,5 +1,10 @@
 package com.cometkaizo.input;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: An input listener for mouse and key events
+ */
 public interface InputListener {
 
     void keyPressed(KeyBinding key);

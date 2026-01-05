@@ -10,7 +10,11 @@ import com.cometkaizo.screen.ImageClickable;
 import java.util.Arrays;
 import java.util.List;
 
-// todo: add lights so it kinda makes sense with the light through painting puzzle
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the lever lock
+ */
 public class LeverLockOverlay extends Overlay {
     private final boolean[][] correctCombination;
     private final Runnable actionOnOpen;

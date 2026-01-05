@@ -7,6 +7,11 @@ import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Clickable;
 import com.cometkaizo.screen.ImageClickable;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: Screen overlay for the statue of David
+ */
 public class DavidOverlay extends Overlay {
     private final Runnable openChestAction, openHeartAction;
     private boolean chestOpen, heartOpen;

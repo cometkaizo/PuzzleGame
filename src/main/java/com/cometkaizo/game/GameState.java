@@ -6,6 +6,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: TODO
+ * Description: This class represents a single game save state which can be written to and loaded from files
+ */
 public class GameState {
     public Vector.MutableDouble playerPos;
 
