@@ -9,6 +9,7 @@ public class GameSettings {
     public final int tileSize = unscaledTileSize * renderScale;
     public final double widthInTiles = 10;
     public final double heightInTiles = 6;
+    public final double cameraPaddingInTiles = 2;
 
 
     public String toString() {

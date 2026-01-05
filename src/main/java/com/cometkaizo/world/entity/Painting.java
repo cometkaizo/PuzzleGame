@@ -2,6 +2,7 @@ package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.overlay.PaintingOverlay;
 import com.cometkaizo.world.Args;
+import com.cometkaizo.world.Light;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 import com.cometkaizo.world.block.WallBlock;
@@ -9,6 +10,8 @@ import com.cometkaizo.world.block.WallBlock;
 public class Painting extends Interactable {
     private String variant, label;
     private int w, h;
+    private boolean litUp;
+
     public Painting(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
     }
@@ -26,13 +29,19 @@ public class Painting extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new PaintingOverlay(app, variant, label));
+        app.setOverlay(new PaintingOverlay(app, litUp, variant, label));
     }
 
     @Override
     protected boolean canBeInteracted() {
         // expand interaction hitbox up by 0.8 blocks so that paintings with walls below them can be interacted from farther up
         return room.player.canInteract() && boundingBox.expanded(0.8, 0, 0, 0).expanded(0.1).intersects(room.player.boundingBox);
+    }
+
+    @Override
+    public void updateLight(Light.Direction direction) {
+        super.updateLight(direction);
+        litUp = direction != null;
     }
 
     @Override
@@ -50,5 +59,10 @@ public class Painting extends Interactable {
             if (hasWallBelow) return boundingBox.getBottom() - 0.1;
         }
         return super.getRenderY();
+    }
+
+    @Override
+    public boolean blocksLight() {
+        return false;
     }
 }

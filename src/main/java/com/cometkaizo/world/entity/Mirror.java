@@ -16,6 +16,11 @@ public class Mirror extends Interactable {
     }
 
     @Override
+    public boolean blocksLight() {
+        return false;
+    }
+
+    @Override
     protected void interact() {
 
     }

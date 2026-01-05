@@ -1,6 +1,8 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.EntranceKeyItem;
 import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.overlay.DoorOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -8,7 +10,6 @@ import com.cometkaizo.world.Vector;
 import java.awt.*;
 
 public class Door extends Interactable {
-    private String keyName;
     private int w, h;
     private boolean open;
     public Door(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -17,8 +18,9 @@ public class Door extends Interactable {
 
     @Override
     protected void interact() {
-        // todo: check if player has the key with the matching name in their inventory
-        if (!keyName.isEmpty()) open();
+        if (open) return;
+        if (this == game.libraryDoor) app.setOverlay(new DoorOverlay(app, EntranceKeyItem.class, this::open));
+        else open();
     }
     public void open() {
         open = true;
@@ -28,7 +30,6 @@ public class Door extends Interactable {
     public void reset() {
         super.reset();
         open = false;
-        keyName = originalArgs.next("");
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
@@ -36,6 +37,10 @@ public class Door extends Interactable {
 
     @Override
     public boolean isSolid(Entity entity) {
+        return !open;
+    }
+    @Override
+    public boolean blocksLight() {
         return !open;
     }
 

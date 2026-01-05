@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+import static com.cometkaizo.app.GameDriver.TPS;
+
 public class GameRenderer extends JPanel {
 
     private final Canvas canvas;
@@ -17,6 +19,7 @@ public class GameRenderer extends JPanel {
     private double partialTick;
     private int mouseX, mouseY;
     private boolean mouseDown;
+    private long tickTimeMillis;
 
     public GameRenderer(Settings settings, GameApp app) {
         this.app = app;
@@ -46,6 +49,9 @@ public class GameRenderer extends JPanel {
     public void setPartialTick(double partialTick) {
         this.partialTick = partialTick;
     }
+    public void setLastTickTime(long tickTimeMillis) {
+        this.tickTimeMillis = tickTimeMillis;
+    }
 
     protected void render(Graphics2D g) {
         Dimension size = getSize(this.size);
@@ -58,6 +64,7 @@ public class GameRenderer extends JPanel {
         canvas.startRender(g, game().getPrevCameraPosition(), game().getCameraPosition(), size.width, size.height, partialTick);
 
         game().render(canvas);
+        renderDebugTickRate();
 
         canvas.endRender();
     }
@@ -67,6 +74,7 @@ public class GameRenderer extends JPanel {
 
         app.getOverlay().render(canvas);
         renderDebugMousePos();
+        renderDebugTickRate();
 
         canvas.endRender();
     }
@@ -75,6 +83,10 @@ public class GameRenderer extends JPanel {
         int mouseXFromCenter = (int) ((mouseX - canvas.halfWidth()) / canvas.renderScale());
         int mouseYFromCenter = (int) ((mouseY - canvas.halfHeight()) / canvas.renderScale());
         canvas.renderDebugString(mouseXFromCenter + ", " + mouseYFromCenter, Color.PINK, 10, 34);
+    }
+    private void renderDebugTickRate() {
+        int tps = tickTimeMillis == 0 ? TPS : (int) Math.min(TPS, 1000 / tickTimeMillis);
+        canvas.renderDebugString("%7d TPS (%3d ms)".formatted(tps, tickTimeMillis), Color.GRAY, canvas.getWidth() - 250, 34);
     }
 
     public void toggleDebug() {

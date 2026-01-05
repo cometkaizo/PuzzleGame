@@ -14,15 +14,12 @@ import com.cometkaizo.input.MouseButtonBinding;
 import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.*;
-import com.cometkaizo.world.entity.Collectible;
 import com.cometkaizo.world.entity.Door;
 import com.cometkaizo.world.entity.Player;
 
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Game implements Tickable, Renderable, InputListener {
     public static final String GAME_STATE_FILENAME = "state.txt";
@@ -31,7 +28,6 @@ public class Game implements Tickable, Renderable, InputListener {
     private final GameState state;
     private final EventBus eventBus;
     private final Vector.MutableDouble cameraPosition, prevCameraPosition, targetCameraPosition;
-    public boolean hasLuggage;
     // todo: currently only has one save slot
     public String name = "save";
     private double cameraSpeed;
@@ -40,12 +36,11 @@ public class Game implements Tickable, Renderable, InputListener {
     private Player player;
     public long tick = 0;
     private Dialogue dialogue;
-    private Set<Collectible> collectedCollectibles = new HashSet<>();
     private boolean ended;
     private final int endFadeInDuration = 100, endFadeInFinishDuration = 50, endFadeOutDuration = 100,
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
-    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor;
+    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, libraryDoor;
     private final Inventory inventory = new Inventory();
 
     /// Reads in a game from a previous save file
@@ -100,7 +95,8 @@ public class Game implements Tickable, Renderable, InputListener {
             sculpturesDoor = (Door) room.getBlockOrEntity("d_sculptures");
             modernDoor = (Door) room.getBlockOrEntity("d_modern");
             artifactsDoor = (Door) room.getBlockOrEntity("d_artifacts");
-            if (paintingsDoor == null || sculpturesDoor == null || modernDoor == null || artifactsDoor == null)
+            libraryDoor = (Door) room.getBlockOrEntity("d_library");
+            if (paintingsDoor == null || sculpturesDoor == null || modernDoor == null || artifactsDoor == null || libraryDoor == null)
                 throw new IllegalStateException("Not all doors are present");
         } catch (Exception e) {
             throw new RuntimeException("Game failed to load", e);
@@ -147,6 +143,12 @@ public class Game implements Tickable, Renderable, InputListener {
         cameraPosition.add(toTarget.scale(cameraSpeed));
     }
 
+    public void teleportCamera() {
+        this.cameraPosition.set(player.getPosition()).add(0D, 0.5D);
+        this.prevCameraPosition.set(player.getPosition()).add(0D, 0.5D);
+        this.targetCameraPosition.set(player.getPosition()).add(0D, 0.5D);
+    }
+
     private void tickEnd() {
         if (endFadeInTime > endFadeInDuration) {
             if (dialogue == null && endFadeOutTime == -1) endFadeOutTime = 0;
@@ -168,12 +170,6 @@ public class Game implements Tickable, Renderable, InputListener {
             else setDialogue(Player.dialogue("AHH! The plane took off already!", "2",
                     Player.dialogue("ASO2 3DI;[FJO WM C_OWO[D;; K3 0f23F @#0KDSO 023KKSOD __=3= s33SDFEfff", "2", null)));
         }
-    }
-
-    public void teleportCamera() {
-        this.cameraPosition.set(player.getPosition()).add(0D, 0.5D);
-        this.prevCameraPosition.set(player.getPosition()).add(0D, 0.5D);
-        this.targetCameraPosition.set(player.getPosition()).add(0D, 0.5D);
     }
 
 
@@ -308,6 +304,18 @@ public class Game implements Tickable, Renderable, InputListener {
     public Vector.MutableDouble getTargetCameraPosition() {
         return targetCameraPosition;
     }
+    public int getCameraTop() {
+        return (int) Math.ceil(cameraPosition.y + settings.heightInTiles / 2 + settings.cameraPaddingInTiles);
+    }
+    public int getCameraBottom() {
+        return (int) Math.floor(cameraPosition.y - settings.heightInTiles / 2 - settings.cameraPaddingInTiles);
+    }
+    public int getCameraLeft() {
+        return (int) Math.floor(cameraPosition.x - settings.widthInTiles / 2 - settings.cameraPaddingInTiles);
+    }
+    public int getCameraRight() {
+        return (int) Math.ceil(cameraPosition.x + settings.widthInTiles / 2 + settings.cameraPaddingInTiles);
+    }
 
     public Player getPlayer() {
         return player;
@@ -330,10 +338,6 @@ public class Game implements Tickable, Renderable, InputListener {
 
     public boolean hasDialogue() {
         return dialogue != null;
-    }
-
-    public void collect(Collectible collectible) {
-        collectedCollectibles.add(collectible);
     }
 
     public GameState getState() {

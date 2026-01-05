@@ -5,19 +5,6 @@ import com.cometkaizo.io.NoSuchResourceException;
 
 import java.io.InputStream;
 
-// Sound X
-// Dialogue X
-// Collectibles X
-// Game end X
-// Secrets
-//     Map Room X (make the floor a map and change the collectible to a pin)
-//     Bathroom -> golden toilet paper roll
-//     Bamboo cafe / gift shop -> coffee
-//     Restaurant -> soda or croissant
-// Background art instead of just random shapes
-// Art (the cozy bamboo cafe thing)
-// Add option to change controls
-// hardcore mode?
 public class Main {
     private static final GameDriver driver = new GameDriver(System.in);
 

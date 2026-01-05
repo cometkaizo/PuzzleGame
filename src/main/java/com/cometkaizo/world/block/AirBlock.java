@@ -1,5 +1,6 @@
 package com.cometkaizo.world.block;
 
+import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -13,6 +14,16 @@ public class AirBlock extends Block {
 
     @Override
     public boolean isSolid(Entity entity) {
+        return false;
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+
+    }
+
+    @Override
+    public boolean blocksLight() {
         return false;
     }
 

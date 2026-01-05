@@ -5,14 +5,13 @@ import java.util.Map;
 public class EntityTypes {
 
     public static final Map<String, Entity.Reader> ENTITIES = Map.ofEntries(
-            Map.entry("b", Button::new),
             Map.entry("letter", Letter::new),
             Map.entry("sign", Sign::new),
             Map.entry("mayan calendar", MayanCalendar::new),
             Map.entry("anubis", AnubisSculpture::new),
             Map.entry("cupid and psyche", CupidAndPsycheSculpture::new),
             Map.entry("the thinker", TheThinkerSculpture::new),
-            Map.entry("statue of rah", RahSculpture::new),
+            Map.entry("statue of ra", RaSculpture::new),
             Map.entry("statue of david", DavidSculpture::new),
             Map.entry("mephistopheles and margaretta", DoubleSidedSculpture::new),
             Map.entry("mirror", Mirror::new),

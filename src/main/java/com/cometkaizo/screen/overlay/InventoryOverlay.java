@@ -20,20 +20,22 @@ public class InventoryOverlay extends Overlay {
     private static final int WIDTH_IN_ITEMS = 3;
     private final List<Clickable> items = new ArrayList<>();
     private final Consumer<Item> onClick;
+    private final boolean waitingForItemSelection;
     private final int rowCount;
 
     public InventoryOverlay(GameApp app) {
-        this(app, _ -> {});
+        this(app, null, null);
     }
     public InventoryOverlay(GameApp app, Consumer<Item> onClick) {
         this(app, onClick, null);
     }
     public InventoryOverlay(GameApp app, Overlay prev) {
-        this(app, _ -> {}, prev);
+        this(app, null, prev);
     }
     public InventoryOverlay(GameApp app, Consumer<Item> onClick, Overlay next) {
         super(app, next);
-        this.onClick = onClick;
+        this.onClick = onClick == null ? _ -> {} : onClick;
+        this.waitingForItemSelection = onClick != null;
         var inventory = app.getGame().getInventory();
         rowCount = max(1, ceilDiv(inventory.size(), WIDTH_IN_ITEMS));
 
@@ -58,7 +60,8 @@ public class InventoryOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderString("Items in Inventory", Assets.font("BoldPixels", 24), Color.WHITE,
+        String title = waitingForItemSelection ? "Select an Item to Use" : "Items in Inventory";
+        canvas.renderString(title, Assets.font("BoldPixels", 24), Color.WHITE,
                 canvas.halfWidth() + canvas.scale(xOffset() + 2), canvas.halfHeight() + canvas.scale(yOffset()) - 30,
                 false, false);
         for (var item : items) item.render(canvas);

@@ -8,11 +8,13 @@ import com.cometkaizo.screen.Text;
 import java.awt.*;
 
 public class PaintingOverlay extends Overlay {
+    private final boolean litUp;
     private final Text content;
     private final String variant;
 
-    public PaintingOverlay(GameApp app, String variant, String label) {
+    public PaintingOverlay(GameApp app, boolean litUp, String variant, String label) {
         super(app);
+        this.litUp = litUp;
         content = new Text(label, Assets.font("BoldPixels", 30), Color.WHITE,
                 w -> w / 2,
                 h -> h / 2 + 75,
@@ -23,7 +25,7 @@ public class PaintingOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderImage(Assets.texture("gui/painting/" + variant), canvas.halfWidth(), canvas.scale(5), -0.5, 0);
+        canvas.renderImage(Assets.texture("gui/painting/" + variant + (litUp ? "_lit" : "")), canvas.halfWidth(), canvas.scale(5), -0.5, 0);
 
         content.render(canvas);
     }

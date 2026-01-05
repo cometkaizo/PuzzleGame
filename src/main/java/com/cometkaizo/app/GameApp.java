@@ -45,6 +45,8 @@ public class GameApp extends App implements Tickable {
     private RawInputListener gameInputListener, overlayInputListener;
     private EventBus overlayEventBus = new SimpleEventBus(); // use one single event bus for all screen overlays (eg title screen, interactable interfaces, ...)
 
+    private long tickTimeMillis;
+
     public GameApp(GameAppSettings settings, CommandGroup commandGroup) {
         super(settings);
         this.settings = settings;
@@ -148,6 +150,8 @@ public class GameApp extends App implements Tickable {
 
     @Override
     public void tick() {
+        long start = System.nanoTime();
+
         super.tick();
 
         gameInputListener.tick();
@@ -155,10 +159,14 @@ public class GameApp extends App implements Tickable {
 
         if (shouldTickGame()) game.tick();
         if (shouldTickOrRenderOverlay()) overlay.tick();
+
+        long end = System.nanoTime();
+        tickTimeMillis = (end - start) / 1_000;
     }
 
     public void render(double partialTick) {
         renderer.setPartialTick(partialTick);
+        renderer.setLastTickTime(tickTimeMillis);
         if (frame != null) frame.repaint();
     }
 

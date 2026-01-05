@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.Item;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.Args;
@@ -25,9 +26,10 @@ public abstract class Collectible extends Interactable {
         room.player.displayedCollectible = this;
         room.player.onInteract();
         collectTime = 0;
-        game.collect(this);
+        game.getInventory().add(newItem());
         Assets.sound("notify").play();
     }
+    protected abstract Item newItem();
 
     @Override
     protected boolean canBeInteracted() {

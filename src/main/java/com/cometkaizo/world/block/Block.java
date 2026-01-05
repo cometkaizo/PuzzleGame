@@ -83,6 +83,15 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         return name;
     }
 
+
+    public boolean blocksLight() {
+        return true;
+    }
+    public void updateLight(Light.Direction direction) {
+
+    }
+
+
     public interface Reader {
         Block apply(Room.Layer layer, Vector.ImmutableInt pos, Args args);
     }

@@ -9,11 +9,15 @@ public class Sign extends Interactable {
 
     public static final Content[] CONTENT = {
             new Content("Mayan Calendar", "The ancient Mayans used a system of interlocking cycles to track time. Each day, all cycles are incremented by one."),
-            new Content("Gallery A"),
+            new Content("Gallery A", "???"),
             new Content("Gallery B", "Wall of time-honored classics"),
-            new Content("Gallery C"),
+            new Content("Gallery C", "???"),
             new Content("Gallery D", "China called itself the \"Central Kingdom\""),
             new Content("Gallery E", "Colorful squares have hidden values. With exacting mathematical method, Piet Mondrian produces paintings which are precisely the sum of their parts."),
+            new Content("Chess Board 1", "The black pawn arrives behind its brother.\n\nThe white pawn of the king steps forward.\n\nThe black knight jumps behind the pawn.\n\nWhat shape is formed?"),
+            new Content("Chess Board 2", "The white rook attacks the black rook.\n\nThe black rook attacks the royal couple and no longer sees the white rook.\n\nThe white knight jumps directly in front of the queen.\n\nWhat can the queen see?"),
+            new Content("Chess Board 3", "The truth is hidden in what is not there."),
+            new Content("Chess Board 4", "???"),
     };
 
     private String title, desc;

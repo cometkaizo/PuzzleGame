@@ -2,14 +2,11 @@ package com.cometkaizo.screen.overlay;
 
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
-import com.cometkaizo.screen.Assets;
+import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
-import com.cometkaizo.screen.Clickable;
-import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.world.Tickable;
 
 import java.awt.*;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import static java.lang.Math.floorMod;
@@ -23,14 +20,12 @@ public class MayanCalendarOverlay extends Overlay {
 
     private final Cog big = new BigCog(), med = new MediumCog(), small = new SmallCog();
     private Cog focused = null;
-    private final List<Clickable> clickables = List.of(
-            new Clickable(app, this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23),
-            new Clickable(app, this::open, w -> w / 2 + 62, h -> h / 2 - 11, _ -> 23, _ -> 23),
-            new Clickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23),
-            new Clickable(app, () -> focus(small), w -> w / 2 - 58, h -> h / 2 - 27, _ -> 55, _ -> 55),
-            new Clickable(app, () -> focus(med), w -> w / 2 - 119, h -> h / 2 - 67, _ -> 135, _ -> 135),
-            new Clickable(app, () -> focus(big), w -> w / 2 + 20, h -> h / 2 - 75, _ -> 30, _ -> 151)
-    );
+    private final Clickable upButton = new ImageClickable(app, this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/up_button", -2, -2),
+            openButton = new ImageClickable(app, this::open, w -> w / 2 + 62, h -> h / 2 - 11, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/open_button", -88, -2) {
+                @Override protected boolean isOutlined() {
+                    return super.isOutlined() && focused == null;
+                }},
+            downButton = new ImageClickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/down_button", -2, -2);
 
     private final int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
 
@@ -56,12 +51,18 @@ public class MayanCalendarOverlay extends Overlay {
 
         if (isCurrentCombo(correctPaintingsCombo)) {
             app.getGame().paintingsDoor.open();
+            app.setOverlay(new NarrationOverlay(app, "The door to the paintings room swings open."));
         } else if (isCurrentCombo(correctSculpturesCombo)) {
             app.getGame().sculpturesDoor.open();
+            app.setOverlay(new NarrationOverlay(app, "The door to the sculptures room swings open."));
         } else if (isCurrentCombo(correctModernCombo)) {
             app.getGame().modernDoor.open();
+            app.setOverlay(new NarrationOverlay(app, "The door to the modern history room swings open."));
         } else if (isCurrentCombo(correctArtifactsCombo)) {
             app.getGame().artifactsDoor.open();
+            app.setOverlay(new NarrationOverlay(app, "The door to the artifacts room swings open."));
+        } else {
+            app.setOverlay(new NarrationOverlay(app, "Nothing happens.", this));
         }
 
         return true;
@@ -96,15 +97,15 @@ public class MayanCalendarOverlay extends Overlay {
         if (focused != big) big.render(canvas);
         if (focused != med) med.render(canvas);
         if (focused != small) small.render(canvas);
-        canvas.renderCenteredImage(Assets.texture("gui/mayan_calendar/open_button"));
+        openButton.render(canvas);
 
         if (isFocusing()) {
             canvas.fillScreen(new Color(0, 0, 0, 200));
             focused.render(canvas);
         }
 
-        canvas.renderCenteredImage(Assets.texture("gui/mayan_calendar/rot_buttons"));
-        clickables.forEach(c -> c.render(canvas));
+        upButton.render(canvas);
+        downButton.render(canvas);
     }
 
     class BigCog extends Cog {
@@ -113,7 +114,7 @@ public class MayanCalendarOverlay extends Overlay {
         static final Image[] SYMBOLS = IntStream.range(0, LENGTH).mapToObj(i -> HAAB_SYMBOLS[i / 20]).toArray(Image[]::new);
 
         public BigCog() {
-            super("big_cog", LENGTH);
+            super("big_cog", LENGTH, 20, -75, 30, 151, -4, 0);
         }
         @Override
         public void render(Canvas canvas) {
@@ -188,7 +189,7 @@ public class MayanCalendarOverlay extends Overlay {
     }
     class MediumCog extends Cog {
         public MediumCog() {
-            super("medium_cog", TZOLKIN_SYMBOLS.length);
+            super("medium_cog", TZOLKIN_SYMBOLS.length, -119, -67, 135, 135, -6, -6);
         }
         @Override
         public void render(Canvas canvas) {
@@ -219,10 +220,15 @@ public class MayanCalendarOverlay extends Overlay {
                 g.setTransform(oldTransform);
             }
         }
+
+        @Override
+        protected boolean isOutlined() {
+            return super.isOutlined() && (focused == this || !small.isHovered());
+        }
     }
     class SmallCog extends Cog {
         public SmallCog() {
-            super("small_cog", 13);
+            super("small_cog", 13, -58, -27, 55, 55, -5, -5);
         }
         @Override
         public void render(Canvas canvas) {
@@ -254,7 +260,7 @@ public class MayanCalendarOverlay extends Overlay {
             }
         }
     }
-    abstract class Cog implements Tickable, Renderable {
+    abstract class Cog extends ImageClickable implements Tickable, Renderable {
         String name;
         int maxRot;
         int rot;
@@ -265,14 +271,13 @@ public class MayanCalendarOverlay extends Overlay {
         int maxRotProgress = 3;
         int maxRotProgressCount = rotProgressCountStep * maxRotProgress * 1;
 
-        public Cog(String name, int maxRot) {
+        public Cog(String name, int maxRot, int dx, int dy, int w, int h, int texDX, int texDY) {
+            super(MayanCalendarOverlay.this.app, () -> {}, w1 -> w1/2 + dx, null, w1 -> w, h1 -> h, null, texDX -2, texDY -2);
+            this.action = () -> focus(this);
+            this.y = w1 -> w1/2 + dy + (focused == this ? -15 : 0);
+            this.texturePath = () -> "gui/mayan_calendar/" + name + "/" + rotProgress;
             this.name = name;
             this.maxRot = maxRot;
-        }
-        @Override
-        public void render(Canvas canvas) {
-            int yOffset = yOffset(canvas);
-            canvas.renderImage(Assets.texture("gui/mayan_calendar/" + name + "/" + rotProgress), canvas.halfWidth(), canvas.halfHeight() + yOffset, -0.5, -0.5);
         }
 
         protected int yOffset(Canvas canvas) {
@@ -314,15 +319,23 @@ public class MayanCalendarOverlay extends Overlay {
         protected double rotProgressPercent() {
             return (double) rotProgressCount / maxRotProgressCount;
         }
+
+        @Override
+        protected boolean isOutlined() {
+            return super.isOutlined() && (focused == null || focused == this);
+        }
     }
 
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
 
-        for (Clickable c : clickables) {
-            if (c.onClick(click)) return;
-        }
+        if (upButton.onClick(click)) return;
+        if (openButton.onClick(click)) return;
+        if (downButton.onClick(click)) return;
+        if (small.onClick(click)) return;
+        if (med.onClick(click)) return;
+        if (big.onClick(click)) return;
 
         // if no clickables successfully clicked, exit out of the focused cog
         focused = null;
@@ -330,7 +343,9 @@ public class MayanCalendarOverlay extends Overlay {
 
     @Override
     public void tick() {
-        clickables.forEach(Clickable::tick);
+        upButton.tick();
+        openButton.tick();
+        downButton.tick();
         big.tick();
         med.tick();
         small.tick();

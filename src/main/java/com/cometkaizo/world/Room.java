@@ -235,6 +235,7 @@ public class Room implements Tickable, Renderable, Resettable {
         public static final String RESPAWN_ID = "R", CAMERA_LOCK_ID = "CL", TRIGGER_ID = "T";
         public final Room room = Room.this;
         public final Block[][] blocks;
+        public final Light[][] light;
         public final List<Entity> entities = new ArrayList<>();
         private List<Entity> entitiesSortedByY = new ArrayList<>(); // list of entities sorted by largest y to lowest y, updated every tick, maintained for rendering order
         public final Map<String, Object> named = new HashMap<>();
@@ -290,9 +291,11 @@ public class Room implements Tickable, Renderable, Resettable {
 
             // convert list to array
             this.blocks = new Block[blocks.size()][];
+            this.light = new Light[blocks.size()][];
             for (int r = 0; r < blocks.size(); r++) {
                 var row = blocks.get(r);
                 this.blocks[r] = row.toArray(Block[]::new);
+                this.light[r] = new Light[row.size()];
             }
 
             in.close();
@@ -524,6 +527,9 @@ public class Room implements Tickable, Renderable, Resettable {
             return result;
         }
 
+        private List<Entity> getEntitiesWithinBlock(Vector.Int pos) {
+            return getEntitiesWithin(new BoundingBox(Vector.mutableDouble(pos), Vector.immutable(1D, 1D)));
+        }
         public List<Entity> getEntitiesWithin(BoundingBox boundingBox) {
             return getEntitiesWithin(boundingBox, b -> true);
         }
@@ -543,7 +549,6 @@ public class Room implements Tickable, Renderable, Resettable {
         public Optional<Block> getBlock(Vector.Int position) {
             return getBlock(position.getX(), position.getY());
         }
-
         public Optional<Block> getBlock(int x, int y) {
             if (y < 0 || y >= blocks.length) return Optional.empty();
             var row = blocks[y];
@@ -557,6 +562,25 @@ public class Room implements Tickable, Renderable, Resettable {
             return getBlockType(x, y).orElse(null) == type;
         }
 
+        public Optional<Light> getLight(Vector.Int pos) {
+            return getLight(pos.getX(), pos.getY());
+        }
+        public Optional<Light> getLight(int x, int y) {
+            if (y < 0 || y >= light.length) return Optional.empty();
+            var row = light[y];
+            if (x < 0 || x >= row.length) return Optional.empty();
+            return Optional.of(row[x]);
+        }
+        public void setLight(Vector.Int pos, Light l) {
+            setLight(pos.getX(), pos.getY(), l);
+        }
+        public void setLight(int x, int y, Light l) {
+            if (y < 0 || y >= light.length) return;
+            var row = light[y];
+            if (x < 0 || x >= row.length) return;
+            row[x] = l;
+        }
+
         public boolean containsSolid(BoundingBox boundingBox, Entity entity) {
             return !getBlocksWithin(boundingBox, block -> block.isSolid(entity)).isEmpty() ||
                     !getEntitiesWithin(boundingBox, e -> e instanceof CollidableEntity c && c.isSolid(entity)).isEmpty();
@@ -568,6 +592,8 @@ public class Room implements Tickable, Renderable, Resettable {
 
         @Override
         public void tick() {
+            for (var row : light) Arrays.fill(row, null); // reset light every single tick
+
             entities.forEach(Tickable::tick);
 
             var entitiesSortedByY = new ArrayList<>(entities);
@@ -585,8 +611,11 @@ public class Room implements Tickable, Renderable, Resettable {
                         entitiesSortedByY.get(nextRenderEntityId).getRenderY() > r) {
                     entitiesSortedByY.get(nextRenderEntityId ++).render(canvas);
                 }
-                // render the row of the blocks
-                for (var b : blocks[r]) b.render(canvas);
+                // render the row of the blocks and light
+                for (int c = 0; c < blocks[r].length; c++) {
+                    blocks[r][c].render(canvas);
+                    if (light[r][c] != null) light[r][c].render(canvas);
+                }
             }
             canvas.renderImage(baseImage, -14D, -10D, 0, -1);
         }
@@ -605,6 +634,32 @@ public class Room implements Tickable, Renderable, Resettable {
             entities.remove(entity);
             if (entity.hasName()) named.remove(entity.getName(), entity);
             return entity;
+        }
+
+
+        public void lightUp(Vector.Int fromPos, Light.Direction direction) {
+            updateLight(fromPos, direction, true);
+        }
+        public void unlight(Vector.Int fromPos, Light.Direction direction) {
+            updateLight(fromPos, direction, false);
+        }
+        private void updateLight(Vector.Int fromPos, Light.Direction direction, boolean lightUp) {
+            var pos = Vector.mutableInt(fromPos);
+            while (!getBlock(pos).map(Block::blocksLight).orElse(true) &&
+                    getEntitiesWithinBlock(pos).stream().noneMatch(Entity::blocksLight)) {
+                // set the light
+                setLight(pos, lightUp ? new Light(this, pos, direction) : null);
+
+                // update any blocks or entities
+                getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
+                getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
+
+                // move the current pos
+                pos.add(direction.delta);
+            }
+            // update the blocking block/entity
+            getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
+            getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
         }
     }
 
@@ -630,16 +685,10 @@ public class Room implements Tickable, Renderable, Resettable {
         }
 
         private void luggageCP0(Player player) {
-            if (!player.isHolding()) return;
-            player.setPosition(player.getRoom().getFirstCheckpoint().pos());
-            player.getGame().teleportCamera();
-            player.getGame().hasLuggage = true;
-            Assets.sound("bump").play();
         }
 
         private void win(Player player) {
-            if (!player.isHolding()) return;
-            player.getGame().end();
+
         }
     }
 
