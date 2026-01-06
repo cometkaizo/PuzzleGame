@@ -10,30 +10,30 @@ import com.cometkaizo.screen.ImageClickable;
 /**
  * Author: Andy Wang
  * Date Modified: TODO
- * Description: Screen overlay for the statue of David
+ * Description: Screen overlay for the statue of Venus de Milo
  */
-public class DavidOverlay extends Overlay {
+public class VenusOverlay extends Overlay {
     private final Runnable openChestAction, openHeartAction;
     private boolean chestOpen, heartOpen;
 
     private final Clickable pedestal, chest;
 
-    public DavidOverlay(GameApp app, boolean chestOpen, boolean heartOpen, boolean[][] pedestalCombo, Runnable openChestAction, Runnable openHeartAction) {
+    public VenusOverlay(GameApp app, boolean chestOpen, boolean heartOpen, boolean[][] pedestalCombo, Runnable openChestAction, Runnable openHeartAction) {
         super(app);
         this.chestOpen = chestOpen;
         this.heartOpen = heartOpen;
         this.pedestal = new ImageClickable(app, () -> {
             if (!this.chestOpen) app.setOverlay(new LeverLockOverlay(app, pedestalCombo, this::openChest, this));
-        }, w -> w / 2 - 23, h -> h / 2 + 51, _ -> 55, _ -> 35, () -> "gui/sculpture/david/pedestal", -2, -2);
+        }, w -> w / 2 - 23, h -> h / 2 + 51, _ -> 55, _ -> 35, () -> "gui/sculpture/venus/pedestal", -2, -2);
         this.chest = new ImageClickable(app, () -> {
-            if (!this.heartOpen) app.setOverlay(new DavidChestOverlay(app, this::openHeart, this));
-        }, w -> w / 2 - 29, h -> h / 2 - 60, _ -> 41, _ -> 32, () -> "gui/sculpture/david/chest", -2, -2);
+            if (!this.heartOpen) app.setOverlay(new VenusChestOverlay(app, this::openHeart, this));
+        }, w -> w / 2 - 14, h -> h / 2 - 69, _ -> 30, _ -> 32, () -> "gui/sculpture/venus/chest", -13, -8);
         this.openChestAction = openChestAction;
         this.openHeartAction = openHeartAction;
     }
 
     public void openChest() {
-        app.getOverlay().close(); // close lever lock overlay
+        app.setOverlay(new NarrationOverlay(app, "You hear the squeaking of hinges. The chest of Venus de Milo swings open to reveal stone organs within.", this));
         openChestAction.run();
         chestOpen = true;
     }
@@ -51,7 +51,7 @@ public class DavidOverlay extends Overlay {
     }
 
     private String getTexturePath() {
-        return "gui/sculpture/david/regular";
+        return "gui/sculpture/venus/regular";
     }
 
     @Override
