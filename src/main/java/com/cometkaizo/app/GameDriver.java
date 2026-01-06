@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-05
  * Description: This class controls ticking the game application
  */
 public class GameDriver extends SystemDriver {
@@ -22,7 +22,7 @@ public class GameDriver extends SystemDriver {
 
     /**
      * Author: Andy Wang
-     * Date Modified: TODO
+     * Date Modified: 2026-01-05
      * Description: Constructs a new GameDriver with the given input stream
      */
     public GameDriver(InputStream input) {
@@ -39,16 +39,6 @@ public class GameDriver extends SystemDriver {
             }
         }, 300, TimeUnit.MILLISECONDS);
 
-        /*double tickTime = 1000D / TPS;
-        addLoop(app::tick, (long) tickTime, TimeUnit.MILLISECONDS);
-        addLoop(new Runnable() {
-            private int renderCnt = 0;
-            @Override
-            public void run() {
-                renderCnt++;
-                app.render(renderCnt % RENDERS_PER_TICK / (double)RENDERS_PER_TICK);
-            }
-        }, (long) (tickTime / RENDERS_PER_TICK), TimeUnit.MILLISECONDS);*/
         addLoop(() -> {
             long millisSinceLastTick = System.currentTimeMillis() - app.getLastTickTime();
             if (millisSinceLastTick >= TICK_PERIOD - TICK_BUFFER_DURATION) app.tick();
