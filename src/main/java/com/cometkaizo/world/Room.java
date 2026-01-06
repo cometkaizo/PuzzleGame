@@ -608,20 +608,27 @@ public class Room implements Tickable, Renderable, Resettable {
 
         @Override
         public void render(Canvas canvas) {
-            int nextRenderEntityId = 0;
+            int nextRenderEntityId = 0; // keep track of which entity we are yet to render
+
             // render blocks from the top row down
-            for (int r = blocks.length - 1; r >= 0; r--) {
+            for (int r = min(game.getCameraTop(), blocks.length - 1); r >= max(game.getCameraBottom(), 0); r--) {
                 // render all entities that are in this row's 1 block y range
                 while (nextRenderEntityId < entitiesSortedByY.size() &&
                         entitiesSortedByY.get(nextRenderEntityId).getRenderY() > r) {
                     entitiesSortedByY.get(nextRenderEntityId ++).render(canvas);
                 }
                 // render the row of the blocks and light
-                for (int c = 0; c < blocks[r].length; c++) {
+                for (int c = max(game.getCameraLeft(), 0); c < min(game.getCameraRight(), blocks[r].length); c++) {
                     blocks[r][c].render(canvas);
                     if (light[r][c] != null) light[r][c].render(canvas);
                 }
             }
+
+            // render remaining entities
+            while (nextRenderEntityId < entitiesSortedByY.size())
+                entitiesSortedByY.get(nextRenderEntityId++).render(canvas);
+
+            // render base image for this layer
             canvas.renderImage(baseImage, -14D, -10D, 0, -1);
         }
 
