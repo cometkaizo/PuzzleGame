@@ -10,9 +10,14 @@ import java.awt.*;
  * Description: This class represents an item that can go into the player's inventory
  */
 public abstract class Item {
-    protected abstract String getTexturePath();
+    protected abstract String getTexturePathImpl();
+    public String getTexturePath() {
+        String texturePath = getTexturePathImpl();
+        if (texturePath == null) return null;
+        return "gui/item/" + texturePath;
+    }
     public Image getTexture() {
-        String texturePath = getTexturePath();
+        String texturePath = getTexturePathImpl();
         if (texturePath == null) return null;
         return Assets.texture("gui/item/" + texturePath);
     }

@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.overlay.AnubisOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -21,11 +22,11 @@ public class AnubisSculpture extends Interactable {
 
     @Override
     protected void interact() {
-
+        app.setOverlay(new AnubisOverlay(app));
     }
 
     @Override
     protected String getTexturePath() {
-        return "sculpture/lady_justice";
+        return "sculpture/anubis";
     }
 }

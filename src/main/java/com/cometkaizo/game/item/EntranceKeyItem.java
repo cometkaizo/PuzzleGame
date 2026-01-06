@@ -7,7 +7,7 @@ package com.cometkaizo.game.item;
  */
 public class EntranceKeyItem extends Item {
     @Override
-    protected String getTexturePath() {
+    protected String getTexturePathImpl() {
         return "entrance_key";
     }
 

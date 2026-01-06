@@ -13,8 +13,8 @@ import java.awt.*;
  * Description: Interactable sculpture of Ra
  */
 public class RaSculpture extends Interactable {
-    private Light.Direction direction = Light.Direction.W;
-    private boolean emittingLight;
+    private Light.Direction direction = Light.Direction.N;
+    private boolean emittingLight = true;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
@@ -27,7 +27,7 @@ public class RaSculpture extends Interactable {
 
     @Override
     protected void interact() {
-        emittingLight = !emittingLight;
+//        emittingLight = !emittingLight;
     }
 
     @Override
@@ -63,5 +63,9 @@ public class RaSculpture extends Interactable {
     @Override
     public boolean isSolid(Entity entity) {
         return true;
+    }
+
+    public void setDirection(Light.Direction direction) {
+        this.direction = direction;
     }
 }

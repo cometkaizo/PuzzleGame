@@ -14,6 +14,7 @@ import com.cometkaizo.game.event.*;
 import com.cometkaizo.input.*;
 import com.cometkaizo.io.data.DataTypes;
 import com.cometkaizo.screen.GameRenderer;
+import com.cometkaizo.screen.overlay.NarrationOverlay;
 import com.cometkaizo.screen.overlay.Overlay;
 import com.cometkaizo.screen.overlay.TitleScreen;
 import com.cometkaizo.system.app.App;
@@ -356,6 +357,9 @@ public class GameApp extends App implements Tickable {
         if (this.overlay != null) this.overlay.cleanup();
         this.overlay = overlay;
         if (this.overlay != null) this.overlay.setup();
+    }
+    public void narrate(String narration, Overlay next) {
+        setOverlay(new NarrationOverlay(this, narration, next));
     }
     public boolean shouldTickGame() {
         return game != null && (overlay == null || overlay.shouldTickGame());
