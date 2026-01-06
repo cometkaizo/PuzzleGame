@@ -101,12 +101,12 @@ public class GameRenderer extends JPanel {
         canvas.renderDebugString(mouseXFromCenter + ", " + mouseYFromCenter, Color.PINK, 10, 34);
     }
     private void renderDebugPerformanceMetrics() {
-        var lastTickDurationMillis = lastTickTimeMillis - secondLastTickTimeMillis;
-        int tps = lastTickDurationMillis == 0 ? TPS : (int) Math.min(TPS, 1000 / lastTickDurationMillis);
+        long lastTickDurationMillis = lastTickTimeMillis - secondLastTickTimeMillis;
+        int tps = lastTickDurationMillis == 0 ? TPS : (int) (1000 / lastTickDurationMillis);
         canvas.renderDebugString("%7d TPS (%3d ms)".formatted(tps, lastTickDurationMillis), Color.GRAY, canvas.getWidth() - 250, 34);
 
         long renderTimeMillis = System.currentTimeMillis() - lastRenderTimeMillis;
-        long fps = Math.min(FPS, 1000 / renderTimeMillis);
+        int fps = renderTimeMillis == 0 ? FPS : (int) (1000 / renderTimeMillis);
         canvas.renderDebugString("%7d FPS (%3d ms)".formatted(fps, renderTimeMillis), Color.GRAY, canvas.getWidth() - 250, 68);
     }
 
