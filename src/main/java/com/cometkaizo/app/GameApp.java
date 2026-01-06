@@ -50,7 +50,7 @@ public class GameApp extends App implements Tickable {
     private RawInputListener gameInputListener, overlayInputListener;
     private EventBus overlayEventBus = new SimpleEventBus(); // use one single event bus for all screen overlays (eg title screen, interactable interfaces, ...)
 
-    private long tickTimeMillis;
+    private long lastTickTime;
 
     /**
      * Author: Andy Wang
@@ -172,7 +172,8 @@ public class GameApp extends App implements Tickable {
      */
     @Override
     public void tick() {
-        long start = System.nanoTime();
+        lastTickTime = System.currentTimeMillis();
+        renderer.tick(lastTickTime);
 
         super.tick();
 
@@ -181,20 +182,31 @@ public class GameApp extends App implements Tickable {
 
         if (shouldTickGame()) game.tick();
         if (shouldTickOrRenderOverlay()) overlay.tick();
-
-        long end = System.nanoTime();
-        tickTimeMillis = (end - start) / 1_000;
     }
 
     /**
      * Author: Andy Wang
      * Date Modified: TODO
-     * Description: renders the game with the given partial tick
+     * Description: Renders the game and waits for the render to finish
      */
-    public void render(double partialTick) {
-        renderer.setPartialTick(partialTick);
-        renderer.setLastTickTime(tickTimeMillis);
-        if (frame != null) frame.repaint();
+    public void render() {
+        if (frame != null) {
+            scheduleRender();
+            try {
+                // wait for the async render to finish by submitting an empty task and waiting
+                SwingUtilities.invokeAndWait(() -> {});
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    /**
+     * Author: Andy Wang
+     * Date Modified: 2026-01-05
+     * Description: Schedules an asynchronous render of the game
+     */
+    private void scheduleRender() {
+        frame.repaint();
     }
 
     /**
@@ -367,5 +379,9 @@ public class GameApp extends App implements Tickable {
     }
     public boolean isMouseDown() {
         return renderer.isMouseDown();
+    }
+
+    public long getLastTickTime() {
+        return lastTickTime;
     }
 }

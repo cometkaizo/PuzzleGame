@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-import static com.cometkaizo.app.GameDriver.TPS;
+import static com.cometkaizo.app.GameDriver.*;
 
 /**
  * Author: Andy Wang
@@ -24,7 +24,7 @@ public class GameRenderer extends JPanel {
     private double partialTick;
     private int mouseX, mouseY;
     private boolean mouseDown;
-    private long tickTimeMillis;
+    private long lastTickTimeMillis, secondLastTickTimeMillis, lastRenderTimeMillis;
 
     public GameRenderer(Settings settings, GameApp app) {
         this.app = app;
@@ -51,25 +51,36 @@ public class GameRenderer extends JPanel {
         g.dispose();
     }
 
-    public void setPartialTick(double partialTick) {
-        this.partialTick = partialTick;
-    }
-    public void setLastTickTime(long tickTimeMillis) {
-        this.tickTimeMillis = tickTimeMillis;
+    public void tick(long lastTickTimeMillis) {
+        this.secondLastTickTimeMillis = this.lastTickTimeMillis;
+        this.lastTickTimeMillis = lastTickTimeMillis;
+        updatePartialTick();
     }
 
     protected void render(Graphics2D g) {
+        updatePartialTick();
+
         Dimension size = getSize(this.size);
+        g.setClip(0, 0, size.width, size.height);
 
         if (app.shouldRenderGame()) renderGame(g, size);
         if (app.shouldTickOrRenderOverlay()) renderOverlay(g, size);
+
+        lastRenderTimeMillis = System.currentTimeMillis();
+    }
+
+    private void updatePartialTick() {
+        this.partialTick = (double) millisSinceLastTick() / TICK_PERIOD;
+    }
+    private long millisSinceLastTick() {
+        return System.currentTimeMillis() - lastTickTimeMillis;
     }
 
     private void renderGame(Graphics2D g, Dimension size) {
         canvas.startRender(g, game().getPrevCameraPosition(), game().getCameraPosition(), size.width, size.height, partialTick);
 
         game().render(canvas);
-        renderDebugTickRate();
+        renderDebugPerformanceMetrics();
 
         canvas.endRender();
     }
@@ -79,7 +90,7 @@ public class GameRenderer extends JPanel {
 
         app.getOverlay().render(canvas);
         renderDebugMousePos();
-        renderDebugTickRate();
+        renderDebugPerformanceMetrics();
 
         canvas.endRender();
     }
@@ -89,9 +100,14 @@ public class GameRenderer extends JPanel {
         int mouseYFromCenter = (int) ((mouseY - canvas.halfHeight()) / canvas.renderScale());
         canvas.renderDebugString(mouseXFromCenter + ", " + mouseYFromCenter, Color.PINK, 10, 34);
     }
-    private void renderDebugTickRate() {
-        int tps = tickTimeMillis == 0 ? TPS : (int) Math.min(TPS, 1000 / tickTimeMillis);
-        canvas.renderDebugString("%7d TPS (%3d ms)".formatted(tps, tickTimeMillis), Color.GRAY, canvas.getWidth() - 250, 34);
+    private void renderDebugPerformanceMetrics() {
+        var lastTickDurationMillis = lastTickTimeMillis - secondLastTickTimeMillis;
+        int tps = lastTickDurationMillis == 0 ? TPS : (int) Math.min(TPS, 1000 / lastTickDurationMillis);
+        canvas.renderDebugString("%7d TPS (%3d ms)".formatted(tps, lastTickDurationMillis), Color.GRAY, canvas.getWidth() - 250, 34);
+
+        long renderTimeMillis = System.currentTimeMillis() - lastRenderTimeMillis;
+        long fps = Math.min(FPS, 1000 / renderTimeMillis);
+        canvas.renderDebugString("%7d FPS (%3d ms)".formatted(fps, renderTimeMillis), Color.GRAY, canvas.getWidth() - 250, 68);
     }
 
     public void toggleDebug() {

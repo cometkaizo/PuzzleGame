@@ -13,7 +13,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameDriver extends SystemDriver {
     private final GameApp app;
-    public static final int RENDERS_PER_TICK = 3, FPS = 60, TPS = FPS / RENDERS_PER_TICK;
+    public static final int
+            RENDERS_PER_TICK = 3, // how many times to render the game (approx) per tick of the game
+            FPS = 60, // frames per second
+            TPS = FPS / RENDERS_PER_TICK, // calculate ticks per second
+            TICK_PERIOD = 1000 / TPS, // calculate the number of milliseconds (approx) between ticks
+            TICK_BUFFER_DURATION = 10; // the number of milliseconds before a tick is supposed to occur do we allow a tick to occur?
 
     /**
      * Author: Andy Wang
@@ -34,17 +39,20 @@ public class GameDriver extends SystemDriver {
             }
         }, 300, TimeUnit.MILLISECONDS);
 
-//        double tickTime = 1000 / 20D;
-//        addLoop(app::tick, (long) tickTime, TimeUnit.MILLISECONDS);
-//        addLoop(app::render, (long) (tickTime / RENDERS_PER_TICK), TimeUnit.MILLISECONDS);
+        /*double tickTime = 1000D / TPS;
+        addLoop(app::tick, (long) tickTime, TimeUnit.MILLISECONDS);
         addLoop(new Runnable() {
             private int renderCnt = 0;
             @Override
             public void run() {
                 renderCnt++;
-                if (renderCnt % RENDERS_PER_TICK == 0) app.tick();
                 app.render(renderCnt % RENDERS_PER_TICK / (double)RENDERS_PER_TICK);
             }
+        }, (long) (tickTime / RENDERS_PER_TICK), TimeUnit.MILLISECONDS);*/
+        addLoop(() -> {
+            long millisSinceLastTick = System.currentTimeMillis() - app.getLastTickTime();
+            if (millisSinceLastTick >= TICK_PERIOD - TICK_BUFFER_DURATION) app.tick();
+            app.render();
         }, 1000 / FPS, TimeUnit.MILLISECONDS);
     }
 }
