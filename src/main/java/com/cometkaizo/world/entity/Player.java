@@ -1,7 +1,6 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.game.event.KeyPressedEvent;
-import com.cometkaizo.game.event.PlayerDeathEvent;
 import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.screen.Assets;
@@ -28,12 +27,11 @@ public class Player extends MovableEntity {
     protected double walkAccel = 0.3, diagWalkAccel = walkAccel * Math.cos(Math.toRadians(45));
     protected double maxWalkSpeed = 0.2, maxDiagWalkSpeed = maxWalkSpeed * Math.cos(Math.toRadians(45));
     protected double friction = 0.1;
-    protected int deathRecoveryDuration = 5, killDuration = 20, interactDuration = 5, dialogueInteractDuration = 2, jumpBufferDuration = 3;
+    protected int interactDuration = 5, dialogueInteractDuration = 2, jumpBufferDuration = 3;
     // jumpTime = -2 means jump not reset, -1 means jump reset
-    protected int deathTime = -1, jumpTime = -1, throwTime = -1, walkTime = -1, interactTime = -1, dialogueInteractTime = -1, jumpBufferTime = -1;
+    protected int jumpTime = -1, walkTime = -1, interactTime = -1, dialogueInteractTime = -1, jumpBufferTime = -1;
     protected int prevWalkTime = -1;
     protected boolean facingRight = true;
-    protected double deathAngleMul;
     protected Collectible displayedCollectible;
 
     public Player(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -42,21 +40,9 @@ public class Player extends MovableEntity {
         eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
     }
 
-    public void kill() {
-        eventBus.post(new PlayerDeathEvent(this));
-
-        deathAngleMul = Math.random() * 2 - 1;
-        if (deathAngleMul >= 0 && deathAngleMul < 0.5) deathAngleMul = 0.5;
-        else if (deathAngleMul < 0 && deathAngleMul > -0.5) deathAngleMul = -0.5;
-    }
-    public void killUnrecoverable() {
-        if (deathTime == -1) deathTime = deathRecoveryDuration;
-    }
-
     @Override
     public void reset() {
         super.reset();
-        deathTime = -1;
         game.getState().playerPos = position;
     }
 
@@ -69,8 +55,6 @@ public class Player extends MovableEntity {
 
         tickJumpBuffer();
         tickJumpTime();
-        tickDeathTime();
-        tickThrowTime();
         tickInteractTime();
         tickDialogueInteractTime();
     }
@@ -113,35 +97,12 @@ public class Player extends MovableEntity {
         if (jumpTime == -2 && isAboveGround()) jumpTime = -1;
         if (jumpTime >= 0) jumpTime ++;
     }
-    private void tickDeathTime() {
-        if (isFalling() || !isDeathRecoverable()) {
-            if (deathTime == deathRecoveryDuration) Assets.sound("fall").play();
-            deathTime ++;
-            if (deathTime >= killDuration) kill();
-        } else deathTime = -1;
-    }
-    private void tickThrowTime() {
-        if (throwTime > -1) {
-            throwTime--;
-// xn: testing the lowest we can set throwTime so that jumping optimally will not let you go into the luggage
-//            if (throwTime == -1) jump();
-        }
-    }
     private void tickInteractTime() {
         if (game.getDialogue() != null) interactTime = interactDuration;
         else if (interactTime >= 0) interactTime --;
     }
     private void tickDialogueInteractTime() {
         if (dialogueInteractTime >= 0) dialogueInteractTime --;
-    }
-
-
-    private boolean isDeathRecoverable() {
-        return deathTime < deathRecoveryDuration;
-    }
-
-    private boolean isFalling() {
-        return !isJumping() && !isAboveGround();
     }
 
     private boolean isAboveGround() {
@@ -265,10 +226,10 @@ public class Player extends MovableEntity {
     }
 
     private boolean walkDisabled() {
-        return deathTime >= 1 || displayingCollectible() || game.ended() || game.hasDialogue();
+        return displayingCollectible() || game.ended() || game.hasDialogue();
     }
     private boolean jumpDisabled() {
-        return deathTime >= deathRecoveryDuration || displayingCollectible() || game.ended() || game.hasDialogue();
+        return displayingCollectible() || game.ended() || game.hasDialogue();
     }
 
     @Override
@@ -316,10 +277,6 @@ public class Player extends MovableEntity {
         return isJumpAvailable()/* && !isFloating()*/;
     }
 
-    public boolean isAlive() {
-        return deathTime == -1;
-    }
-
     /// Called when the player interacts with an object. Paired with canInteract() 
     /// to ensure that only one object is interacted with per key click
     public void onInteract() {
@@ -355,13 +312,7 @@ public class Player extends MovableEntity {
         double angle = 0;
         double translateX = 0, translateY = 0;
         double alpha = 1;
-        if (!isDeathRecoverable()) {
-            angle = Math.toRadians(Math.pow((deathTime + canvas.partialTick() - deathRecoveryDuration) * 0.2, 2.5) * 15 * deathAngleMul);
-            translateY = Math.pow((deathTime + canvas.partialTick() - deathRecoveryDuration) * 0.2, 2.5) * 25;
-            alpha = Math.pow(1 - (deathTime + canvas.partialTick() - deathRecoveryDuration) / (killDuration - deathRecoveryDuration) * 1, 5);
-        } else if (deathTime >= 0) {
-//            angle = Math.sin((deathTime + canvas.partialTick()) * 1.3) * 0.2;
-        } else if (walkTime >= 0) {
+        if (walkTime >= 0) {
             angle = Math.sin((canvas.lerp(prevWalkTime, walkTime))) * 0.2;
             translateY = -Math.abs(Math.sin(canvas.lerp(prevWalkTime, walkTime)) * 25);
         }
