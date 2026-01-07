@@ -3,6 +3,7 @@ package com.cometkaizo.app;
 import com.cometkaizo.Main;
 import com.cometkaizo.app.command.ExitCommand;
 import com.cometkaizo.app.command.GameCommand;
+import com.cometkaizo.app.command.GiveCommand;
 import com.cometkaizo.app.command.TPCommand;
 import com.cometkaizo.command.CommandGroup;
 import com.cometkaizo.command.CommandSyntaxException;
@@ -64,6 +65,7 @@ public class GameApp extends App implements Tickable {
         this.commandGroup = new CommandGroup(
                 () -> new ExitCommand(this),
                 () -> new GameCommand(this),
+                () -> new GiveCommand(this),
                 () -> new TPCommand(this)
         );
         this.game = new Game(this, new GameSettings());

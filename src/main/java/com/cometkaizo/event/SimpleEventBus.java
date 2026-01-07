@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * Description: Simple implementation of an EventBus
  */
 public class SimpleEventBus implements EventBus {
-    private final Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners = new HashMap<>(3);
+    private final Map<Object, Map<Class<? extends Event>, List<Consumer<?>>>> listeners = Collections.synchronizedMap(new HashMap<>(3));
     private final Set<Object> pendingRemoval = new HashSet<>(3);
     private final Set<PendingAddition<?>> pendingAddition = new HashSet<>(10);
 

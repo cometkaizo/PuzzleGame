@@ -1,8 +1,8 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.LightHeartItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.VenusOverlay;
-import com.cometkaizo.screen.overlay.NarrationOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -15,7 +15,9 @@ import java.awt.*;
  */
 public class VenusDeMiloSculpture extends Interactable {
     public static final String OPEN_HEART_MSG = """
-            You insert the organ key into the heart and turn it.""";
+            You insert the organ key into the heart and turn it.
+            
+            The stone heart opens to reveal a human heart. You take it.""";
     private boolean[][] pedestalCombo = {{true, true, false, false, false, true, true}, {false, true, true, true, true, true, false}};
     private boolean chestOpen, heartOpen;
 
@@ -39,7 +41,8 @@ public class VenusDeMiloSculpture extends Interactable {
     }
     public void openHeart() {
         heartOpen = true;
-        app.setOverlay(new NarrationOverlay(app, OPEN_HEART_MSG));
+        app.narrate(OPEN_HEART_MSG, null);
+        game.getInventory().add(new LightHeartItem());
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.cometkaizo.world.Vector;
 public class CupidAndPsycheSculpture extends Interactable {
     public CupidAndPsycheSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
-        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 2D));
+        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
     }
 
     @Override

@@ -57,9 +57,10 @@ public class InventoryOverlay extends Overlay {
         }
 
         // complete the row with empty slots
-        for (; c < WIDTH_IN_ITEMS; c ++) {
-            items.add(new Slot(r, c, null));
-        }
+        if (inventory.size() == 0 || inventory.size() % WIDTH_IN_ITEMS != 0)
+            for (; c < WIDTH_IN_ITEMS; c ++) {
+                items.add(new Slot(r, c, null));
+            }
     }
 
     @Override
@@ -76,17 +77,17 @@ public class InventoryOverlay extends Overlay {
         return -(Slot.SIZE * WIDTH_IN_ITEMS + Slot.X_PADDING * (WIDTH_IN_ITEMS - 1)) / 2;
     }
     private int yOffset() {
-        return -(Slot.SIZE * rowCount + Slot.X_PADDING * (rowCount - 1)) / 2;
+        return -(Slot.SIZE * rowCount + Slot.Y_PADDING * (rowCount - 1)) / 2;
     }
 
     class Slot extends ImageClickable {
         public static final int SIZE = 38;
-        public static final int X_PADDING = 4, Y_PADDING = 30;
+        public static final int X_PADDING = 4, Y_PADDING = 10;
         public final Item item;
 
         public Slot(int r, int c, Item item) {
             super(InventoryOverlay.this.app, item == null ? () -> {} : () -> onClick.accept(item),
-                    w -> w/2 + xOffset() + c * (SIZE + X_PADDING), h -> h/2 + yOffset() + r * (SIZE + X_PADDING),
+                    w -> w/2 + xOffset() + c * (SIZE + X_PADDING), h -> h/2 + yOffset() + r * (SIZE + Y_PADDING),
                     _ -> SIZE, _ -> SIZE, () -> "gui/item/slot", -2, -2);
             this.item = item;
         }
@@ -95,7 +96,7 @@ public class InventoryOverlay extends Overlay {
         public void render(Canvas canvas) {
             super.render(canvas);
             if (item == null) return;
-            canvas.renderImage(item.getTexture(), lastX + canvas.scale(3), lastY + canvas.scale(3));
+            canvas.renderImage(item.getTexture(), lastX + canvas.scale(1), lastY + canvas.scale(1));
             canvas.renderString(item.getName(), Assets.font("BoldPixels", 24), Color.WHITE, lastX + lastW / 2F, lastY + lastH + 25, true, false);
         }
     }

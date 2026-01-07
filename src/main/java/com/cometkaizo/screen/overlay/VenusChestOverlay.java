@@ -26,6 +26,7 @@ public class VenusChestOverlay extends Overlay {
     }
 
     public void tryOpenHeart() {
+        if (heartOpen) return;
         app.setOverlay(new InventoryOverlay(app, item -> {
             if (item instanceof OrganKeyItem) openHeart();
         }, this));
