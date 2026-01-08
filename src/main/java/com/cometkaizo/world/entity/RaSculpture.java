@@ -10,9 +10,9 @@ import java.awt.*;
 /**
  * Author: Andy Wang
  * Date Modified: TODO
- * Description: Interactable sculpture of Ra
+ * Description: Sculpture of Ra
  */
-public class RaSculpture extends Interactable {
+public class RaSculpture extends CollidableEntity {
     private Light.Direction direction = Light.Direction.N;
     private boolean emittingLight = true;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -23,11 +23,6 @@ public class RaSculpture extends Interactable {
     @Override
     public void reset() {
         super.reset();
-    }
-
-    @Override
-    protected void interact() {
-//        emittingLight = !emittingLight;
     }
 
     @Override

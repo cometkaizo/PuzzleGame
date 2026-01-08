@@ -16,13 +16,17 @@ public class Sign extends Interactable {
             new Content("Gallery A", "???"),
             new Content("Gallery B", "Wall of time-honored classics"),
             new Content("Gallery C", "???"),
-            new Content("Gallery D", "China called itself the \"Central Kingdom\""),
+            new Content("Gallery D", "China called itself the \"Central Kingdom\""), // Russia, Kanagawa, Penguins
             new Content("Gallery E", "Colorful squares have hidden values. With exacting mathematical method, Piet Mondrian produces paintings which are precisely the sum of their parts."),
             new Content("Chess Board 1", "The black pawn arrives behind its brother.\n\nThe white pawn of the king steps forward.\n\nThe black knight jumps behind the pawn.\n\nWhat shape is formed?"),
             new Content("Chess Board 2", "The white rook attacks the black rook.\n\nThe black rook attacks the royal couple and no longer sees the white rook.\n\nThe white knight jumps directly in front of the queen.\n\nWhat can the queen see?"),
             new Content("Chess Board 3", "The truth is hidden in what is not there."),
             new Content("Chess Board 4", "???"),
             new Content("Chess Board", "Maps are great. When you're lost, they let you CHECK WHERE you are."),
+            new Content("The Thinker", "Thoughts become words and words become action."),
+            new Content("Cupid and Psyche", "???"),
+            new Content("Mephistopheles and Margaretta", "???"),
+            new Content("Venus de Milo", "???"),
     };
 
     private String title, desc;

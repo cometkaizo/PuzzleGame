@@ -12,6 +12,7 @@ public class EntityTypes {
             Map.entry("letter", Letter::new),
             Map.entry("sign", Sign::new),
             Map.entry("mayan calendar", MayanCalendar::new),
+            Map.entry("note holder", NoteHolder::new),
             Map.entry("anubis", AnubisSculpture::new),
             Map.entry("cupid and psyche", CupidAndPsycheSculpture::new),
             Map.entry("the thinker", TheThinkerSculpture::new),

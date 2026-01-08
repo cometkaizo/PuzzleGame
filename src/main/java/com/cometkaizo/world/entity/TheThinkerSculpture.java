@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.overlay.TheThinkerOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -11,7 +12,7 @@ import com.cometkaizo.world.Vector;
 public class TheThinkerSculpture extends Interactable {
     public TheThinkerSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
-        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 2D));
+        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
     }
 
     @Override
@@ -21,11 +22,16 @@ public class TheThinkerSculpture extends Interactable {
 
     @Override
     protected void interact() {
+        app.setOverlay(new TheThinkerOverlay(app));
+    }
 
+    @Override
+    public boolean isSolid(Entity entity) {
+        return true;
     }
 
     @Override
     protected String getTexturePath() {
-        return "sculpture/the_thinker";
+        return "sculpture/thinker";
     }
 }
