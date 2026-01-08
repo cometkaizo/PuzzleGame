@@ -29,15 +29,15 @@ public class NoteHolderOverlay extends Overlay {
         for (int i = 0; i < notes.length; i++) slots[i] = new Slot(i);
 
         seeClickable = new ImageClickable(this.app,
-                () -> {if (lit) app.setOverlay(new NoteHolderSeeOverlay(app, this.notes));},
-                w -> w/2, h -> h/2 - 50, _ -> 32, _-> 32,
+                () -> {if (lit) app.setOverlay(new NoteHolderSeeOverlay(app, this.notes, this));},
+                w -> w/2 - 16, h -> h/2 - 50, _ -> 32, _-> 32,
                 () -> "gui/note_holder/see", -2, -2);
     }
 
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderCenteredImage(Assets.texture("gui/note_holder/regular"));
+//        canvas.renderCenteredImage(Assets.texture("gui/note_holder/regular"));
 
         for (Slot slot : slots) slot.render(canvas);
         seeClickable.render(canvas);
@@ -47,7 +47,7 @@ public class NoteHolderOverlay extends Overlay {
         private final int index;
 
         public Slot(int index) {
-            super(NoteHolderOverlay.this.app, () -> {}, w -> w/2, h -> h/2 + index * 10, _ -> 64, _ -> 10, null, -2, -2);
+            super(NoteHolderOverlay.this.app, () -> {}, w -> w/2 - 32, h -> h/2 + index * 10, _ -> 64, _ -> 10, null, -2, -2);
             this.index = index;
             this.action = () -> {
                 if (note() == null) placeNote();

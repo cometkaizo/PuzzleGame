@@ -1,5 +1,6 @@
 package com.cometkaizo.screen;
 
+import com.cometkaizo.world.Direction;
 import com.cometkaizo.world.Light;
 
 /**
@@ -17,12 +18,12 @@ public enum DirectionAtlasTexture implements AtlasTexture {
         this.y = y;
     }
 
-    public static DirectionAtlasTexture get(Light.Direction direction) {
+    public static DirectionAtlasTexture get(Direction direction) {
         return switch (direction) {
-            case N -> N;
-            case E -> E;
-            case S -> S;
-            case W -> W;
+            case UP -> N;
+            case RIGHT -> E;
+            case DOWN -> S;
+            case LEFT -> W;
         };
     }
 

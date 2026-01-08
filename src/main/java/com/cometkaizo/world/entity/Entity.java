@@ -106,7 +106,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     public boolean blocksLight() {
         return true;
     }
-    public void updateLight(Light.Direction direction) {
+    public void updateLight(Direction direction) {
 
     }
 

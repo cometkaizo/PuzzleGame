@@ -1,10 +1,7 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.Canvas;
-import com.cometkaizo.world.Args;
-import com.cometkaizo.world.Light;
-import com.cometkaizo.world.Room;
-import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.*;
 
 import java.awt.*;
 /**
@@ -13,7 +10,7 @@ import java.awt.*;
  * Description: Sculpture of Ra
  */
 public class RaSculpture extends CollidableEntity {
-    private Light.Direction direction = Light.Direction.N;
+    private Direction direction = Direction.UP;
     private boolean emittingLight = true;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -31,22 +28,22 @@ public class RaSculpture extends CollidableEntity {
         if (emittingLight) layer.lightUp(lightEmissionPos(), direction);
     }
     private Vector.ImmutableInt lightEmissionPos() {
-        return Vector.immutableInt(position).addedTo(0, 1).addedTo(direction.delta);
+        return Vector.immutableInt(position).addedTo(0, 1);
     }
 
     @Override
     public void render(Canvas canvas) {
-        super.render(canvas);
+//        super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.BLUE);
     }
 
     @Override
     protected String getTexturePath() {
         return "sculpture/ra/" + switch (direction) {
-            case N -> "up";
-            case S -> "down";
-            case W -> "left";
-            case E -> "right";
+            case UP -> "up";
+            case DOWN -> "down";
+            case LEFT -> "left";
+            case RIGHT -> "right";
         };
     }
 
@@ -69,7 +66,7 @@ public class RaSculpture extends CollidableEntity {
         return false;
     }
 
-    public void setDirection(Light.Direction direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 }

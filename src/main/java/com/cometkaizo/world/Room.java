@@ -649,29 +649,45 @@ public class Room implements Tickable, Renderable, Resettable {
         }
 
 
-        public void lightUp(Vector.Int fromPos, Light.Direction direction) {
+        public void lightUp(Vector.Int fromPos, Direction direction) {
             updateLight(fromPos, direction, true);
         }
-        public void unlight(Vector.Int fromPos, Light.Direction direction) {
+        public void unlight(Vector.Int fromPos, Direction direction) {
             updateLight(fromPos, direction, false);
         }
-        private void updateLight(Vector.Int fromPos, Light.Direction direction, boolean lightUp) {
+        private void updateLight(Vector.Int fromPos, Direction direction, boolean lightUp) {
             var pos = Vector.mutableInt(fromPos);
-            while (!getBlock(pos).map(Block::blocksLight).orElse(true) &&
-                    getEntitiesWithinBlock(pos).stream().noneMatch(Entity::blocksLight)) {
+            while (!getBlock(pos).map(Block::blocksLight).orElse(true)) {
                 // set the light
-                setLight(pos, lightUp ? new Light(this, pos, direction) : null);
+                var collision = findFirstEntityCollision(pos, direction);
+                setLight(pos, lightUp ? new Light(this, pos, direction, collision.orElse(null)) : null);
 
                 // update any blocks or entities
                 getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
                 getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
 
                 // move the current pos
-                pos.add(direction.delta);
+                pos.add(direction.delta());
+
+                // if collision with entity occurred, break
+                if (collision.isPresent()) break;
             }
             // update the blocking block/entity
             getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
             getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
+        }
+
+        private Optional<CollidableEntity> findFirstEntityCollision(Vector.MutableInt pos, Direction direction) {
+            var entities = getEntitiesWithinBlock(pos).stream()
+                    .filter(CollidableEntity.class::isInstance)
+                    .filter(Entity::blocksLight)
+                    .map(CollidableEntity.class::cast);
+            return switch (direction) {
+                case UP -> entities.min(Comparator.comparingDouble(Entity::getY));
+                case RIGHT -> entities.min(Comparator.comparingDouble(Entity::getX));
+                case DOWN -> entities.max(Comparator.comparingDouble(Entity::getY));
+                case LEFT -> entities.max(Comparator.comparingDouble(Entity::getX));
+            };
         }
     }
 

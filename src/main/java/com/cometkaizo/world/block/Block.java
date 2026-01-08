@@ -53,7 +53,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     }
 
     protected abstract String getTexturePath();
-    private Image getTextureAtlas() {
+    protected Image getTextureAtlas() {
         var texturePath = getTexturePath();
         if (texturePath == null) return null;
         return Assets.texture("block/" + texturePath);
@@ -92,7 +92,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     public boolean blocksLight() {
         return true;
     }
-    public void updateLight(Light.Direction direction) {
+    public void updateLight(Direction direction) {
 
     }
 

@@ -131,6 +131,9 @@ public class Game implements Tickable, Renderable, InputListener {
         if (world != null) world.tick();
         if (room != null) room.tick();
         tickCameraPos();
+
+        eventBus.tick();
+
         if (!ended) tick ++;
         else tickEnd();
     }

@@ -1,5 +1,7 @@
 package com.cometkaizo.event;
 
+import com.cometkaizo.world.Tickable;
+
 import java.util.function.Consumer;
 
 /**
@@ -7,7 +9,7 @@ import java.util.function.Consumer;
  * Date Modified: TODO
  * Description: This class represents a channel on which events are posted and listened for
  */
-public interface EventBus {
+public interface EventBus extends Tickable {
     /**
      * Author: Andy Wang
      * Date Modified: TODO
@@ -31,4 +33,10 @@ public interface EventBus {
     /// Date Modified: TODO
     /// Unregisters all listeners that were registered with the specified key
     void unregister(Object key);
+
+    /// Author: Andy Wang
+    /// Date Modified: TODO
+    /// Ticks this event bus for internal operations such as adding and removing listeners
+    @Override
+    void tick();
 }

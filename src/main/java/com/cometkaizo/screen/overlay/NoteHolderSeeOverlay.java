@@ -13,8 +13,8 @@ import com.cometkaizo.screen.Canvas;
 public class NoteHolderSeeOverlay extends Overlay {
     private final NoteItem[] notes;
 
-    public NoteHolderSeeOverlay(GameApp app, NoteItem[] notes) {
-        super(app);
+    public NoteHolderSeeOverlay(GameApp app, NoteItem[] notes, Overlay next) {
+        super(app, next);
         this.notes = notes;
     }
 

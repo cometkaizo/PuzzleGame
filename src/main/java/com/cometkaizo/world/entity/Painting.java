@@ -1,10 +1,7 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.overlay.PaintingOverlay;
-import com.cometkaizo.world.Args;
-import com.cometkaizo.world.Light;
-import com.cometkaizo.world.Room;
-import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.*;
 import com.cometkaizo.world.block.WallBlock;
 /**
  * Author: Andy Wang
@@ -43,7 +40,7 @@ public class Painting extends Interactable {
     }
 
     @Override
-    public void updateLight(Light.Direction direction) {
+    public void updateLight(Direction direction) {
         super.updateLight(direction);
         litUp = direction != null;
     }

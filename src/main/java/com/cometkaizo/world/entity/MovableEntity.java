@@ -94,10 +94,4 @@ public abstract class MovableEntity extends CollidableEntity {
         int y = canvas.toScreenY(canvas.lerp(oldBoundingBoxPos.y, boundingBox.getBottom())) + canvas.scale(getTextureDeltaY());
         canvas.renderImage(texture, x, y, getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
-
-    // Ensure that no movable entities can block light (that would require a more complex light system)
-    @Override
-    public final boolean blocksLight() {
-        return false;
-    }
 }

@@ -1,10 +1,8 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.overlay.HopeDiamondOverlay;
-import com.cometkaizo.world.Args;
-import com.cometkaizo.world.Light;
-import com.cometkaizo.world.Room;
-import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.*;
+
 /**
  * Author: Andy Wang
  * Date Modified: TODO
@@ -29,7 +27,7 @@ public class HopeDiamond extends Interactable {
     }
 
     @Override
-    public void updateLight(Light.Direction direction) {
+    public void updateLight(Direction direction) {
         super.updateLight(direction);
         lit = direction != null;
     }

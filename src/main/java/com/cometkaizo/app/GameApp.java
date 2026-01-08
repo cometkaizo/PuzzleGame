@@ -1,10 +1,7 @@
 package com.cometkaizo.app;
 
 import com.cometkaizo.Main;
-import com.cometkaizo.app.command.ExitCommand;
-import com.cometkaizo.app.command.GameCommand;
-import com.cometkaizo.app.command.GiveCommand;
-import com.cometkaizo.app.command.TPCommand;
+import com.cometkaizo.app.command.*;
 import com.cometkaizo.command.CommandGroup;
 import com.cometkaizo.command.CommandSyntaxException;
 import com.cometkaizo.event.EventBus;
@@ -66,6 +63,7 @@ public class GameApp extends App implements Tickable {
                 () -> new ExitCommand(this),
                 () -> new GameCommand(this),
                 () -> new GiveCommand(this),
+                () -> new PosCommand(this),
                 () -> new TPCommand(this)
         );
         this.game = new Game(this, new GameSettings());
@@ -185,6 +183,8 @@ public class GameApp extends App implements Tickable {
 
         if (shouldTickGame()) game.tick();
         if (shouldTickOrRenderOverlay()) overlay.tick();
+
+        overlayEventBus.tick();
     }
 
     /**

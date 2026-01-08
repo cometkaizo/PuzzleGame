@@ -20,15 +20,6 @@ public class SimpleEventBus implements EventBus {
      */
     @Override
     public void post(Event event) {
-        if (!pendingRemoval.isEmpty()) {
-            pendingRemoval.forEach(listeners::remove);
-            pendingRemoval.clear();
-        }
-        if (!pendingAddition.isEmpty()) {
-            pendingAddition.forEach(p -> p.add(listeners));
-            pendingAddition.clear();
-        }
-
         listeners.forEach((_, ls) ->
                 ls.forEach((type, l) ->
                         tryListen(type, l, event)));
@@ -64,6 +55,21 @@ public class SimpleEventBus implements EventBus {
     @Override
     public void unregister(Object key) {
         pendingRemoval.add(key);
+    }
+
+    /// Author: Andy Wang
+    /// Date Modified: TODO
+    /// Ticks this event bus for internal operations such as adding and removing listeners
+    @Override
+    public void tick() {
+        if (!pendingRemoval.isEmpty()) {
+            pendingRemoval.forEach(listeners::remove);
+            pendingRemoval.clear();
+        }
+        if (!pendingAddition.isEmpty()) {
+            pendingAddition.forEach(p -> p.add(listeners));
+            pendingAddition.clear();
+        }
     }
 
     /**

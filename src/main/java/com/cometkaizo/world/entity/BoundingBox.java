@@ -48,6 +48,19 @@ public class BoundingBox {
         return getY() + getHeight() / 2;
     }
 
+    public Vector.Double getTopCenter() {
+        return Vector.immutable(getCenterX(), getTop());
+    }
+    public Vector.Double getBottomCenter() {
+        return Vector.immutable(getCenterX(), getBottom());
+    }
+    public Vector.Double getLeftCenter() {
+        return Vector.immutable(getLeft(), getCenterY());
+    }
+    public Vector.Double getRightCenter() {
+        return Vector.immutable(getRight(), getCenterY());
+    }
+
     // it is way more important to pay attention to floating point inaccuracies than I thought
     public boolean intersects(BoundingBox other) {
         return getLeft() < other.getRight() - 1E-7 &&

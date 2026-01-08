@@ -2,10 +2,7 @@ package com.cometkaizo.world.entity;
 
 import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.screen.overlay.NoteHolderOverlay;
-import com.cometkaizo.world.Args;
-import com.cometkaizo.world.Light;
-import com.cometkaizo.world.Room;
-import com.cometkaizo.world.Vector;
+import com.cometkaizo.world.*;
 
 /**
  * Author: Andy Wang
@@ -32,7 +29,7 @@ public class NoteHolder extends Interactable {
     }
 
     @Override
-    public void updateLight(Light.Direction direction) {
+    public void updateLight(Direction direction) {
         super.updateLight(direction);
         lit = direction != null;
     }

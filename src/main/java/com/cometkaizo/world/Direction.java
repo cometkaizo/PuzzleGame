@@ -11,10 +11,12 @@ public enum Direction {
     RIGHT(Axis.X, 1, 0);
     private final Axis axis;
     private final int x, y;
+    private final Vector.ImmutableInt delta;
     Direction(Axis axis, int x, int y) {
         this.axis = axis;
         this.x = x;
         this.y = y;
+        this.delta = Vector.immutable(x, y);
     }
 
     public Axis axis() {
@@ -44,5 +46,9 @@ public enum Direction {
 
     public int y() {
         return y;
+    }
+
+    public Vector.ImmutableInt delta() {
+        return delta;
     }
 }

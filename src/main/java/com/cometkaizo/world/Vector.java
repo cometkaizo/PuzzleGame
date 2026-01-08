@@ -58,6 +58,7 @@ public interface Vector<T extends Number> extends DataSerializable {
     default ImmutableDouble withLength(double length) {
         return normalized().scaledBy(length);
     }
+    Immutable<T> with(Axis axis, T len);
 
     default boolean isZero() {
         return isShorterThan(1E-7);
@@ -137,6 +138,11 @@ public interface Vector<T extends Number> extends DataSerializable {
         default ImmutableInt scaledBy(double factor) {
             return multipliedBy(factor, factor);
         }
+
+        @Override
+        default ImmutableInt with(Axis axis, Integer len) {
+            return immutable(axis == Axis.X ? len : getX(), axis == Axis.Y ? len : getY());
+        }
     }
     interface Double extends Vector<java.lang.Double> {
         @Override
@@ -165,6 +171,10 @@ public interface Vector<T extends Number> extends DataSerializable {
         @Override
         default ImmutableDouble scaledBy(double factor) {
             return multipliedBy(factor, factor);
+        }
+        @Override
+        default ImmutableDouble with(Axis axis, java.lang.Double len) {
+            return immutable(axis == Axis.X ? len : getX(), axis == Axis.Y ? len : getY());
         }
     }
     interface Mutable<T extends Number> extends Vector<T> {
