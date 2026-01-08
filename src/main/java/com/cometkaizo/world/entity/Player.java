@@ -331,6 +331,8 @@ public class Player extends MovableEntity {
 
         g.setTransform(oT);
         g.setComposite(oC);
+
+        canvas.renderDebugBoundingBox(boundingBox, Color.WHITE);
     }
 
     @Override

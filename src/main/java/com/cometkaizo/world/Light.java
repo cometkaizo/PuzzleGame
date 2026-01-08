@@ -1,5 +1,6 @@
 package com.cometkaizo.world;
 
+import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.AtlasTexture;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.DirectionAtlasTexture;
@@ -47,16 +48,29 @@ public class Light extends Block {
         if (atlas == null) return;
         var texture = getAtlasTexture();
 
-        var oldClip = canvas.getGraphics().getClip();
-        clipRenderToWithinBlock(canvas);
-
-        canvas.blitImage(atlas,
+        if (shouldRenderBase()) canvas.blitImage(atlas,
                 texture.x(), texture.y(), // src
-                getX(), getY() + 1, // dest
+                getX() + collisionOffset.x, getY() + 1 + collisionOffset.y, // dest
+                1, 1 // w and h
+        );
+        if (shouldRenderCollision()) canvas.blitImage(getCollisionTextureAtlas(),
+                texture.x(), texture.y(), // src
+                getX() + collisionOffset.x, getY() + 1 + collisionOffset.y + getRenderOffsetY(), // dest
                 1, 1 // w and h
         );
 
-        canvas.getGraphics().setClip(oldClip);
+        canvas.renderDebugBlock(position, Color.YELLOW);
+    }
+
+    private double getRenderOffsetY() {
+        return direction == Direction.UP ? 0.5 : direction == Direction.DOWN ? -0.4 : 0;
+    }
+
+    private boolean shouldRenderBase() {
+        return true;
+    }
+    private boolean shouldRenderCollision() {
+        return collisionEntity != null;
     }
 
     private void calculateCollisionOffset(Canvas canvas) {
@@ -89,19 +103,9 @@ public class Light extends Block {
         }
     }
 
-    /**
-     * Author: Andy Wang
-     * Date Modified: 2026-01-08
-     * Description: clips the rendering of the given canvas to the 1x1 block location on the screen
-     */
-    private void clipRenderToWithinBlock(Canvas canvas) {
-        canvas.renderDebugRect(
-                canvas.toScreenX(position.x + collisionOffset.getX()), canvas.toScreenY(position.y + 1 + collisionOffset.getY()),
-                canvas.toScreenLength(1), canvas.toScreenLength(1), Color.RED);
-        canvas.getGraphics().setClip(
-                canvas.toScreenX(position.x + collisionOffset.getX()), canvas.toScreenY(position.y + 1 + collisionOffset.getY()),
-                canvas.toScreenLength(1), canvas.toScreenLength(1)
-        );
+    @Override
+    public boolean shouldRenderBehindEntities() {
+        return collisionEntity != null && direction == Direction.DOWN;
     }
 
     @Override
@@ -111,5 +115,8 @@ public class Light extends Block {
     @Override
     protected String getTexturePath() {
         return "light/1";
+    }
+    private Image getCollisionTextureAtlas() {
+        return Assets.texture("block/light/2");
     }
 }

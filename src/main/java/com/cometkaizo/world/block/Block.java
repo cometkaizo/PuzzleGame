@@ -47,8 +47,8 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         var texture = getAtlasTexture();
         canvas.blitImage(atlas,
                 texture.x(), texture.y(), // src
-                getX(), getY() + getHeight(), // dest
-                1, texture.hasYExtension() ? getHeight() : 1 // w and h
+                getX(), getY() + getTextureHeight(), // dest
+                1, texture.hasYExtension() ? getTextureHeight() : 1 // w and h
         );
     }
 
@@ -58,11 +58,20 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         if (texturePath == null) return null;
         return Assets.texture("block/" + texturePath);
     }
-    protected double getHeight() {
+    protected double getTextureHeight() {
         return 1;
     }
     protected AtlasTexture getAtlasTexture() {
         return AtlasTexture.SINGLE_BLOCK;
+    }
+
+    /**
+     * Author: Andy Wang
+     * Date Modified: 2026-01-08
+     * Description: returns whether this block should be rendered behind entities at its y-level
+     */
+    public boolean shouldRenderBehindEntities() {
+        return false;
     }
 
     public String getNamespace() {

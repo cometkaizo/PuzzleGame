@@ -612,15 +612,22 @@ public class Room implements Tickable, Renderable, Resettable {
 
             // render blocks from the top row down
             for (int r = min(game.getCameraTop(), blocks.length - 1); r >= max(game.getCameraBottom(), 0); r--) {
+                // render the row of light that must be behind the player
+                for (int c = max(game.getCameraLeft(), 0); c < min(game.getCameraRight(), blocks[r].length); c++) {
+                    if (blocks[r][c].shouldRenderBehindEntities()) blocks[r][c].render(canvas);
+                    if (light[r][c] != null && light[r][c].shouldRenderBehindEntities()) light[r][c].render(canvas);
+                }
+
                 // render all entities that are in this row's 1 block y range
                 while (nextRenderEntityId < entitiesSortedByY.size() &&
                         entitiesSortedByY.get(nextRenderEntityId).getRenderY() > r) {
                     entitiesSortedByY.get(nextRenderEntityId ++).render(canvas);
                 }
+
                 // render the row of the blocks and light
                 for (int c = max(game.getCameraLeft(), 0); c < min(game.getCameraRight(), blocks[r].length); c++) {
-                    blocks[r][c].render(canvas);
-                    if (light[r][c] != null) light[r][c].render(canvas);
+                    if (!blocks[r][c].shouldRenderBehindEntities()) blocks[r][c].render(canvas);
+                    if (light[r][c] != null && !light[r][c].shouldRenderBehindEntities()) light[r][c].render(canvas);
                 }
             }
 
@@ -659,7 +666,7 @@ public class Room implements Tickable, Renderable, Resettable {
             var pos = Vector.mutableInt(fromPos);
             while (!getBlock(pos).map(Block::blocksLight).orElse(true)) {
                 // set the light
-                var collision = findFirstEntityCollision(pos, direction);
+                var collision = pos.equals(fromPos) ? Optional.<CollidableEntity>empty() : findFirstEntityCollision(pos, direction);
                 setLight(pos, lightUp ? new Light(this, pos, direction, collision.orElse(null)) : null);
 
                 // update any blocks or entities

@@ -51,7 +51,7 @@ public class WallBlock extends Block {
     }
 
     @Override
-    protected double getHeight() {
+    protected double getTextureHeight() {
         return 2.5;
     }
 }

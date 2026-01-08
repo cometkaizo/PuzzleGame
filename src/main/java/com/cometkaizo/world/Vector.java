@@ -4,6 +4,8 @@ import com.cometkaizo.io.DataSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.util.MathUtils;
 
+import java.util.Objects;
+
 /**
  * Author: Andy Wang
  * Date Modified: TODO
@@ -344,6 +346,17 @@ public interface Vector<T extends Number> extends DataSerializable {
                     ", y=" + y +
                     '}';
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Int that)) return false;
+            return x == that.getX() && y == that.getY();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
     class MutableDouble implements Mutable<java.lang.Double>, Double {
         public double x;
@@ -471,6 +484,17 @@ public interface Vector<T extends Number> extends DataSerializable {
                     ", y=" + y +
                     '}';
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Double that)) return false;
+            return java.lang.Double.compare(x, that.getX()) == 0 && java.lang.Double.compare(y, that.getY()) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
     class ImmutableInt implements Immutable<Integer>, Int {
         public final int x;
@@ -529,6 +553,17 @@ public interface Vector<T extends Number> extends DataSerializable {
                     ", y=" + y +
                     '}';
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Int that)) return false;
+            return x == that.getX() && y == that.getY();
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
+        }
     }
     class ImmutableDouble implements Immutable<java.lang.Double>, Double {
         public final double x;
@@ -586,6 +621,17 @@ public interface Vector<T extends Number> extends DataSerializable {
                     "x=" + x +
                     ", y=" + y +
                     '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Double that)) return false;
+            return java.lang.Double.compare(x, that.getX()) == 0 && java.lang.Double.compare(y, that.getY()) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 }
