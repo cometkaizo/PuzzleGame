@@ -53,6 +53,11 @@ public class Organ extends Interactable {
     }
 
     @Override
+    public boolean isSolid(Entity entity) {
+        return true;
+    }
+
+    @Override
     protected String getTexturePath() {
         return "organ";
     }

@@ -68,6 +68,12 @@ public class Assets {
         return alpha < 255;
     }
 
+    public static Font font() {
+        return font("BoldPixels");
+    }
+    public static Font font(int size) {
+        return font("BoldPixels", size);
+    }
     public static Font font(String path, int size) {
         return font(path).deriveFont(Font.PLAIN, size);
     }

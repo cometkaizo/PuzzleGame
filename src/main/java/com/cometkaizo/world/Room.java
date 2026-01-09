@@ -694,14 +694,6 @@ public class Room implements Tickable, Renderable, Resettable {
                 case LEFT -> entities.max(Comparator.comparingDouble(Entity::getX));
             };
         }
-
-        public boolean isLit(int x, int y) {
-            return getLight(x, y).isPresent() ||
-                    getLight(x + 1, y).map(l -> l.direction == Direction.LEFT).orElse(false) ||
-                    getLight(x - 1, y).map(l -> l.direction == Direction.RIGHT).orElse(false) ||
-                    getLight(x, y + 1).map(l -> l.direction == Direction.DOWN).orElse(false) ||
-                    getLight(x, y - 1).map(l -> l.direction == Direction.UP).orElse(false);
-        }
     }
 
     public record Checkpoint(Vector.ImmutableDouble pos, BoundingBox activationArea, String name) {

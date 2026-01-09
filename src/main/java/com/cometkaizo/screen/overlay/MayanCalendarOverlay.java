@@ -32,13 +32,12 @@ public class MayanCalendarOverlay extends Overlay {
                 }},
             downButton = new ImageClickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/down_button", -2, -2);
 
-    private final int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
+    private final int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo;
 
-    public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctModernCombo, int[] correctArtifactsCombo) {
+    public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctArtifactsCombo) {
         super(app);
         this.correctPaintingsCombo = correctPaintingsCombo;
         this.correctSculpturesCombo = correctSculpturesCombo;
-        this.correctModernCombo = correctModernCombo;
         this.correctArtifactsCombo = correctArtifactsCombo;
     }
 
@@ -60,9 +59,6 @@ public class MayanCalendarOverlay extends Overlay {
         } else if (isCurrentCombo(correctSculpturesCombo)) {
             app.getGame().sculpturesDoor.open();
             app.setOverlay(new NarrationOverlay(app, "The door to the sculptures room swings open."));
-        } else if (isCurrentCombo(correctModernCombo)) {
-            app.getGame().modernDoor.open();
-            app.setOverlay(new NarrationOverlay(app, "The door to the modern history room swings open."));
         } else if (isCurrentCombo(correctArtifactsCombo)) {
             app.getGame().artifactsDoor.open();
             app.setOverlay(new NarrationOverlay(app, "The door to the artifacts room swings open."));

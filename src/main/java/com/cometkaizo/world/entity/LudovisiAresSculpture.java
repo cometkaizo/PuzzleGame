@@ -1,15 +1,16 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.overlay.LudovisiAresOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 /**
  * Author: Andy Wang
  * Date Modified: TODO
- * Description: Interactable cupid and psyche sculpture
+ * Description: Interactable ludovisi ares sculpture
  */
-public class CupidAndPsycheSculpture extends Interactable {
-    public CupidAndPsycheSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
+public class LudovisiAresSculpture extends Interactable {
+    public LudovisiAresSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
     }
@@ -21,11 +22,16 @@ public class CupidAndPsycheSculpture extends Interactable {
 
     @Override
     protected void interact() {
+        app.setOverlay(new LudovisiAresOverlay(app));
+    }
 
+    @Override
+    public boolean isSolid(Entity entity) {
+        return true;
     }
 
     @Override
     protected String getTexturePath() {
-        return "sculpture/cupid_and_psyche";
+        return "sculpture/ares";
     }
 }

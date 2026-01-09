@@ -28,6 +28,11 @@ public class DoubleSidedSculpture extends Interactable {
     }
 
     @Override
+    public boolean isSolid(Entity entity) {
+        return true;
+    }
+
+    @Override
     protected String getTexturePath() {
         return "sculpture/double_sided";
     }

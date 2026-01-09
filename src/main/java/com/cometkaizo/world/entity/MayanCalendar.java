@@ -14,7 +14,7 @@ import java.util.Arrays;
  * Description: Interactable mayan calendar
  */
 public class MayanCalendar extends Interactable {
-    private int[] correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo;
+    private int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo;
 
     public MayanCalendar(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -23,7 +23,7 @@ public class MayanCalendar extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctModernCombo, correctArtifactsCombo));
+        app.setOverlay(new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo));
     }
 
     @Override
@@ -31,7 +31,6 @@ public class MayanCalendar extends Interactable {
         super.reset();
         correctPaintingsCombo = nextMayanCombo(originalArgs);
         correctSculpturesCombo = nextMayanCombo(originalArgs);
-        correctModernCombo = nextMayanCombo(originalArgs);
         correctArtifactsCombo = nextMayanCombo(originalArgs);
     }
     private int[] nextMayanCombo(Args args) {
@@ -50,6 +49,7 @@ public class MayanCalendar extends Interactable {
 
     @Override
     public void render(Canvas canvas) {
+        super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.DARK_GRAY);
     }
 
