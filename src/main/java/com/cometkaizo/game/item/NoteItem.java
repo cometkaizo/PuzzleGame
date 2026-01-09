@@ -9,16 +9,72 @@ import java.awt.*;
 
 public class NoteItem extends Item implements Renderable {
     private static final String[] MESSAGES = {
-            "NOTE 1",
-            "\nNOTE 2",
-            "\n\nNOTE 3",
-            "\n\n\nNOTE 4",
+            """
+            The       is 4
+            
+            
+            The          wheel is                   7 times.
+            
+            
+            The                  is decremented   times.
+            
+            
+            The large right
+            
+            
+            
+            """,
+            """
+            The day                       Zip
+            
+            
+            The                   is
+            
+            
+            The outer wheel is                  4 times.
+            
+            
+            The                                     incremented thrice.
+            
+            
+            
+            """,
+            """
+            The day is               5
+            
+            
+            The inner wheel is incremented 7 times.
+            
+            
+            The                   is
+            
+            
+            The                 most          is                       ice
+            
+            
+            
+            """,
+            """
+            The day is     Akbal
+            
+            
+            The                   is
+            
+            
+            The                   is                    times.
+            
+            
+            The                        wheel is
+            
+            
+            Finally, three days pass.
+            """,
     };
     public final String message;
     private final Text text;
     public NoteItem(int variant) {
         this.message = MESSAGES[variant];
-        text = new Text(message, Assets.font("BoldPixels", 20), Color.BLACK, w -> w/2 - 48, h -> h/2 - 30, 94, false, false);
+        text = new Text(message, Assets.font("BoldPixels", 20), Color.BLACK, w -> w/2 - 52, h -> h/2 - 50, 120, false, false);
     }
 
     @Override
