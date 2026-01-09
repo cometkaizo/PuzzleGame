@@ -34,11 +34,11 @@
 ,,,w,,,,,,,,,gallery C (pointing),,,,,,w,,,,,,w,,,,,,,w,w,,,,,w,w,,,,,,,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,,,,,,w,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,p;;13;The Vitruvian Man by Da Vinci;2;1,,,,,w,,,,,,,w,,p;;16;The King Penguin by Thomas Waterman Wood;3;1,,,,w,,,,,,,,,,,,,,,,,,,,,w,,,rosetta stone,,,,,,,,,,,,,,,w
-,,,w,w,w,w,w,w,w,w,w,w,d;d_modern;2;1,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,,,,,,,,,morse code 1,,,morse code 2,,,morse code 3,,,w
+,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,,,,,,,,,morse code 1,,,morse code 2,,,morse code 3,,,w
+,,,w,,,,,,,,,,d;d_modern;2;1,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
-,,,w,,,pacman,,,,,,,,,,,,,organ,,,,,,,,,d;h_modern;1;2,,,,,,,,,,,,,d;h_artifacts;1;2,,,,,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,hope diamond,sign,,,,,,,,,,w
+,,,w,,,pacman,,,,,,,,,,,,,,,,,,,,,d;h_modern;1;2,w,,,,,,,,,,,,,d;h_artifacts;1;2,,,,,,,,,,,,,,,,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,hope diamond,sign,,,,organ,,,,,w
 ,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,w,,,w,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,typewriter (alphabet order),,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,w,,,,,w,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
