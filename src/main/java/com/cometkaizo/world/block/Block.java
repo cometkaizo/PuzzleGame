@@ -23,6 +23,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     public String name;
     public final Vector.ImmutableInt position;
     private Boolean connectedN, connectedE, connectedS, connectedW;
+    protected boolean lit;
 
     public Block(Room.Layer layer, Vector.ImmutableInt position, Args args) {
         this.room = layer.room;
@@ -39,6 +40,13 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
     }
 
     public abstract boolean isSolid(Entity entity);
+
+    public void resetLight() {
+        lit = false;
+    }
+    public void tickLightEmission() {
+
+    }
 
     @Override
     public void render(Canvas canvas) {
@@ -102,7 +110,7 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         return true;
     }
     public void updateLight(Direction direction) {
-
+        lit = direction != null;
     }
 
 

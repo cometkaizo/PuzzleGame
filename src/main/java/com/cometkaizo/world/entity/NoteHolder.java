@@ -10,7 +10,6 @@ import com.cometkaizo.world.*;
  * Description: Interactable note-holder for light to shine through
  */
 public class NoteHolder extends Interactable {
-    private boolean lit;
     private NoteItem[] notes = new NoteItem[4];
 
     public NoteHolder(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -29,12 +28,6 @@ public class NoteHolder extends Interactable {
     }
 
     @Override
-    public void updateLight(Direction direction) {
-        super.updateLight(direction);
-        lit = direction != null;
-    }
-
-    @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
@@ -42,6 +35,11 @@ public class NoteHolder extends Interactable {
     @Override
     protected String getTexturePath() {
         return "note_holder";
+    }
+
+    @Override
+    public double getRenderY() {
+        return super.getRenderY() + 0.1;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.CombinationLockOverlay;
 import com.cometkaizo.screen.overlay.LetterOverlay;
@@ -8,6 +9,8 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
+import java.util.Arrays;
+
 /**
  * Author: Andy Wang
  * Date Modified: TODO
@@ -43,16 +46,15 @@ public class CombinationPuzzleBox extends Interactable {
     };
 
 
-    private String correctCombination;
-    private String[] digitOptions;
+    private String[] correctCombination;
+    private String[][] digitOptions;
     private int w, h;
     private int variant;
     private String overlayVariant;
-    private String message;
     private boolean solid;
 
     private boolean open;
-    private long openMessageTick = -1;
+    private long openTick = -1;
 
 
     public CombinationPuzzleBox(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -62,15 +64,31 @@ public class CombinationPuzzleBox extends Interactable {
     @Override
     protected void interact() {
         if (!open) app.setOverlay(new CombinationLockOverlay(app, correctCombination, digitOptions, this::open, overlayVariant));
-        else openMessage();
+        else if (opensMessage()) openMessage();
+        else app.narrate("You've already solved this lock.", null);
     }
     private void openMessage() {
-        app.setOverlay(new LetterOverlay(app, message, "note"));
+        app.setOverlay(new LetterOverlay(app, MESSAGES[variant - 1], "note"));
     }
 
     private void open() {
         open = true;
-        openMessageTick = game.tick + 20;
+        openTick = game.tick + 20;
+    }
+
+    private void actuallyOpen() {
+        if (opensMessage()) openMessage();
+        else if (givesItem()) giveItem();
+    }
+    private boolean opensMessage() {
+        return variant <= 5;
+    }
+    private boolean givesItem() {
+        return variant >= 8 && variant <= 11;
+    }
+    private void giveItem() {
+        game.getInventory().add(new NoteItem(variant - 8));
+        app.narrate("Inside the locked box is a note. You take it.", null);
     }
 
     @Override
@@ -79,11 +97,17 @@ public class CombinationPuzzleBox extends Interactable {
         open = false;
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
-        correctCombination = originalArgs.next("");
-        digitOptions = originalArgs.next("").split(" ");
+
+        String comboRaw = originalArgs.next("");
+        correctCombination = comboRaw.contains("|") ? comboRaw.split("\\|") : comboRaw.split("");
+
+        var digitsRaw = Arrays.stream(originalArgs.next("").split(" "));
+        digitOptions = (comboRaw.contains("|") ?
+                digitsRaw.map(s -> s.split("\\|")) :
+                digitsRaw.map(s -> s.split("")))
+                .toArray(String[][]::new);
 
         variant = originalArgs.nextInt(1);
-        message = MESSAGES[variant - 1];
         overlayVariant = originalArgs.next("regular");
 
         solid = originalArgs.next("solid").equalsIgnoreCase("solid");
@@ -94,7 +118,7 @@ public class CombinationPuzzleBox extends Interactable {
     @Override
     public void tick() {
         super.tick();
-        if (game.tick == openMessageTick) openMessage();
+        if (game.tick == openTick) actuallyOpen();
     }
 
     @Override

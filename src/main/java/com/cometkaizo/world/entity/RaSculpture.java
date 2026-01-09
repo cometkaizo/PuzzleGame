@@ -23,17 +23,18 @@ public class RaSculpture extends CollidableEntity {
     }
 
     @Override
-    public void tick() {
-        super.tick();
+    public void tickLightEmission() {
+        super.tickLightEmission();
         if (emittingLight) layer.lightUp(lightEmissionPos(), direction);
     }
     private Vector.ImmutableInt lightEmissionPos() {
+        if (direction == Direction.DOWN) return Vector.immutableInt(position);
         return Vector.immutableInt(position).addedTo(0, 1);
     }
 
     @Override
     public void render(Canvas canvas) {
-//        super.render(canvas);
+        super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.BLUE);
     }
 

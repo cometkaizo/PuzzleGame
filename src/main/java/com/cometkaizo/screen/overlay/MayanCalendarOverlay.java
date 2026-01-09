@@ -68,6 +68,7 @@ public class MayanCalendarOverlay extends Overlay {
             app.setOverlay(new NarrationOverlay(app, "The door to the artifacts room swings open."));
         } else {
             app.setOverlay(new NarrationOverlay(app, "Nothing happens.", this));
+            Assets.sound("wrong").play();
         }
 
         return true;

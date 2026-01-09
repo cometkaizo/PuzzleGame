@@ -29,7 +29,13 @@ public class NoteHolderOverlay extends Overlay {
         for (int i = 0; i < notes.length; i++) slots[i] = new Slot(i);
 
         seeClickable = new ImageClickable(this.app,
-                () -> {if (lit) app.setOverlay(new NoteHolderSeeOverlay(app, this.notes, this));},
+                () -> {
+                    if (lit) app.setOverlay(new NoteHolderSeeOverlay(app, this.notes, this));
+                    else {
+                        app.narrate("There's no light shining through here", this);
+                        Assets.sound("wrong").play();
+                    }
+                },
                 w -> w/2 - 16, h -> h/2 - 50, _ -> 32, _-> 32,
                 () -> "gui/note_holder/see", -2, -2);
     }
@@ -69,13 +75,14 @@ public class NoteHolderOverlay extends Overlay {
                     app.setOverlay(NoteHolderOverlay.this);
                 } else {
                     app.narrate("This item cannot be placed here", NoteHolderOverlay.this);
+                    Assets.sound("wrong").play();
                 }
             }, NoteHolderOverlay.this));
         }
 
         private void pickUpNote() {
-            notes[index] = null;
             app.getGame().getInventory().add(note());
+            notes[index] = null;
         }
 
         @Override

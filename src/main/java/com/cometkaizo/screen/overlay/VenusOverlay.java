@@ -2,10 +2,11 @@ package com.cometkaizo.screen.overlay;
 
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
-import com.cometkaizo.screen.Assets;
+import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
-import com.cometkaizo.screen.Clickable;
-import com.cometkaizo.screen.ImageClickable;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * Author: Andy Wang
@@ -17,6 +18,11 @@ public class VenusOverlay extends Overlay {
     private boolean chestOpen, heartOpen;
 
     private final Clickable pedestal, chest;
+    private final List<Writing> writing = List.of(
+            new Writing("8 5 1 4", 16, -83),
+            new Writing("19 8 15 21 12 4 5 18", -56, -67),
+            new Writing("11 14 5 5", 2, 5)
+    );
 
     public VenusOverlay(GameApp app, boolean chestOpen, boolean heartOpen, boolean[][] pedestalCombo, Runnable openChestAction, Runnable openHeartAction) {
         super(app);
@@ -48,6 +54,7 @@ public class VenusOverlay extends Overlay {
         canvas.renderImage(Assets.texture(getTexturePath()), canvas.halfWidth(), canvas.halfHeight(), -0.5, -0.5);
         pedestal.render(canvas);
         if (chestOpen) chest.render(canvas);
+        for (var w : writing) w.render(canvas);
     }
 
     private String getTexturePath() {
@@ -66,5 +73,12 @@ public class VenusOverlay extends Overlay {
         super.onClick(click);
         pedestal.onClick(click);
         if (chestOpen) chest.onClick(click);
+    }
+
+    private class Writing extends Text {
+        public Writing(String message, int dx, int dy) {
+            super(message, Assets.font("BoldPixels", 30), Color.RED,
+                    w -> w/2 + dx, h -> h/2 + dy, 100, true, false);
+        }
     }
 }

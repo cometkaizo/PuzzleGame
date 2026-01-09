@@ -26,6 +26,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     protected Room.Layer layer;
     protected Room room;
     protected String name;
+    protected boolean lit;
 
     public Entity(Room.Layer layer, Vector.MutableDouble position, Args args) {
         this.room = layer.room;
@@ -49,6 +50,12 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     @Override
     public void tick() {
         updateOldPosition();
+    }
+    public void resetLight() {
+        lit = false;
+    }
+    public void tickLightEmission() {
+
     }
 
     protected void updateOldPosition() {
@@ -107,7 +114,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         return true;
     }
     public void updateLight(Direction direction) {
-
+        lit = direction != null;
     }
 
 

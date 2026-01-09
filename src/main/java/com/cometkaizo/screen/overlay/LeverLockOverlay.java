@@ -61,6 +61,9 @@ public class LeverLockOverlay extends Overlay {
         if (Arrays.deepEquals(currentCombination, correctCombination)) {
             open = true;
             actionOnOpen.run();
+        } else {
+            app.narrate("Nothing happens.", this);
+            Assets.sound("wrong").play();
         }
     }
 

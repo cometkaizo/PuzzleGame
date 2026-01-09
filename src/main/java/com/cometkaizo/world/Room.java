@@ -599,6 +599,10 @@ public class Room implements Tickable, Renderable, Resettable {
         public void tick() {
             for (var row : light) Arrays.fill(row, null); // reset light every single tick
 
+            entities.forEach(Entity::resetLight);
+            for (var row : blocks) for (var b : row) b.resetLight();
+            entities.forEach(Entity::tickLightEmission);
+            for (var row : blocks) for (var b : row) b.tickLightEmission();
             entities.forEach(Tickable::tick);
 
             var entitiesSortedByY = new ArrayList<>(entities);
@@ -655,23 +659,17 @@ public class Room implements Tickable, Renderable, Resettable {
             return entity;
         }
 
-
         public void lightUp(Vector.Int fromPos, Direction direction) {
-            updateLight(fromPos, direction, true);
-        }
-        public void unlight(Vector.Int fromPos, Direction direction) {
-            updateLight(fromPos, direction, false);
-        }
-        private void updateLight(Vector.Int fromPos, Direction direction, boolean lightUp) {
             var pos = Vector.mutableInt(fromPos);
             while (!getBlock(pos).map(Block::blocksLight).orElse(true)) {
                 // set the light
-                var collision = pos.equals(fromPos) ? Optional.<CollidableEntity>empty() : findFirstEntityCollision(pos, direction);
-                setLight(pos, lightUp ? new Light(this, pos, direction, collision.orElse(null)) : null);
+                boolean first = pos.equals(fromPos);
+                var collision = first ? Optional.<CollidableEntity>empty() : findFirstEntityCollision(pos, direction);
+                setLight(pos, new Light(this, pos, direction, collision.orElse(null), first));
 
                 // update any blocks or entities
-                getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
-                getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
+                getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(direction));
+                getBlock(pos).ifPresent(b -> b.updateLight(direction));
 
                 // move the current pos
                 pos.add(direction.delta());
@@ -680,8 +678,8 @@ public class Room implements Tickable, Renderable, Resettable {
                 if (collision.isPresent()) break;
             }
             // update the blocking block/entity
-            getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(lightUp ? direction : null));
-            getBlock(pos).ifPresent(b -> b.updateLight(lightUp ? direction : null));
+            getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(direction));
+            getBlock(pos).ifPresent(b -> b.updateLight(direction));
         }
 
         private Optional<CollidableEntity> findFirstEntityCollision(Vector.MutableInt pos, Direction direction) {
@@ -695,6 +693,14 @@ public class Room implements Tickable, Renderable, Resettable {
                 case DOWN -> entities.max(Comparator.comparingDouble(Entity::getY));
                 case LEFT -> entities.max(Comparator.comparingDouble(Entity::getX));
             };
+        }
+
+        public boolean isLit(int x, int y) {
+            return getLight(x, y).isPresent() ||
+                    getLight(x + 1, y).map(l -> l.direction == Direction.LEFT).orElse(false) ||
+                    getLight(x - 1, y).map(l -> l.direction == Direction.RIGHT).orElse(false) ||
+                    getLight(x, y + 1).map(l -> l.direction == Direction.DOWN).orElse(false) ||
+                    getLight(x, y - 1).map(l -> l.direction == Direction.UP).orElse(false);
         }
     }
 

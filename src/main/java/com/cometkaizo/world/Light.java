@@ -19,16 +19,18 @@ public class Light extends Block {
     public Vector.MutableDouble collisionOffset = Vector.mutable(0D, 0D); // the offset to render this light texture at due to collision with an entity
     public Direction direction;
     private final CollidableEntity collisionEntity;
+    private final boolean first;
 
     /**
      * Author: Andy Wang
      * Date Modified: TODO
      * Description: Constructs a light block on the given layer with the given position and direction
      */
-    public Light(Room.Layer layer, Vector.Int pos, Direction direction, CollidableEntity collisionEntity) {
+    public Light(Room.Layer layer, Vector.Int pos, Direction direction, CollidableEntity collisionEntity, boolean first) {
         super(layer, Vector.immutableInt(pos), new Args("light"));
         this.direction = direction;
         this.collisionEntity = collisionEntity;
+        this.first = first;
     }
 
     @Override
@@ -48,16 +50,26 @@ public class Light extends Block {
         if (atlas == null) return;
         var texture = getAtlasTexture();
 
+        var oldClip = canvas.getGraphics().getClip();
+        canvas.getGraphics().setClip(
+                direction == Direction.RIGHT ? canvas.toScreenX(position.x - getRenderOffsetX()) : 0,
+                direction == Direction.DOWN ? canvas.toScreenY(position.y + 1 - getRenderOffsetY()) : 0,
+                direction == Direction.LEFT ? canvas.toScreenX(position.x + 1 - getRenderOffsetX()) : canvas.getWidth(),
+                direction == Direction.UP ? canvas.toScreenY(position.y - getRenderOffsetY()) : canvas.getHeight()
+        );
+
         if (shouldRenderBase()) canvas.blitImage(atlas,
                 texture.x(), texture.y(), // src
-                getX() + collisionOffset.x, getY() + 1 + collisionOffset.y, // dest
+                getX(), getY() + 1, // dest
                 1, 1 // w and h
         );
         if (shouldRenderCollision()) canvas.blitImage(getCollisionTextureAtlas(),
                 texture.x(), texture.y(), // src
-                getX() + collisionOffset.x, getY() + 1 + collisionOffset.y + getRenderOffsetY(), // dest
+                getX() + collisionOffset.x + getRenderOffsetX(), getY() + 1 + collisionOffset.y + getRenderOffsetY(), // dest
                 1, 1 // w and h
         );
+
+        canvas.getGraphics().setClip(oldClip);
 
         canvas.renderDebugBlock(position, Color.YELLOW);
     }
@@ -65,9 +77,17 @@ public class Light extends Block {
     private double getRenderOffsetY() {
         return direction == Direction.UP ? 0.5 : direction == Direction.DOWN ? -0.4 : 0;
     }
+    private double getRenderOffsetX() {
+        return direction == Direction.LEFT ? -0.2 : direction == Direction.RIGHT ? 0.2 : 0;
+    }
 
     private boolean shouldRenderBase() {
-        return true;
+        return collisionEntity == null || switch (direction) {
+            case UP -> collisionOffset.y + getRenderOffsetY() > 0;
+            case DOWN -> collisionOffset.y + getRenderOffsetY() < 0;
+            case LEFT -> collisionOffset.x + getRenderOffsetX() < 0;
+            case RIGHT -> collisionOffset.x + getRenderOffsetX() > 0;
+        };
     }
     private boolean shouldRenderCollision() {
         return collisionEntity != null;
@@ -93,13 +113,6 @@ public class Light extends Block {
             if (direction == Direction.UP || direction == Direction.RIGHT) {
                 collisionOffset.subtract(direction.delta());
             }
-
-            switch (direction) {
-                case UP -> collisionOffset.setY(Math.min(collisionOffset.y, 0));
-                case DOWN -> collisionOffset.setY(Math.max(collisionOffset.y, 0));
-                case LEFT -> collisionOffset.setX(Math.max(collisionOffset.x, 0));
-                case RIGHT -> collisionOffset.setX(Math.min(collisionOffset.x, 0));
-            }
         }
     }
 
@@ -114,7 +127,7 @@ public class Light extends Block {
     }
     @Override
     protected String getTexturePath() {
-        return "light/1";
+        return "light/" + (first ? "3" : "1");
     }
     private Image getCollisionTextureAtlas() {
         return Assets.texture("block/light/2");

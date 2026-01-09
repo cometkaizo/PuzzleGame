@@ -28,6 +28,7 @@ public class DoorOverlay extends Overlay {
     public void tryOpen() {
         app.setOverlay(new InventoryOverlay(app, item -> {
             if (type.isInstance(item)) open();
+            else Assets.sound("wrong").play();
         }, this));
     }
     private void open() {

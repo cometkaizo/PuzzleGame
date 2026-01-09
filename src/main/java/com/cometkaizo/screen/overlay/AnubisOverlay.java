@@ -8,7 +8,6 @@ import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Clickable;
 import com.cometkaizo.screen.ImageClickable;
 import com.cometkaizo.world.Direction;
-import com.cometkaizo.world.Light;
 import com.cometkaizo.world.entity.RaSculpture;
 
 import java.util.function.BiConsumer;
@@ -44,6 +43,7 @@ public class AnubisOverlay extends Overlay {
                     app.narrate("The scale tips...", AnubisOverlay.this);
                 } else {
                     app.narrate("This item cannot be weighed", AnubisOverlay.this);
+                    Assets.sound("wrong").play();
                 }
             }, this));
         }
@@ -57,10 +57,13 @@ public class AnubisOverlay extends Overlay {
 
         if (!(app.getGame().room.getBlockOrEntity("statue of ra") instanceof RaSculpture ra)) return;
 
-        if (getWeighResult() == AnubisOverlay.WeighResult.OBJECT_HEAVIER) {
+        if (getWeighResult() == WeighResult.NO_OBJECT) {
             ra.setDirection(Direction.UP);
+            next = new NarrationOverlay(app, "The Statue of Ra turns to the top.");
+        } else if (getWeighResult() == WeighResult.OBJECT_HEAVIER) {
+            ra.setDirection(Direction.LEFT);
             next = new NarrationOverlay(app, "The Statue of Ra turns to the left.");
-        } else if (getWeighResult() == AnubisOverlay.WeighResult.OBJECT_LIGHTER) {
+        } else if (getWeighResult() == WeighResult.OBJECT_LIGHTER) {
             ra.setDirection(Direction.DOWN);
             next = new NarrationOverlay(app, "The Statue of Ra turns to the bottom.");
         }

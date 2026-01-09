@@ -21,6 +21,7 @@ public class NoteHolderSeeOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
+        canvas.renderCenteredImage(Assets.texture("gui/note_holder/light"));
         for (var note : notes) if (note != null) note.render(canvas);
 
         canvas.renderCenteredImage(Assets.texture("gui/note_holder/glass"));

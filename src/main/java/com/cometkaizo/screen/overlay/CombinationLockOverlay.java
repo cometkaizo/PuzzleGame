@@ -8,6 +8,7 @@ import com.cometkaizo.screen.Clickable;
 import com.cometkaizo.screen.ImageClickable;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,18 +18,19 @@ import java.util.List;
  */
 public class CombinationLockOverlay extends Overlay {
     private final Font font = Assets.font("BoldPixels", 50);
-    private final Color color = Color.BLACK;
-    private final String correctCombination;
-    private final String[] digitOptions;
+    private final Color color = Color.BLACK, secondaryColor = Color.GRAY;
+    private final String[] correctCombination;
+    private final String[][] digitOptions;
     private final Runnable actionOnOpen;
     private final int[] selectedDigits = new int[4];
     private boolean open;
     private final String overlayVariant;
+    private final String longestDigit;
 
     private final Clickable handleClickable;
     private final List<Clickable> digitClickables;
 
-    public CombinationLockOverlay(GameApp app, String correctCombination, String[] digitOptions, Runnable actionOnOpen, String overlayVariant) {
+    public CombinationLockOverlay(GameApp app, String[] correctCombination, String[][] digitOptions, Runnable actionOnOpen, String overlayVariant) {
         super(app);
         this.correctCombination = correctCombination;
         this.digitOptions = digitOptions;
@@ -44,6 +46,13 @@ public class CombinationLockOverlay extends Overlay {
                 newDigitClickable(2),
                 newDigitClickable(3)
         );
+
+        // find longest digit
+        var longestDigit = "";
+        for (var options : digitOptions)
+            for (var digit : options)
+                if (digit.length() > longestDigit.length()) longestDigit = digit;
+        this.longestDigit = longestDigit;
     }
     private Clickable newDigitClickable(int id) {
         return new ImageClickable(app, () -> changeDigit(id),
@@ -52,16 +61,18 @@ public class CombinationLockOverlay extends Overlay {
     }
 
     private void open() {
-        if (currentCombination().equals(correctCombination)) {
+        if (Arrays.equals(currentCombination(), correctCombination)) {
             open = true;
             actionOnOpen.run();
+        } else {
+            Assets.sound("wrong").play();
         }
     }
 
     private void changeDigit(int digitId) {
         if (open) return;
         selectedDigits[digitId] ++;
-        selectedDigits[digitId] %= digitOptions[digitId].length();
+        selectedDigits[digitId] %= digitOptions[digitId].length;
     }
 
     @Override
@@ -75,23 +86,48 @@ public class CombinationLockOverlay extends Overlay {
     }
 
     private void renderCurrentCombination(Canvas canvas) {
-        String currentCombo = currentCombination();
+        var g = canvas.getGraphics();
+        var oldClip = g.getClip();
+
+        String[] currentCombo = currentCombination();
         int yOffset = -5 + getYOffset();
         for (int i = 0; i < 4; i ++) {
-            int x = canvas.halfWidth() + canvas.scale(34);
+            canvas.renderDebugRect(canvas.halfWidth() + canvas.scale(20), canvas.halfHeight() + canvas.scale(-14 + i * 18 + getYOffset()),
+                    canvas.scale(34), canvas.scale(12), Color.YELLOW);
+            g.setClip(
+                    canvas.halfWidth() + canvas.scale(20),
+                    canvas.halfHeight() + canvas.scale(-14 + i * 18 + getYOffset()),
+                    canvas.scale(34),
+                    canvas.scale(12));
+
+            int x = canvas.halfWidth() + canvas.scale(37.5);
             int y = canvas.halfHeight() + canvas.scale(yOffset + i*18);
-            canvas.renderString("" + currentCombo.charAt(i), font, color, x, y, false, false);
+            canvas.renderString(currentCombo[i], font, color, x, y, true, false);
+
+            int padding = g.getFontMetrics(font).stringWidth(longestDigit)/2 + canvas.scale(10);
+            canvas.renderString(selectedDigit(i, selectedDigits[i] + 1), font, secondaryColor, x + padding, y, true, false);
+            canvas.renderString(selectedDigit(i, selectedDigits[i] - 1), font, secondaryColor, x - padding, y, true, false);
         }
+
+        g.setClip(oldClip);
     }
+
     private int getYOffset() {
         return open ? 28 : 0;
     }
 
-    private String currentCombination() {
-        return "" + digitOptions[0].charAt(selectedDigits[0])
-                + digitOptions[1].charAt(selectedDigits[1])
-                + digitOptions[2].charAt(selectedDigits[2])
-                + digitOptions[3].charAt(selectedDigits[3]);
+    private String[] currentCombination() {
+        return new String[] {selectedDigit(0), selectedDigit(1), selectedDigit(2), selectedDigit(3)};
+    }
+
+    protected String selectedDigit(int digitIndex) {
+        digitIndex = Math.floorMod(digitIndex, digitOptions.length);
+        return digitOptions[digitIndex][selectedDigits[digitIndex]];
+    }
+    protected String selectedDigit(int digitIndex, int selectedDigit) {
+        digitIndex = Math.floorMod(digitIndex, digitOptions.length);
+        selectedDigit = Math.floorMod(selectedDigit, digitOptions[digitIndex].length);
+        return digitOptions[digitIndex][selectedDigit];
     }
 
     @Override

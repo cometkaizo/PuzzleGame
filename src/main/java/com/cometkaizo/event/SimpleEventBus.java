@@ -62,13 +62,17 @@ public class SimpleEventBus implements EventBus {
     /// Ticks this event bus for internal operations such as adding and removing listeners
     @Override
     public void tick() {
-        if (!pendingRemoval.isEmpty()) {
-            pendingRemoval.forEach(listeners::remove);
-            pendingRemoval.clear();
-        }
-        if (!pendingAddition.isEmpty()) {
-            pendingAddition.forEach(p -> p.add(listeners));
-            pendingAddition.clear();
+        try {
+            if (!pendingAddition.isEmpty()) {
+                pendingAddition.forEach(p -> p.add(listeners));
+                pendingAddition.clear();
+            }
+            if (!pendingRemoval.isEmpty()) {
+                pendingRemoval.forEach(listeners::remove);
+                pendingRemoval.clear();
+            }
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
     }
 

@@ -26,7 +26,8 @@ public class Sign extends Interactable {
             new Content("The Thinker", "Thoughts become words and words become action."),
             new Content("Cupid and Psyche", "???"),
             new Content("Mephistopheles and Margaretta", "???"),
-            new Content("Venus de Milo", "???"),
+            new Content("Venus de Milo", "Her beauty comes from what she is MISSING"),
+            new Content("The Hope Diamond", "This famous diamond has a bloody history. It sparkles nicely in a strong light."),
     };
 
     private String title, desc;
