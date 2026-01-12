@@ -1,7 +1,6 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.overlay.BookOverlay;
-import com.cometkaizo.screen.overlay.SignOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -32,7 +31,7 @@ public class Bookshelf extends Interactable {
 
     @Override
     protected String getTexturePath() {
-        return "book/shelf";
+        return "bookshelf";
     }
 
     @Override

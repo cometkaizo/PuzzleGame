@@ -24,6 +24,7 @@ public class EntityTypes {
             Map.entry("rosetta stone", RosettaStone::new),
             Map.entry("antikythera", Antikythera::new),
             Map.entry("morse code", MorseCodeArtifact::new),
+            Map.entry("twelve plus one", TwelvePlusOne::new),
             Map.entry("hope diamond", HopeDiamond::new),
             Map.entry("organ", Organ::new),
             Map.entry("chess", Chess::new),
