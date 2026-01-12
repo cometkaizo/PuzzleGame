@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.ChessKeyItem;
 import com.cometkaizo.game.item.EntranceKeyItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.DoorOverlay;
@@ -24,6 +25,7 @@ public class Door extends Interactable {
     protected void interact() {
         if (open) return;
         if (this == game.libraryDoor) app.setOverlay(new DoorOverlay(app, EntranceKeyItem.class, this::open));
+        else if (this == game.chessDoor) app.setOverlay(new DoorOverlay(app, ChessKeyItem.class, this::open));
         else open();
     }
     public void open() {

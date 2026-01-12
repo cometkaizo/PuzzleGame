@@ -34,21 +34,21 @@
 ,,,w,,,,,,,,,gallery C (pointing),,,,,,w,,,,,,w,,,bookshelf;;4,,,,,,,,,,,,bookshelf;;8,,,,,,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,,,,,,w,,,,,,,w,,,,,,w,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,p;;13;The Vitruvian Man by Da Vinci;2;1,,,,,w,,,,,,,w,,p;;16;The King Penguin by Thomas Waterman Wood;3;1,,,,w,,,,,,,,,,,,,,,,,,,,,w,,,rosetta stone,,,,,,,,,,,,,,,w
-,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,,,,,,,,,morse code 1,,,morse code 2,,,morse code 3,,,w
+,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;d_library;4;1,,,,w,w,w,w,w,w,w,w,w,,,,,,,,,,,morse code 1,,morse code 2,,morse code 3,,morse code poster,w
 ,,,w,,,,,,,,,,d;d_modern;2;1,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
 ,,,w,,,pacman,,,,,,,,,,,,,,,,,,,,,d;h_modern;1;2,w,,,,,,,,,,,,,d;h_artifacts;1;2,,,,,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,hope diamond,sign,,,,organ,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,w,,,w,,,,,w,w,w,w,w,,,twelve plus one,,,,,,,,,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,,,,,w,,,,,,,,,,,,,,,,,,,,,,,,,hope diamond,sign,,w,w,w,w,w,w,w,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,,,,,,,,,,,,,,sign;;11,chess;;b  r   r;k    p p;p  q np ;Np P    ;   p Q  ;P    PPB; PP    P; K   R  ,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,w,,,w,,,,,w,w,w,w,w,,,twelve plus one,,z;;1;1;WEEP;ELNOPSTUVW ELNOPSTUVW ELNOPSTUVW ELNOPSTUVW;12,,,,,,,,,,,,z;;1;1;Nc6+;JKLMNOPQ abcdefgh 12345678 ^_&(+*=%;7,w
 ,,,w,,,typewriter (alphabet order),,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,w,,,,,w,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,w,,,,,w,,,,w,w,w,w,w,,,,,,,,,,,,,,antikythera,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,w,,,w,,,,,w,w,w,w,w,w,w,w,w,w,w,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,sign;;7,chess;;  b k n ;pp   n  ;   p  p ;B       ;   p   R;N  P N  ;PP  P  P;    K   ,,sign;;8,chess;;        ;    N  n; B     k; KQ     ;      r ;        ;        ; R      ,w,,,,,,,,,,,,w
-,,,w,,,,,,t,w,e,l,v,e,p,l,u,s,o,n,e,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,R;;;;;first,,,,,,,w,w,w,w,w,,,z;;1;1;LKUN;BKWNLEOF PJUNEOAK MNUEOSCH QWENHWTL;6,,,,,,,,,w,w,w,w,w,w,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,,sign;;11,chess;;b  r   r;k    p p;p  q np ;Np P    ;   p Q  ;P    PPB; PP    P; K   R  ,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,sign;;9,chess;;KNPKPRNQ;RBRPQRBP;P PRBPRP;PPPQKPQP;PPPBBPKP;PRPRKPRP;PKPPPPBP;RNBQRRNR,,sign;;10,chess;;        ;        ;        ;        ;       b;K k    b; r      ;       q;auto,w,,,,,,,,,,,z;;1;1;Nc6+;JKLMNOPQ abcdefgh 12345678 ^_&(+*=%;7,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,,,,,,,,,,,,w
-,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,,,,,,w,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,w,,,,,w,,,,w,w,w,w,w,,,,,,,,,,,w,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,w,,,w,,,,,w,w,w,w,w,,,,,,,,,,,w,w,w,d;d_chess;2;1,,w,w,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,w,w,,,,,,w,w,w,w,w,,,antikythera,,,,,,,,w,sign;;7,chess;;  b k n ;pp   n  ;   p  p ;B       ;   p   R;N  P N  ;PP  P  P;    K   ,,,sign;;8,chess;;        ;    N  n; B     k; KQ     ;      r ;        ;        ; R      ,w
+,,,w,,,,,,t,w,e,l,v,e,p,l,u,s,o,n,e,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,w,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,R;;;;;first,,,,,,,w,w,w,w,w,,,,,,,,,,,w,,,,z;;1;1;LKUN;BKWNLEOF PJUNEOAK MNUEOSCH QWENHWTL;6,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,w,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,organ,,,,,,,,w,sign;;9,chess;;KNPKPRNQ;RBRPQRBP;P PRBPRP;PPPQKPQP;PPPBBPKP;PRPRKPRP;PKPPPPBP;RNBQRRNR,,,sign;;10,chess;;        ;        ;        ;        ;       b;K k    b; r      ;       q;auto,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,w,,,,,,,w
+,,,w,,,,,,,,,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,,,w,w,w,w,w,,,,,,,,,,,w,,,,,,,w
 ,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,d;;4;1,,,,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w,w

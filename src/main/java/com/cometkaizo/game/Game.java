@@ -45,7 +45,7 @@ public class Game implements Tickable, Renderable, InputListener {
     private final int endFadeInDuration = 100, endFadeInFinishDuration = 50, endFadeOutDuration = 100,
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
-    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, libraryDoor;
+    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor;
     private final Inventory inventory = new Inventory();
 
     /// Reads in a game from a previous save file
@@ -100,8 +100,16 @@ public class Game implements Tickable, Renderable, InputListener {
             sculpturesDoor = (Door) room.getBlockOrEntity("d_sculptures");
             modernDoor = (Door) room.getBlockOrEntity("d_modern");
             artifactsDoor = (Door) room.getBlockOrEntity("d_artifacts");
+            artifactsHallDoor = (Door) room.getBlockOrEntity("h_artifacts");
             libraryDoor = (Door) room.getBlockOrEntity("d_library");
-            if (paintingsDoor == null || sculpturesDoor == null || modernDoor == null || artifactsDoor == null || libraryDoor == null)
+            chessDoor = (Door) room.getBlockOrEntity("d_chess");
+            if (paintingsDoor == null ||
+                    sculpturesDoor == null ||
+                    modernDoor == null ||
+                    artifactsDoor == null ||
+                    artifactsHallDoor == null ||
+                    libraryDoor == null ||
+                    chessDoor == null)
                 throw new IllegalStateException("Not all doors are present");
         } catch (Exception e) {
             throw new RuntimeException("Game failed to load", e);

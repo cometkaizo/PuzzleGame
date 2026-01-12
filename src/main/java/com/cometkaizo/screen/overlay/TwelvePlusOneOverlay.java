@@ -17,17 +17,17 @@ public class TwelvePlusOneOverlay extends Overlay {
     private final Set<Letter> letters = Set.of(
             new Letter("T", 0),
             new Letter("W", 1),
-            new Letter("L", 2),
-            new Letter("V", 3),
-            new Letter("E", 4),
-            new Letter("P", 5),
-            new Letter("L", 6),
-            new Letter("U", 7),
+            new Letter("V", 2),
+            new Letter("E", 3),
+            new Letter("L", 4),
+            new Letter("L", 5),
+            new Letter("U", 6),
+            new Letter("P", 7),
             new Letter("E", 8),
             new Letter("S", 9),
-            new Letter("O", 10),
+            new Letter("N", 10),
             new Letter("E", 11),
-            new Letter("N", 12)
+            new Letter("O", 12)
     );
     private Letter selected;
 
@@ -69,6 +69,11 @@ public class TwelvePlusOneOverlay extends Overlay {
 
                 selected = null;
             }
+        }
+
+        @Override
+        protected boolean isOutlined() {
+            return super.isOutlined() || selected == this;
         }
     }
 
