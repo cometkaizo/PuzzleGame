@@ -17,7 +17,7 @@ public class VenusDeMiloSculpture extends Interactable {
     public static final String OPEN_HEART_MSG = """
             You insert the organ key into the heart and turn it.
             
-            The stone heart opens to reveal a human heart. You take it.""";
+            The stone heart opens to reveal a human heart. You take it - it feels lighter than a feather.""";
     private boolean[][] pedestalCombo = {{true, true, false, false, false, true, true}, {false, true, true, true, true, true, false}};
     private boolean chestOpen, heartOpen;
 

@@ -10,6 +10,7 @@ import com.cometkaizo.world.Vector;
  * Description: Interactable ludovisi ares sculpture
  */
 public class LudovisiAresSculpture extends Interactable {
+    private boolean chestOpen, heartOpen;
     public LudovisiAresSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
@@ -22,7 +23,7 @@ public class LudovisiAresSculpture extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new LudovisiAresOverlay(app));
+        app.setOverlay(new LudovisiAresOverlay(app, chestOpen, heartOpen, () -> chestOpen = true, () -> heartOpen = true));
     }
 
     @Override
