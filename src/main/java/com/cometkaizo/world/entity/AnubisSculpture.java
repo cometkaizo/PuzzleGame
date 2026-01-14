@@ -1,7 +1,10 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.item.FeatherItem;
 import com.cometkaizo.game.item.WeighableItem;
+import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.overlay.AnubisOverlay;
+import com.cometkaizo.screen.overlay.InventoryOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -11,6 +14,7 @@ import com.cometkaizo.world.Vector;
  * Description: Interactable anubis sculpture
  */
 public class AnubisSculpture extends Interactable {
+    private boolean scaleUnlocked;
     private WeighableItem weighed;
     public AnubisSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -24,6 +28,21 @@ public class AnubisSculpture extends Interactable {
 
     @Override
     protected void interact() {
+        if (scaleUnlocked) openScaleOverlay();
+        else {
+            app.narrate("Anubis seeks the truth...", new InventoryOverlay(app, item -> {
+                if (item instanceof FeatherItem) {
+                    scaleUnlocked = true;
+                    game.getInventory().remove(item);
+                    openScaleOverlay();
+                } else {
+                    Assets.sound("wrong").play();
+                    app.narrate("This is not the truth.", null);
+                }
+            }));
+        }
+    }
+    private void openScaleOverlay() {
         app.setOverlay(new AnubisOverlay(app, weighed, this::onWeigh));
     }
 

@@ -18,6 +18,7 @@ public class EntityTypes {
             Map.entry("ludovisi ares", LudovisiAresSculpture::new),
             Map.entry("the thinker", TheThinkerSculpture::new),
             Map.entry("statue of ra", RaSculpture::new),
+            Map.entry("hermes", HermesSculpture::new),
             Map.entry("venus de milo", VenusDeMiloSculpture::new),
             Map.entry("mephistopheles and margaretta", DoubleSidedSculpture::new),
             Map.entry("mirror", Mirror::new),

@@ -28,6 +28,19 @@ public class Sign extends Interactable {
             new Content("Mephistopheles and Margaretta", "???"),
             new Content("Venus de Milo", "Her beauty comes from what she is MISSING"),
             new Content("The Hope Diamond", "This famous diamond has a bloody history. It sparkles nicely in a strong light."),
+            new Content("Flying Mercury", """
+                    mercury, the swIft messenger, is captured mId-leap.
+                    
+                    his arms eVoke motion, extended as if in flIght.
+                    
+                    the musculature of his chest shows an Incredible attention to anatomical detail.
+                    
+                    in his right hand, he holds a diVine object.
+                    
+                    he shImmers, catching lIght on sculpted rIdges.
+                    
+                    the bronze surface glows as shadows drIve across the pedestal, emphasizing moVement and energy.
+                    """),
     };
 
     private String title, desc;
