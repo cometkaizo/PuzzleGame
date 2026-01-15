@@ -51,27 +51,41 @@ public class Light extends Block {
         var texture = getAtlasTexture();
 
         var oldClip = canvas.getGraphics().getClip();
-        canvas.getGraphics().setClip(
-                direction == Direction.RIGHT ? canvas.toScreenX(position.x - getRenderOffsetX()) : 0,
-                direction == Direction.DOWN ? canvas.toScreenY(position.y + 1 - getRenderOffsetY()) : 0,
-                direction == Direction.LEFT ? canvas.toScreenX(position.x + 1 - getRenderOffsetX()) : canvas.getWidth(),
-                direction == Direction.UP ? canvas.toScreenY(position.y - getRenderOffsetY()) : canvas.getHeight()
-        );
+        applyClip(canvas);
 
-        if (shouldRenderBase()) canvas.blitImage(atlas,
-                texture.x(), texture.y(), // src
-                getX(), getY() + 1, // dest
-                1, 1 // w and h
-        );
-        if (shouldRenderCollision()) canvas.blitImage(getCollisionTextureAtlas(),
-                texture.x(), texture.y(), // src
-                getX() + collisionOffset.x + getRenderOffsetX(), getY() + 1 + collisionOffset.y + getRenderOffsetY(), // dest
-                1, 1 // w and h
-        );
+        if (shouldRenderBase()) renderBase(canvas, atlas, texture);
+        if (shouldRenderCollision()) renderCollision(canvas, texture);
 
         canvas.getGraphics().setClip(oldClip);
 
         canvas.renderDebugBlock(position, Color.YELLOW);
+    }
+
+    private void applyClip(Canvas canvas) {
+        // clip the drawing area so that we don't draw outside the block in weird ways
+        // the first light block in a ray of light has about half the drawing area as other light blocks, since it starts in the middle
+        canvas.getGraphics().setClip(
+                direction == Direction.RIGHT ? canvas.toScreenX(position.x + (first ? 0.3 : 1) - getRenderOffsetX()) : 0,
+                direction == Direction.DOWN ? canvas.toScreenY(position.y + (first ? 0.5 : 1) - getRenderOffsetY()) : 0,
+                direction == Direction.LEFT ? canvas.toScreenX(position.x + (first ? 0.3 : 1) - getRenderOffsetX()) : canvas.getWidth(),
+                direction == Direction.UP ? canvas.toScreenY(position.y + (first ? 1 : 0) - getRenderOffsetY()) : canvas.getHeight()
+        );
+    }
+
+    private void renderBase(Canvas canvas, Image atlas, AtlasTexture texture) {
+        canvas.blitImage(atlas,
+                texture.x(), texture.y(), // src
+                getX(), getY() + 1, // dest
+                1, 1 // w and h
+        );
+    }
+
+    private void renderCollision(Canvas canvas, AtlasTexture texture) {
+        canvas.blitImage(getCollisionTextureAtlas(),
+                texture.x(), texture.y(), // src
+                getX() + collisionOffset.x + getRenderOffsetX(), getY() + 1 + collisionOffset.y + getRenderOffsetY(), // dest
+                1, 1 // w and h
+        );
     }
 
     private double getRenderOffsetY() {
@@ -109,9 +123,9 @@ public class Light extends Block {
             this.collisionOffset.set(collisionPos
                     .subtractedBy(position)
                     .with(direction.axis().invert(), 0D));
-            // if in positive x or y directions, offset it back by one to render correctly
+            // if in positive x or y directions, offset it back by a bit to render correctly
             if (direction == Direction.UP || direction == Direction.RIGHT) {
-                collisionOffset.subtract(direction.delta());
+                collisionOffset.subtract(Vector.immutableDouble(direction.delta()).scaledBy(0.8));
             }
         }
     }

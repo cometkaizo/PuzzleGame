@@ -659,32 +659,35 @@ public class Room implements Tickable, Renderable, Resettable {
             return entity;
         }
 
-        public void lightUp(Vector.Int fromPos, Direction direction) {
+        public void lightUp(Vector.Int fromPos, Direction direction, Object emitter) {
             var pos = Vector.mutableInt(fromPos);
             while (!getBlock(pos).map(Block::blocksLight).orElse(true)) {
                 // set the light
                 boolean first = pos.equals(fromPos);
-                var collision = first ? Optional.<CollidableEntity>empty() : findFirstEntityCollision(pos, direction);
+                var collision = findFirstEntityCollision(pos, direction, emitter);
                 setLight(pos, new Light(this, pos, direction, collision.orElse(null), first));
 
-                // update any blocks or entities
-                getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(direction));
-                getBlock(pos).ifPresent(b -> b.updateLight(direction));
+                // update any blocks or entities if it's not the emission block
+                if (!first) {
+                    getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(direction));
+                    getBlock(pos).ifPresent(b -> b.updateLight(direction));
+                }
 
                 // move the current pos
                 pos.add(direction.delta());
 
                 // if collision with entity occurred, break
-                if (collision.isPresent()) break;
+                if (collision.isPresent()) return;
             }
             // update the blocking block/entity
             getEntitiesWithinBlock(pos).forEach(e -> e.updateLight(direction));
             getBlock(pos).ifPresent(b -> b.updateLight(direction));
         }
 
-        private Optional<CollidableEntity> findFirstEntityCollision(Vector.MutableInt pos, Direction direction) {
+        private Optional<CollidableEntity> findFirstEntityCollision(Vector.MutableInt pos, Direction direction, Object emitter) {
             var entities = getEntitiesWithinBlock(pos).stream()
                     .filter(CollidableEntity.class::isInstance)
+                    .filter(e -> e != emitter)
                     .filter(Entity::blocksLight)
                     .map(CollidableEntity.class::cast);
             return switch (direction) {

@@ -25,7 +25,7 @@ public class RaSculpture extends CollidableEntity {
     @Override
     public void tickLightEmission() {
         super.tickLightEmission();
-        if (emittingLight) layer.lightUp(lightEmissionPos(), direction);
+        if (emittingLight) layer.lightUp(lightEmissionPos(), direction, this);
     }
     private Vector.ImmutableInt lightEmissionPos() {
         if (direction == Direction.DOWN) return Vector.immutableInt(position);
