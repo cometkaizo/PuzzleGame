@@ -28,23 +28,20 @@ public class AnubisSculpture extends Interactable {
 
     @Override
     protected void interact() {
-        if (scaleUnlocked) openScaleOverlay();
+        if (scaleUnlocked) app.setOverlay(new AnubisOverlay(app, weighed, this::onWeigh));
         else {
-            app.narrate("Anubis seeks the truth...", new InventoryOverlay(app, item -> {
+            app.narrate("To awaken Ra, Anubis seeks the truth...", new InventoryOverlay(app, item -> {
                 if (item instanceof FeatherItem) {
                     scaleUnlocked = true;
                     game.getInventory().remove(item);
                     if (room.getBlockOrEntity("statue of ra") instanceof RaSculpture ra) ra.turnOnLight();
-                    openScaleOverlay();
+                    app.narrate("Anubis accepts the truth. The statue of Ra awakens...", new AnubisOverlay(app, weighed, this::onWeigh));
                 } else {
                     Assets.sound("wrong").play();
                     app.narrate("This is not the truth.", null);
                 }
             }));
         }
-    }
-    private void openScaleOverlay() {
-        app.setOverlay(new AnubisOverlay(app, weighed, this::onWeigh));
     }
 
     private void onWeigh(WeighableItem item, AnubisOverlay.WeighResult weighResult) {

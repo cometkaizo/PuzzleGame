@@ -59,13 +59,13 @@ public class AnubisOverlay extends Overlay {
 
         if (getWeighResult() == WeighResult.NO_OBJECT) {
             ra.setDirection(Direction.UP);
-            next = new NarrationOverlay(app, "The Statue of Ra turns to the top.");
+            next = new NarrationOverlay(app, "Ra turns his gaze to the north.");
         } else if (getWeighResult() == WeighResult.OBJECT_HEAVIER) {
             ra.setDirection(Direction.LEFT);
-            next = new NarrationOverlay(app, "The Statue of Ra turns to the left.");
+            next = new NarrationOverlay(app, "Ra turns his gaze westward.");
         } else if (getWeighResult() == WeighResult.OBJECT_LIGHTER) {
             ra.setDirection(Direction.DOWN);
-            next = new NarrationOverlay(app, "The Statue of Ra turns to the bottom.");
+            next = new NarrationOverlay(app, "Ra turns his gaze to the south.");
         }
     }
 
