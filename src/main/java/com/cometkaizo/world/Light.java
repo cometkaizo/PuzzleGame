@@ -65,7 +65,7 @@ public class Light extends Block {
         // clip the drawing area so that we don't draw outside the block in weird ways
         // the first light block in a ray of light has about half the drawing area as other light blocks, since it starts in the middle
         canvas.getGraphics().setClip(
-                direction == Direction.RIGHT ? canvas.toScreenX(position.x + (first ? 0.3 : 1) - getRenderOffsetX()) : 0,
+                direction == Direction.RIGHT ? canvas.toScreenX(position.x - getRenderOffsetX()) : 0,
                 direction == Direction.DOWN ? canvas.toScreenY(position.y + (first ? 0.5 : 1) - getRenderOffsetY()) : 0,
                 direction == Direction.LEFT ? canvas.toScreenX(position.x + (first ? 0.3 : 1) - getRenderOffsetX()) : canvas.getWidth(),
                 direction == Direction.UP ? canvas.toScreenY(position.y + (first ? 1 : 0) - getRenderOffsetY()) : canvas.getHeight()
@@ -92,7 +92,7 @@ public class Light extends Block {
         return direction == Direction.UP ? 0.5 : direction == Direction.DOWN ? -0.4 : 0;
     }
     private double getRenderOffsetX() {
-        return direction == Direction.LEFT ? -0.2 : direction == Direction.RIGHT ? 0.2 : 0;
+        return direction == Direction.LEFT ? -0.2 : direction == Direction.RIGHT ? 0 : 0;
     }
 
     private boolean shouldRenderBase() {

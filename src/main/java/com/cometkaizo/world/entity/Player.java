@@ -336,8 +336,8 @@ public class Player extends MovableEntity {
     }
 
     @Override
-    protected double getTextureDeltaXFactor() {
-        return -0.5;
+    protected int getTextureDeltaX() {
+        return -23;
     }
 
     public static Dialogue dialogue(String msg, String textureVariation, Dialogue next) {

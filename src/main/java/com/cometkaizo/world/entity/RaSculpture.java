@@ -9,7 +9,7 @@ import java.awt.*;
  * Date Modified: TODO
  * Description: Sculpture of Ra
  */
-public class RaSculpture extends CollidableEntity {
+public class RaSculpture extends Interactable {
     private Direction direction = Direction.UP;
     private boolean emittingLight = false;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -20,6 +20,15 @@ public class RaSculpture extends CollidableEntity {
     @Override
     public void reset() {
         super.reset();
+    }
+
+    @Override
+    protected void interact() {
+        app.narrate(getInteractionMessage(), null);
+    }
+    private String getInteractionMessage() {
+        return "Statue of Ra, the Egyptian God of the Sun." +
+                (emittingLight ? "\n\nA powerful beam of light shines from the sculpture." : "");
     }
 
     @Override
