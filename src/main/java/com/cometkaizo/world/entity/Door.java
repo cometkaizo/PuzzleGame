@@ -2,6 +2,7 @@ package com.cometkaizo.world.entity;
 
 import com.cometkaizo.game.item.ChessKeyItem;
 import com.cometkaizo.game.item.EntranceKeyItem;
+import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.DoorOverlay;
 import com.cometkaizo.world.Args;
@@ -29,6 +30,8 @@ public class Door extends Interactable {
         else open();
     }
     public void open() {
+        if (open) return;
+        Assets.sound("door").play();
         open = true;
     }
 
