@@ -81,8 +81,32 @@ public class BookOverlay extends Overlay {
                     new MayanNumber(10),
                     new MayanNumber(11)
             ),
-            new Content("", ""),
-            new Content("", ""),
+            new Content("", "",
+                    new Label("China", 49, -4),
+                    new Label("Russia", 42, -30),
+                    new Label("India", 36, 4),
+                    new Label("Japan", 71, -11),
+                    new Label("Kanagawa", 71, -6, 15),
+                    new Label("Canada", -63, -27),
+                    new Label("United States", -65, -7),
+                    new Label("Brazil", -38, 24),
+                    new Label("Greenland", -25, -41),
+                    new Label("Australia", 69, 34),
+                    new Label("France", -6, -11),
+                    new Label("England", -10, -18),
+                    new Label("Antarctica", 32, 57)
+                    ),
+            new Content("", "Organs in the Human Body\n\n\n1 - Brain\n\n2 - Mouth\n\n3 - Esophagus\n\n4 - Lungs\n\n5 - Heart\n\n6 - Liver\n\n7 - Stomach\n\n8 - Small Intestine\n\n9 - Large Intestine",
+                    new Label("1", -51, -48),
+                    new Label("2", -39, -35),
+                    new Label("3", -52, -28),
+                    new Label("4", -60, -8),
+                    new Label("4", -43, -8),
+                    new Label("5", -51, -7),
+                    new Label("6", -60, 10),
+                    new Label("7", -46, 13),
+                    new Label("8", -51, 28),
+                    new Label("9", -39, 27)),
     };
     private final int variant;
     private final Content content;
@@ -154,6 +178,15 @@ public class BookOverlay extends Overlay {
 
             g.drawImage(image, x, y, symbolSize, symbolSize, null);
             text.render(canvas);
+        }
+    }
+
+    public static class Label extends Text {
+        public Label(String message, int dx, int dy) {
+            this(message, dx, dy, 24);
+        }
+        public Label(String message, int dx, int dy, int size) {
+            super(message, Assets.font(size), Color.BLACK, w -> w/2 + dx, h -> h/2 + dy, 100, true, true);
         }
     }
 }
