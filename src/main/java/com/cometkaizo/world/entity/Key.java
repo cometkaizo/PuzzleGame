@@ -16,6 +16,11 @@ public class Key extends Collectible {
     }
 
     @Override
+    protected String pickupMessage() {
+        return "You pick up the key.";
+    }
+
+    @Override
     protected Item newItem() {
         return new EntranceKeyItem();
     }

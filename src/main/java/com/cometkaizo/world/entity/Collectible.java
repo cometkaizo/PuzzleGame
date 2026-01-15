@@ -26,12 +26,13 @@ public abstract class Collectible extends Interactable {
 
     @Override
     protected void interact() {
-        room.player.displayedCollectible = this;
         room.player.onInteract();
         collectTime = 0;
+        app.narrate(pickupMessage(), null);
         game.getInventory().add(newItem());
         Assets.sound("notify").play();
     }
+    protected abstract String pickupMessage();
     protected abstract Item newItem();
 
     @Override
