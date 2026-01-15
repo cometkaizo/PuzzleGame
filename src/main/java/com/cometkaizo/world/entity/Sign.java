@@ -14,7 +14,7 @@ public class Sign extends Interactable {
     public static final Content[] CONTENT = {
             new Content("Mayan Calendar", "The ancient Mayans used a system of interlocking cycles to track time. Each day, all cycles are incremented by one."),
             new Content("Gallery A", "???"),
-            new Content("Gallery B", "Wall of time-honored classics"),
+            new Content("Gallery B", "Here is a wall of time-honored classics in sequence, but one is missing..."),
             new Content("Gallery C", "???"),
             new Content("Gallery D", "China called itself the \"Central Kingdom\""), // Russia, Kanagawa, Penguins
             new Content("Gallery E", "Colorful squares have hidden values. With exacting mathematical method, Piet Mondrian produces paintings which are precisely the sum of their parts."),

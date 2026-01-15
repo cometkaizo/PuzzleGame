@@ -34,6 +34,7 @@ public class AnubisSculpture extends Interactable {
                 if (item instanceof FeatherItem) {
                     scaleUnlocked = true;
                     game.getInventory().remove(item);
+                    if (room.getBlockOrEntity("statue of ra") instanceof RaSculpture ra) ra.turnOnLight();
                     openScaleOverlay();
                 } else {
                     Assets.sound("wrong").play();

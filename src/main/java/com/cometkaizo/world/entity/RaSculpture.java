@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class RaSculpture extends CollidableEntity {
     private Direction direction = Direction.UP;
-    private boolean emittingLight = true;
+    private boolean emittingLight = false;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
@@ -31,6 +31,9 @@ public class RaSculpture extends CollidableEntity {
         if (direction == Direction.DOWN) return Vector.immutableInt(position);
         return Vector.immutableInt(position).addedTo(0, 1);
     }
+    public void turnOnLight() {
+        emittingLight = true;
+    }
 
     @Override
     public void render(Canvas canvas) {
@@ -40,6 +43,7 @@ public class RaSculpture extends CollidableEntity {
 
     @Override
     protected String getTexturePath() {
+        if (!emittingLight) return "sculpture/ra/off";
         return "sculpture/ra/" + switch (direction) {
             case UP -> "up";
             case DOWN -> "down";
