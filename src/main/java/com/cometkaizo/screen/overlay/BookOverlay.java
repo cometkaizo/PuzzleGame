@@ -81,6 +81,8 @@ public class BookOverlay extends Overlay {
                     new MayanNumber(10),
                     new MayanNumber(11)
             ),
+            new Content("", ""),
+            new Content("", ""),
     };
     private final int variant;
     private final Content content;
