@@ -41,9 +41,12 @@ public class Sign extends Interactable {
                     
                     the bronze surface glows as shadows drIve across the pedestal, emphasizing moVement and energy.
                     """),
+            new Content("Rosetta Stone", "This 2,000-year-old artifact provides the key for linguists to unlock the meaning of the ÇäÑÑŽ language, revealing vast knowledge of the calendar systems of ancient civilizations."),
+            new Content("Archimedes Death Ray", "This legendary weapon was supposedly used to focus sunlight to set attacking Roman ships ablaze during the Siege of Syracuse."),
     };
 
     private String title, desc;
+    private String overlayVariant;
 
     public Sign(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -55,11 +58,13 @@ public class Sign extends Interactable {
         int messageVariant = originalArgs.nextInt(1) - 1;
         title = CONTENT[messageVariant].title;
         desc = CONTENT[messageVariant].desc;
+
+        overlayVariant = originalArgs.next("regular");
     }
 
     @Override
     protected void interact() {
-        app.setOverlay(new SignOverlay(app, title, desc, "sign"));
+        app.setOverlay(new SignOverlay(app, title, desc, overlayVariant));
     }
 
     @Override

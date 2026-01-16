@@ -32,7 +32,7 @@ public class SignOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderImage(Assets.texture("gui/" + variant), canvas.halfWidth(), canvas.halfHeight(), -0.5, -0.5);
+        canvas.renderImage(Assets.texture("gui/sign/" + variant), canvas.halfWidth(), canvas.halfHeight(), -0.5, -0.5);
 
         title.render(canvas);
         desc.render(canvas);

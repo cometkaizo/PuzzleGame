@@ -14,6 +14,7 @@ public class BlockTypes {
             "", AirBlock::new,
             "g", GroundBlock::new,
             "w", WallBlock::new,
+            "counter", CounterBlock::new,
             "b", BarrierBlock::new
     );
 

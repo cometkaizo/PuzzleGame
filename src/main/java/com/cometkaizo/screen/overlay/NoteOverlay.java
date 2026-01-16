@@ -10,13 +10,13 @@ import java.awt.*;
 /**
  * Author: Andy Wang
  * Date Modified: TODO
- * Description: Screen overlay for a letter
+ * Description: Screen overlay for a note or letter with no title
  */
-public class LetterOverlay extends Overlay {
+public class NoteOverlay extends Overlay {
     private final Text content;
     private final String variant;
 
-    public LetterOverlay(GameApp app, String message, String variant) {
+    public NoteOverlay(GameApp app, String message, String variant) {
         super(app);
         content = new Text(message, Assets.font(20), Color.BLACK,
                 w -> w / 2 - 48,
@@ -28,7 +28,7 @@ public class LetterOverlay extends Overlay {
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-        canvas.renderCenteredImage(Assets.texture("gui/" + variant));
+        canvas.renderCenteredImage(Assets.texture("gui/note/" + variant));
 
         content.render(canvas);
     }

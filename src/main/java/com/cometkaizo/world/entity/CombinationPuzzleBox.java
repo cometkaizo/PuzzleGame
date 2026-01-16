@@ -5,7 +5,7 @@ import com.cometkaizo.game.item.MachinePieceItem;
 import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.CombinationLockOverlay;
-import com.cometkaizo.screen.overlay.LetterOverlay;
+import com.cometkaizo.screen.overlay.NoteOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -71,7 +71,7 @@ public class CombinationPuzzleBox extends Interactable {
         else app.narrate("You've already solved this lock.", null);
     }
     private void openMessage() {
-        app.setOverlay(new LetterOverlay(app, MESSAGES[variant - 1], "note"));
+        app.setOverlay(new NoteOverlay(app, MESSAGES[variant - 1], "mayan_note"));
     }
 
     @Override

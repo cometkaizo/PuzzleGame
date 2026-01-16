@@ -59,11 +59,26 @@ public class Door extends Interactable {
 
     @Override
     public void render(Canvas canvas) {
+        super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, open ? Color.GREEN : Color.PINK);
     }
 
     @Override
     protected String getTexturePath() {
-        return "door";
+        return "door/" + (open ? "open/" : "closed/") + name;
+    }
+
+    @Override
+    protected int getTextureDeltaX() {
+        return -2;
+    }
+    @Override
+    protected int getTextureDeltaY() {
+        return 2;
+    }
+
+    @Override
+    public double getRenderY() {
+        return position.y + 0.8;
     }
 }

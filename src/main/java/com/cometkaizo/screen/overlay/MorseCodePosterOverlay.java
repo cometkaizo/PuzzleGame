@@ -43,12 +43,12 @@ public class MorseCodePosterOverlay extends Overlay {
         title = new Text("""
                 Morse Code Translation""", Assets.font(40), Color.BLACK,
                 w -> w / 2 - 58,
-                h -> h / 2 - 78,
+                h -> h / 2 - 82,
                 200, false, false);
         desc = new Text("""
-                Each letter below, in ALPHABETICAL ORDER from top to bottom, is paired with a dot-dash combo.""", Assets.font(20), Color.BLACK,
+                Each letter from the ÇäÑÑŽ language, in ALPHABETICAL ORDER from top to bottom, is paired with a dot-dash combo.""", Assets.font(20), Color.BLACK,
                 w -> w / 2 - 58,
-                h -> h / 2 - 68,
+                h -> h / 2 - 72,
                 116, false, false);
     }
 

@@ -1,9 +1,13 @@
 package com.cometkaizo.world.entity;
 
-import com.cometkaizo.screen.overlay.LetterOverlay;
+import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.overlay.NoteOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
+
+import java.awt.*;
+
 /**
  * Author: Andy Wang
  * Date Modified: TODO
@@ -30,11 +34,27 @@ public class Letter extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new LetterOverlay(app, MESSAGE, "letter"));
+        app.setOverlay(new NoteOverlay(app, MESSAGE, "letter"));
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+        super.render(canvas);
+        canvas.renderDebugBoundingBox(boundingBox, Color.BLUE);
     }
 
     @Override
     protected String getTexturePath() {
         return "letter";
+    }
+
+    @Override
+    protected double getTextureDeltaYFactor() {
+        return -2.5;
+    }
+
+    @Override
+    public double getRenderY() {
+        return position.y + 0.8;
     }
 }

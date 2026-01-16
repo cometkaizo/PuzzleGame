@@ -109,7 +109,7 @@ public class BookOverlay extends Overlay {
                     new Label("9", -39, 27)),
             // ÑŽÇäëØü
             new Content("""
-                    DICTIONARY of the Symbolic Language
+                    DICTIONARY of the ÇäÑÑŽ Language
                     
                     
                     ÑŽØŽÇ
