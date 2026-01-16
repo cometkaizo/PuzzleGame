@@ -25,7 +25,7 @@ public class TwelvePlusOne extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new TwelvePlusOneOverlay(app));
+        app.setOverlay(overlay);
     }
 
     @Override
