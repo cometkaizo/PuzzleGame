@@ -56,6 +56,7 @@ public class CombinationPuzzleBox extends Interactable {
 
     private boolean open;
     private long openTick = -1;
+    private CombinationLockOverlay overlay;
 
 
     public CombinationPuzzleBox(Room.Layer layer, Vector.MutableDouble position, Args args) {
@@ -64,7 +65,7 @@ public class CombinationPuzzleBox extends Interactable {
 
     @Override
     protected void interact() {
-        if (!open) app.setOverlay(new CombinationLockOverlay(app, correctCombination, digitOptions, this::open, overlayVariant));
+        if (!open) app.setOverlay(overlay);
         else if (opensMessage()) openMessage();
         else app.narrate("You've already solved this lock.", null);
     }
@@ -125,6 +126,8 @@ public class CombinationPuzzleBox extends Interactable {
         solid = originalArgs.next("solid").equalsIgnoreCase("solid");
 
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
+
+        overlay = new CombinationLockOverlay(app, correctCombination, digitOptions, this::open, overlayVariant);
     }
 
     @Override
