@@ -6,6 +6,7 @@ import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Dialogue;
+import com.cometkaizo.screen.overlay.InventoryOverlay;
 import com.cometkaizo.util.MathUtils;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
@@ -32,7 +33,6 @@ public class Player extends MovableEntity {
     protected int jumpTime = -1, walkTime = -1, interactTime = -1, dialogueInteractTime = -1, jumpBufferTime = -1;
     protected int prevWalkTime = -1;
     protected boolean facingRight = true;
-    protected Collectible displayedCollectible;
 
     public Player(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -226,10 +226,10 @@ public class Player extends MovableEntity {
     }
 
     private boolean walkDisabled() {
-        return displayingCollectible() || game.ended() || game.hasDialogue();
+        return game.ended() || game.hasDialogue();
     }
     private boolean jumpDisabled() {
-        return displayingCollectible() || game.ended() || game.hasDialogue();
+        return game.ended() || game.hasDialogue();
     }
 
     @Override
@@ -246,20 +246,14 @@ public class Player extends MovableEntity {
             jump();
         }
         if (input == InputBindings.INTERACT.get()) {
-            if (canConfirmCollectible()) {
-                displayedCollectible = null;
+            if (canInteract()) { // this should run after all interactable entities have been checked for interaction
+                                 // if any of those entities have interacted, then this if statement will not pass
+                app.setOverlay(new InventoryOverlay(app));
             }
-            else if (canInteractDialogue()) game.advanceDialogue();
         }
     }
-    public boolean canConfirmCollectible() {
-        return interactTime == -1 && displayingCollectible();
-    }
-    public boolean canInteractDialogue() {
-        return dialogueInteractTime == -1 && !displayingCollectible();
-    }
     public boolean canInteract() {
-        return interactTime == -1 && !displayingCollectible();
+        return interactTime == -1;
     }
 
     public void jump() {
@@ -289,13 +283,8 @@ public class Player extends MovableEntity {
         return isJumping();
     }
 
-    public boolean displayingCollectible() {
-        return displayedCollectible != null;
-    }
-
     @Override
     protected String getTexturePath() {
-        if (displayingCollectible()) return "player/paws_up";
         if (jumpTime >= 0 && jumpTime < 5) return "player/jump";
         return "player/normal";
     }
@@ -323,7 +312,7 @@ public class Player extends MovableEntity {
             g.translate(screenX, screenY);
             if (angle != 0)
                 g.rotate(angle);
-            if (!facingRight && !displayingCollectible()) g.scale(-1, 1);
+            if (!facingRight) g.scale(-1, 1);
             g.translate(-screenX, -screenY);
         }
 
