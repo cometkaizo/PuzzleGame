@@ -27,7 +27,11 @@ public class Door extends Interactable {
         if (open) return;
         if (this == game.libraryDoor) app.setOverlay(new DoorOverlay(app, EntranceKeyItem.class, this::open));
         else if (this == game.chessDoor) app.setOverlay(new DoorOverlay(app, ChessKeyItem.class, this::open));
-        else open();
+        else app.narrate("It's locked.", null);
+    }
+    @Override
+    protected void solve() {
+        open();
     }
     public void open() {
         if (open) return;

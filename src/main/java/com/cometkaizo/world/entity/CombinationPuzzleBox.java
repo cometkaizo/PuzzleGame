@@ -72,12 +72,18 @@ public class CombinationPuzzleBox extends Interactable {
         app.setOverlay(new LetterOverlay(app, MESSAGES[variant - 1], "note"));
     }
 
+    @Override
+    protected void solve() {
+        actuallyOpen();
+    }
+
     private void open() {
         open = true;
         openTick = game.tick + 20;
     }
 
     private void actuallyOpen() {
+        open = true;
         if (opensMessage()) openMessage();
         else if (givesItem()) giveItem();
     }

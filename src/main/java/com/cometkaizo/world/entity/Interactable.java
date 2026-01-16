@@ -22,9 +22,14 @@ public abstract class Interactable extends CollidableEntity {
 
     private void onKeyPressed(KeyPressedEvent event) {
         KeyBinding input = event.input();
-        if (input == InputBindings.INTERACT.get() && canBeInteracted()) {
-            interact();
-            room.player.onInteract();
+        if (canBeInteracted()) {
+            if (input == InputBindings.INTERACT.get()) {
+                interact();
+                room.player.onInteract();
+            } else if (input == InputBindings.SOLVE.get()) {
+                solve();
+                room.player.onInteract();
+            }
         }
     }
 
@@ -33,6 +38,9 @@ public abstract class Interactable extends CollidableEntity {
     }
 
     protected abstract void interact();
+    protected void solve() {
+
+    }
 
     protected double interactDistance() {
         return 0.1;

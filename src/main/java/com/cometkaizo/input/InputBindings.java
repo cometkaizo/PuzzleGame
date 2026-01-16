@@ -23,8 +23,8 @@ public class InputBindings {
     public static final Supplier<KeyBinding> UP = GAME.register("up", app -> new KeyBinding("Up", VK_W));
     public static final Supplier<KeyBinding> DOWN = GAME.register("down", app -> new KeyBinding("Down", VK_S));
     public static final Supplier<KeyBinding> INTERACT = GAME.register("interact", app -> new KeyBinding("Interact", VK_E));
+    public static final Supplier<KeyBinding> SOLVE = GAME.register("solve", app -> new KeyBinding("solve", VK_V));
     public static final Supplier<KeyBinding> TOGGLE_DEBUG = GAME.register("toggle_debug", app -> new KeyBinding("Toggle Debug", VK_Z));
-    public static final Supplier<MouseButtonBinding> THROW = GAME.register("throw", app -> new MouseButtonBinding("Throw", BUTTON1));
 
     public static final Supplier<KeyBinding> OVERLAY_CLOSE = OVERLAY.register("overlay_close", app -> new KeyBinding("Close Overlay", VK_E));
     public static final Supplier<MouseButtonBinding> OVERLAY_INTERACT = OVERLAY.register("overlay_interact", app -> new MouseButtonBinding("Interact Overlay", BUTTON1));
