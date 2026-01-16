@@ -11,6 +11,8 @@ import com.cometkaizo.world.Vector;
  * Description: Interactable twelve plus one puzzle
  */
 public class TwelvePlusOne extends Interactable {
+    private final TwelvePlusOneOverlay overlay = new TwelvePlusOneOverlay(app);
+
     public TwelvePlusOne(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
