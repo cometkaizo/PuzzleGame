@@ -21,10 +21,10 @@ public class BookOverlay extends Overlay {
             new Content("""
                     The Mayan Calendar is an ancient system of keeping track of time. The Mayans identified each day with four digits.
                     
-                    Digit 1 = number between 0 - 12
-                    Digit 2 = 20 spirit names
-                    Digit 3 = number between 0 - 19
-                    Digit 4 = 19 month names
+                    Digit 1 is a number between 0 - 12
+                    Digit 2 is one of 20 spirit names
+                    Digit 3 is a number between 0 - 19
+                    Digit 4 is one of 19 month names
                     
                     Mayan mathematics
                     """, """
