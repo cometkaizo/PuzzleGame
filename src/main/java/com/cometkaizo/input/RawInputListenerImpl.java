@@ -56,7 +56,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (inactive()) return;
+//        if (inactive()) return; // don't block "release" events when inactive
         keyBindings.values().forEach(binding -> {
             if (binding instanceof KeyBinding keyBinding && e.getKeyCode() == keyBinding.key) {
                 keyBinding.isDown = false;
@@ -87,7 +87,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (inactive()) return;
+//        if (inactive()) return; // don't block "release" events when inactive
         keyBindings.values().forEach(binding -> {
             if (binding instanceof MouseButtonBinding buttonBinding && e.getButton() == buttonBinding.button) {
                 buttonBinding.isDown = false;
