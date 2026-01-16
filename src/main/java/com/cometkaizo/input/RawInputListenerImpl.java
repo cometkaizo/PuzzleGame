@@ -41,7 +41,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (prevInactive) return;
+        if (inactive()) return;
         keyBindings.values().forEach(binding -> {
             if (binding instanceof KeyBinding keyBinding &&
                     e.getKeyCode() == keyBinding.key) {
@@ -56,7 +56,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (prevInactive) return;
+        if (inactive()) return;
         keyBindings.values().forEach(binding -> {
             if (binding instanceof KeyBinding keyBinding && e.getKeyCode() == keyBinding.key) {
                 keyBinding.isDown = false;
@@ -72,7 +72,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (prevInactive) return;
+        if (inactive()) return;
         keyBindings.values().forEach(binding -> {
             if (binding instanceof MouseButtonBinding buttonBinding &&
                     e.getButton() == buttonBinding.button) {
@@ -87,7 +87,7 @@ public class RawInputListenerImpl implements RawInputListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (prevInactive) return;
+        if (inactive()) return;
         keyBindings.values().forEach(binding -> {
             if (binding instanceof MouseButtonBinding buttonBinding && e.getButton() == buttonBinding.button) {
                 buttonBinding.isDown = false;
@@ -127,7 +127,7 @@ public class RawInputListenerImpl implements RawInputListener {
     @Override
     public void tick() {
         if (inactive() && !prevInactive) interruptHeldKeys();
-        tickHeldKeys();
+        else tickHeldKeys();
         prevInactive = inactive();
     }
 
