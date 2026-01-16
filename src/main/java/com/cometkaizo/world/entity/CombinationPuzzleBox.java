@@ -1,6 +1,7 @@
 package com.cometkaizo.world.entity;
 
 import com.cometkaizo.game.item.ChessKeyItem;
+import com.cometkaizo.game.item.MachinePieceItem;
 import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.CombinationLockOverlay;
@@ -92,15 +93,21 @@ public class CombinationPuzzleBox extends Interactable {
         return variant <= 5;
     }
     private boolean givesItem() {
-        return variant >= 7 && variant <= 11;
+        return variant >= 6 && variant <= 12;
     }
     private void giveItem() {
-        if (variant == 7) {
+        if (variant == 6) {
+            game.getInventory().add(new MachinePieceItem());
+            app.narrate("Inside the locked box is a part from a machine. You take it.", null);
+        } else if (variant == 7) {
             game.getInventory().add(new ChessKeyItem());
             app.narrate("Inside the locked box is a key. You take it.", null);
-        } else {
+        } else if (8 <= variant && variant <= 11) {
             game.getInventory().add(new NoteItem(variant - 8));
             app.narrate("Inside the locked box is a note. You take it.", null);
+        } else if (variant == 12) {
+            game.getInventory().add(new MachinePieceItem());
+            app.narrate("Inside the locked box is a part from a machine. You take it.", null);
         }
     }
 
