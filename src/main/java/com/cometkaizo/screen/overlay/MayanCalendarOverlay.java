@@ -96,6 +96,7 @@ public class MayanCalendarOverlay extends Overlay {
             app.setOverlay(new NarrationOverlay(app, "The door to the sculptures room swings open."));
         } else if (isCurrentCombo(correctArtifactsCombo)) {
             app.getGame().artifactsDoor.open();
+            app.getGame().artifactsHallDoor.open();
             app.setOverlay(new NarrationOverlay(app, "The door to the artifacts room swings open."));
         } else if (isCurrentCombo(correctBasementCombo)) {
             app.getGame().basementDoor.open();
