@@ -18,6 +18,7 @@ import java.awt.*;
 public class Door extends Interactable {
     private int w, h;
     private boolean open;
+    private String roomName;
     public Door(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
     }
@@ -27,8 +28,12 @@ public class Door extends Interactable {
         if (open) return;
         if (this == game.libraryDoor) app.setOverlay(new DoorOverlay(app, EntranceKeyItem.class, this::open));
         else if (this == game.chessDoor) app.setOverlay(new DoorOverlay(app, ChessKeyItem.class, this::open));
-        else app.narrate("It's locked.", null);
+        else app.narrate(getRoomNameMessage() + "It's locked.", null);
     }
+    private String getRoomNameMessage() {
+        return roomName == null ? "" : "The door to the " + roomName + ".\n\n";
+    }
+
     @Override
     protected void solve() {
         open();
@@ -46,6 +51,8 @@ public class Door extends Interactable {
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
+
+        roomName = originalArgs.next(null);
     }
 
     @Override

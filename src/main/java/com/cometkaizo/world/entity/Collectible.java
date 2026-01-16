@@ -62,15 +62,7 @@ public abstract class Collectible extends Interactable {
         double translateX = 0, translateY = 0;
         double alpha = 1;
 
-        double playerScreenX = canvas.toScreenX(canvas.lerp(room.player.getOldX(), room.player.getX()));
-        double playerScreenY = canvas.toScreenY(canvas.lerp(room.player.getOldY(), room.player.getY()));
-
-        if (!collected()) {
-
-        } else if (room.player.displayedCollectible == this) {
-            translateX = playerScreenX - screenX + canvas.toScreenLength(0.63);
-            translateY = playerScreenY - screenY - canvas.toScreenLength(2.2) * (1 - Math.pow(1 - Math.min(1, (collectTime + canvas.partialTick()) / collectDuration), 2.5));
-        } else return;
+        if (collected()) return;
 
         {
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
