@@ -1,8 +1,12 @@
 package com.cometkaizo.screen.overlay;
 
 import com.cometkaizo.app.GameApp;
+import com.cometkaizo.game.event.MousePressedEvent;
+import com.cometkaizo.game.item.MachinePieceItem;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.Clickable;
+import com.cometkaizo.screen.ImageClickable;
 
 import java.util.List;
 
@@ -25,6 +29,10 @@ public class TheThinkerOverlay extends Overlay {
             new StickyNote("e", "right", w -> w/2 - 10, h -> h/2 - 53),
             new StickyNote("u", "left", w -> w/2 - 47, h -> h/2 - 30)
     );
+    private boolean brainSolved;
+    private final Clickable brain = new ImageClickable(app, () -> {
+        if (!brainSolved) app.setOverlay(new BrainOverlay(app, this::solveBrain, this));
+    }, w -> w/2 + 12, h -> h/2 - 89, _ -> 32, _ -> 24, () -> "gui/sculpture/thinker/brain", -2, -2);
 
     public TheThinkerOverlay(GameApp app) {
         super(app);
@@ -35,6 +43,25 @@ public class TheThinkerOverlay extends Overlay {
         super.render(canvas);
         canvas.renderCenteredImage(Assets.texture("gui/sculpture/thinker/regular"));
 
+        brain.render(canvas);
         for (StickyNote note : notes) note.render(canvas);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        brain.tick();
+    }
+
+    @Override
+    protected void onClick(MousePressedEvent click) {
+        super.onClick(click);
+        brain.onClick(click);
+    }
+
+    private void solveBrain() {
+        brainSolved = true;
+        app.narrate("The immense brainpower produces what looks like a part of a machine. You take it.", this);
+        app.getGame().getInventory().add(new MachinePieceItem());
     }
 }

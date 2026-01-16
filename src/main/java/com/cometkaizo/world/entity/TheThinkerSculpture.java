@@ -10,6 +10,8 @@ import com.cometkaizo.world.Vector;
  * Description: Interactable "The Thinker" sculpture
  */
 public class TheThinkerSculpture extends Interactable {
+    private final TheThinkerOverlay overlay = new TheThinkerOverlay(app);
+
     public TheThinkerSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
@@ -22,7 +24,7 @@ public class TheThinkerSculpture extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new TheThinkerOverlay(app));
+        app.setOverlay(overlay);
     }
 
     @Override
