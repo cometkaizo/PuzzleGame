@@ -211,8 +211,8 @@ public class Game implements Tickable, Renderable, InputListener {
 
         canvas.renderString("Rowan Howell", Assets.font(40), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(43), true, true);
         canvas.renderString("Story", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.5), true, false);
-        canvas.renderString("Visual Assets (kinda)", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.2), true, false);
-        canvas.renderString("Puzzle Design (kinda)", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(41.9), true, false);
+        canvas.renderString("Visual Assets", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.2), true, false);
+        canvas.renderString("Puzzle Design", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(41.9), true, false);
     }
 
     @Override
