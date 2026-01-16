@@ -27,7 +27,9 @@ public class StringUtils {
 
         for (String word : words) {
             String line = lines.getLast();
-            String extendedLine = line.isEmpty() ? word : line + " " + word;
+            String extendedLine = line.isEmpty() && word.isEmpty() ? " " :
+                    line.isEmpty() ? word : 
+                            line + " " + word;
             if (font.stringWidth(extendedLine) > width) { // move word to next line
                 lines.add(word);
             } else {
