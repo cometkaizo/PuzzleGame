@@ -8,14 +8,14 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: 2025-12-24
+ * Date Modified: 2026-01-15
  * Description:
  * A convenience wrapper class for Graphics2D which provides the ability to use common operations such as rendering
  * using world-space coordinates (in blocks) or rendering centered text. When required functionality is too specific
  * and does not exist within this class, the {@link #getGraphics()} method can be used to acquire the raw Graphics2D instance.
  */
 public class Canvas {
-    private boolean debug = true;
+    private boolean debug;
     private int screenWidth, screenHeight;
     private double cameraX, cameraY;
     private double coordToScreen;
