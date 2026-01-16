@@ -25,20 +25,24 @@ public class MayanCalendarOverlay extends Overlay {
 
     private final Cog big = new BigCog(), med = new MediumCog(), small = new SmallCog();
     private Cog focused = null;
-    private final Clickable upButton = new ImageClickable(app, this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/up_button", -2, -2),
+    private final Clickable
+            bigUpButton = new ImageClickable(app, this::incrementBig, w -> w / 2 + 62, h -> h / 2 - 80, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/big_up_button", -2, -2),
+            upButton = new ImageClickable(app, this::increment, w -> w / 2 + 62, h -> h / 2 - 50, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/up_button", -2, -2),
             openButton = new ImageClickable(app, this::open, w -> w / 2 + 62, h -> h / 2 - 11, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/open_button", -88, -2) {
                 @Override protected boolean isOutlined() {
                     return super.isOutlined() && focused == null;
                 }},
-            downButton = new ImageClickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/down_button", -2, -2);
+            downButton = new ImageClickable(app, this::decrement, w -> w / 2 + 62, h -> h / 2 + 26, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/down_button", -2, -2),
+            bigDownButton = new ImageClickable(app, this::decrementBig, w -> w / 2 + 62, h -> h / 2 + 56, _ -> 23, _ -> 23, () -> "gui/mayan_calendar/big_down_button", -2, -2);
 
-    private final int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo;
+    private final int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo;
 
-    public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctArtifactsCombo) {
+    public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctArtifactsCombo, int[] correctBasementCombo) {
         super(app);
         this.correctPaintingsCombo = correctPaintingsCombo;
         this.correctSculpturesCombo = correctSculpturesCombo;
         this.correctArtifactsCombo = correctArtifactsCombo;
+        this.correctBasementCombo = correctBasementCombo;
     }
 
     private void increment() {
@@ -50,6 +54,37 @@ public class MayanCalendarOverlay extends Overlay {
             small.increment();
         }
     }
+
+    private void decrement() {
+        if (big.isRotating() || med.isRotating() || small.isRotating()) return;
+        if (isFocusing()) focused.decrement();
+        else {
+            big.decrement();
+            med.decrement();
+            small.decrement();
+        }
+    }
+
+    private void incrementBig() {
+        if (big.isRotating() || med.isRotating() || small.isRotating()) return;
+        if (isFocusing()) focused.incrementBig();
+        else {
+            big.incrementBig();
+            med.incrementBig();
+            small.incrementBig();
+        }
+    }
+
+    private void decrementBig() {
+        if (big.isRotating() || med.isRotating() || small.isRotating()) return;
+        if (isFocusing()) focused.decrementBig();
+        else {
+            big.decrementBig();
+            med.decrementBig();
+            small.decrementBig();
+        }
+    }
+
     private boolean open() {
         if (isFocusing()) return false;
 
@@ -62,6 +97,9 @@ public class MayanCalendarOverlay extends Overlay {
         } else if (isCurrentCombo(correctArtifactsCombo)) {
             app.getGame().artifactsDoor.open();
             app.setOverlay(new NarrationOverlay(app, "The door to the artifacts room swings open."));
+        } else if (isCurrentCombo(correctBasementCombo)) {
+            app.getGame().basementDoor.open();
+            app.setOverlay(new NarrationOverlay(app, "The door to the basement swings open..."));
         } else {
             app.setOverlay(new NarrationOverlay(app, "Nothing happens.", this));
             Assets.sound("wrong").play();
@@ -72,16 +110,6 @@ public class MayanCalendarOverlay extends Overlay {
 
     private boolean isCurrentCombo(int[] combo) {
         return combo[0] == small.rot && combo[1] == med.rot && combo[2] == big.rot;
-    }
-
-    private void decrement() {
-        if (big.isRotating() || med.isRotating() || small.isRotating()) return;
-        if (isFocusing()) focused.decrement();
-        else {
-            big.decrement();
-            med.decrement();
-            small.decrement();
-        }
     }
 
     private boolean focus(Cog cog) {
@@ -106,8 +134,10 @@ public class MayanCalendarOverlay extends Overlay {
             focused.render(canvas);
         }
 
+        bigUpButton.render(canvas);
         upButton.render(canvas);
         downButton.render(canvas);
+        bigDownButton.render(canvas);
     }
 
     class BigCog extends Cog {
@@ -309,6 +339,18 @@ public class MayanCalendarOverlay extends Overlay {
             if (rot < 0) rot += maxRot;
             rotForwards = false;
         }
+        public void incrementBig() {
+            rotProgressCount = maxRotProgressCount;
+            rot += 20;
+            rot %= maxRot;
+            rotForwards = true;
+        }
+        public void decrementBig() {
+            rotProgressCount = maxRotProgressCount;
+            rot -= 20;
+            if (rot < 0) rot += maxRot;
+            rotForwards = false;
+        }
 
         public boolean isRotating() {
             return rotProgressCount != 0;
@@ -332,9 +374,11 @@ public class MayanCalendarOverlay extends Overlay {
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
 
+        if (bigUpButton.onClick(click)) return;
         if (upButton.onClick(click)) return;
         if (openButton.onClick(click)) return;
         if (downButton.onClick(click)) return;
+        if (bigDownButton.onClick(click)) return;
         if (small.onClick(click)) return;
         if (med.onClick(click)) return;
         if (big.onClick(click)) return;
@@ -345,9 +389,11 @@ public class MayanCalendarOverlay extends Overlay {
 
     @Override
     public void tick() {
+        bigUpButton.tick();
         upButton.tick();
         openButton.tick();
         downButton.tick();
+        bigDownButton.tick();
         big.tick();
         med.tick();
         small.tick();

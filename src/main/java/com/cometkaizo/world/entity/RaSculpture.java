@@ -10,8 +10,8 @@ import java.awt.*;
  * Description: Sculpture of Ra
  */
 public class RaSculpture extends Interactable {
-    private Direction direction = Direction.DOWN;//Direction.UP;
-    private boolean emittingLight = true;//false;
+    private Direction direction = Direction.UP;
+    private boolean emittingLight = false;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));

@@ -45,7 +45,7 @@ public class Game implements Tickable, Renderable, InputListener {
     private final int endFadeInDuration = 100, endFadeInFinishDuration = 50, endFadeOutDuration = 100,
             endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
-    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor;
+    public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor, basementDoor;
     private final Inventory inventory = new Inventory();
 
     /// Reads in a game from a previous save file
@@ -103,13 +103,15 @@ public class Game implements Tickable, Renderable, InputListener {
             artifactsHallDoor = (Door) room.getBlockOrEntity("h_artifacts");
             libraryDoor = (Door) room.getBlockOrEntity("d_library");
             chessDoor = (Door) room.getBlockOrEntity("d_chess");
+            basementDoor = (Door) room.getBlockOrEntity("d_basement");
             if (paintingsDoor == null ||
                     sculpturesDoor == null ||
                     modernDoor == null ||
                     artifactsDoor == null ||
                     artifactsHallDoor == null ||
                     libraryDoor == null ||
-                    chessDoor == null)
+                    chessDoor == null ||
+                    basementDoor == null)
                 throw new IllegalStateException("Not all doors are present");
         } catch (Exception e) {
             throw new RuntimeException("Game failed to load", e);
@@ -193,38 +195,24 @@ public class Game implements Tickable, Renderable, InputListener {
     public void render(Canvas canvas) {
         if (world != null) world.render(canvas);
         if (room != null) room.render(canvas);
-//        for (var c : collectedCollectibles) c.renderOverlay(canvas);
-        if (ended) renderEndScreen(canvas);
+        renderEndRoom(canvas);
         if (getDialogue() != null) getDialogue().render(canvas);
     }
 
-    private void renderEndScreen(Canvas canvas) {
-        if (endFadeInTime > endFadeInFinishDuration) {
-            canvas.renderImage(Assets.texture("gui/end"), 0, 0);
-            if (endFadeInTime > endDialogueStartDuration/* && dialogue == null*/) {
-                canvas.renderImage(finishedInTime() ? Assets.texture("gui/win") : Assets.texture("gui/lose"), 0, 0);
-            }
-        }
+    private void renderEndRoom(Canvas canvas) {
+        canvas.renderString("The End", Assets.font(80), Color.WHITE, canvas.toScreenX(35), canvas.toScreenY(45), true, true);
+        canvas.renderString("Thanks for playing", Assets.font(60), Color.WHITE, canvas.toScreenX(35), canvas.toScreenY(44.5), true, true);
 
-        var g = canvas.getGraphics();
-        var oC = g.getComposite();
+        canvas.renderString("Andy Wang", Assets.font(40), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(43), true, true);
+        canvas.renderString("Programming", Assets.font(30), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(42.5), true, false);
+        canvas.renderString("Story", Assets.font(30), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(42.2), true, false);
+        canvas.renderString("Visual Assets", Assets.font(30), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(41.9), true, false);
+        canvas.renderString("Puzzle Design", Assets.font(30), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(41.6), true, false);
 
-        { // fades
-            double alpha;
-            if (endFadeOutTime != -1) {
-                alpha = (endFadeOutTime - endFadeOutStartDuration + canvas.partialTick()) / (endFadeInDuration - endFadeOutStartDuration);
-            } else if (endFadeInTime != -1) {
-                alpha = endFadeInTime < 10 ? (endFadeInTime + canvas.partialTick()) / 10D :
-                        endFadeInTime > endFadeInFinishDuration ?
-                                1 - (endFadeInTime + canvas.partialTick() - endFadeInFinishDuration) / (endFadeInDuration - endFadeInFinishDuration) :
-                                1;
-            } else alpha = 0;
-            alpha = Math.clamp(alpha, 0, 1);
-            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            canvas.renderImage(Assets.texture("gui/black"), 0, 0);
-            g.setComposite(oC);
-        }
-
+        canvas.renderString("Rowan Howell", Assets.font(40), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(43), true, true);
+        canvas.renderString("Story", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.5), true, false);
+        canvas.renderString("Visual Assets (kinda)", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.2), true, false);
+        canvas.renderString("Puzzle Design (kinda)", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(41.9), true, false);
     }
 
     @Override

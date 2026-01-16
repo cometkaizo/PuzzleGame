@@ -107,6 +107,56 @@ public class BookOverlay extends Overlay {
                     new Label("7", -46, 13),
                     new Label("8", -51, 28),
                     new Label("9", -39, 27)),
+            // ÑŽÇäëØü
+            new Content("""
+                    DICTIONARY of Runic Symbolic Words
+                    
+                    
+                    ÑŽØŽÇ
+                       to trudge through anything in which
+                       the feet sink
+                    
+                    ÑŽØÇë
+                       to blend together; to adapt
+                    
+                    ÑŽüØüü
+                       corner, edge or slice of anything
+                    
+                    ÑäØŽ
+                       of, like or pertaining to a sheriff
+                    
+                    ÑØŽØ
+                       spar forming an extension of the
+                       bowsprit
+                    
+                    ŽÑüäØ
+                       obstinate quirk or habit
+                    """, """
+                    (cont.)
+                    
+                    
+                    ŽÑüëü
+                       belief that Christ is everywhere
+                    
+                    ŽäØÑÑ
+                       animal crossbred from male yak and
+                       domestic cow
+                    
+                    ëëØ
+                       rhetorical device of repeating
+                       conjunction for emphasis
+                    
+                    ëØÇØ
+                       instrument for viewing the colon
+                    
+                    ëØäü
+                       belief that knowledge is always probable
+                       but never absolute
+                    
+                    ëØüä
+                       capable of being sold""",
+                    new Text("252", Assets.font(15), Color.BLACK, w -> w/2 - 104, h -> h/2 + 55, 100, false, false),
+                    new Text("253", Assets.font(15), Color.BLACK, w -> w/2 + 97, h -> h/2 + 55, 100, false, false)),
     };
     private final int variant;
     private final Content content;

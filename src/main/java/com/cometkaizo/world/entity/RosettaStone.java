@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.screen.overlay.RosettaStoneOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -11,17 +12,17 @@ import com.cometkaizo.world.Vector;
 public class RosettaStone extends Interactable {
     public RosettaStone(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
-        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 2D));
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
+        boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
     @Override
     protected void interact() {
+        app.setOverlay(new RosettaStoneOverlay(app));
+    }
 
+    @Override
+    public boolean isSolid(Entity entity) {
+        return true;
     }
 
     @Override

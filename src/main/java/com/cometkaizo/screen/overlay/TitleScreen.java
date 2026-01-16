@@ -18,8 +18,8 @@ public class TitleScreen extends Overlay {
     private static final Font TITLE_FONT = Assets.font("BoldPixels").deriveFont(Font.PLAIN, 70);
     private static final String TITLE = "Puzzle Game";
     private final List<Button> buttons = List.of(
-            new Button(app, "New Game", 30, this::newGame, w -> w / 2 - 24, h -> h / 2 - 24, _ -> 50, _ -> 12),
-            new Button(app, "Load Game", 30, this::loadGame, w -> w / 2 - 24, h -> h / 2 - 10, _ -> 50, _ -> 12)
+            new Button(app, "New Game", 30, this::newGame, w -> w / 2 - 28, h -> h / 2 - 24, _ -> 58, _ -> 16),
+            new Button(app, "Load Game", 30, this::loadGame, w -> w / 2 - 28, h -> h / 2, _ -> 58, _ -> 16)
     );
 
     public TitleScreen(GameApp app) {
@@ -48,7 +48,9 @@ public class TitleScreen extends Overlay {
 
     @Override
     public void render(Canvas canvas) {
-        canvas.renderString(TITLE, TITLE_FONT, Color.BLACK, canvas.getWidth() / 2F, canvas.getHeight() / 2F - 200, true, true);
+        canvas.fillScreen(Color.BLACK);
+
+        canvas.renderString(TITLE, TITLE_FONT, Color.WHITE, canvas.getWidth() / 2F, canvas.getHeight() / 2F - 200, true, true);
 
         buttons.forEach(button -> button.render(canvas));
     }

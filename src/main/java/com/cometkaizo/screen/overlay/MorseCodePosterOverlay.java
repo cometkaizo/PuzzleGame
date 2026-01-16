@@ -16,7 +16,7 @@ import java.util.function.BooleanSupplier;
  * Description: Screen overlay for the morse code poster
  */
 public class MorseCodePosterOverlay extends Overlay {
-    private static final String[] SYMBOLS = {"ä", "ë", "ü", "Ñ", "Ç", "Ø", "Ž", };
+    private static final String[] SYMBOLS = {"Ñ", "Ž", "Ç", "ä", "ë", "Ø", "ü", };
     private final Text title, desc;
     private final BooleanSupplier isLit;
     private final NoteSlot[] slots = {
@@ -74,7 +74,8 @@ public class MorseCodePosterOverlay extends Overlay {
         public int id;
 
         public NoteSlot(int id, int dx, int dy) {
-            super(MorseCodePosterOverlay.this.app, () -> {}, w -> w/2 + dx, h -> h/2 + dy, _ -> 16, _ -> 16, null, -2, -2);
+            super(MorseCodePosterOverlay.this.app, () -> {}, w -> w/2 + dx, null, _ -> 16, _ -> 16, null, -2, -2);
+            this.y = h -> h/2 + dy + (this == selected ? -4 : 0);
             this.action = this::selectOrSwap;
             this.texturePath = () -> "gui/morse_code_poster/" + (this.id == -1 ? "note_empty" : "note");
             this.id = id;

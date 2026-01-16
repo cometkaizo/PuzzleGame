@@ -10,13 +10,13 @@ import java.util.function.IntUnaryOperator;
  * Date Modified: TODO
  * Description: A button that can be clicked on a screen overlay
  */
-public class Button extends Clickable {
+public class Button extends ImageClickable {
     protected String message;
     protected Font font;
     protected Color color = new Color(0, 0, 0);
 
     public Button(GameApp app, String message, int size, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
-        super(app, action, x, y, w, h);
+        super(app, action, x, y, w, h, () -> "gui/title_screen/button", -2, -2);
         this.message = message;
         this.font = Assets.font("BoldPixels", size);
     }

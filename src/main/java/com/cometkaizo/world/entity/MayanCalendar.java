@@ -100,7 +100,8 @@ public class MayanCalendar extends Interactable {
             "Ghost",
     };
 
-    private int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo;
+    private int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo;
+    private MayanCalendarOverlay overlay;
 
     public MayanCalendar(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -109,7 +110,7 @@ public class MayanCalendar extends Interactable {
 
     @Override
     protected void interact() {
-        app.setOverlay(new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo));
+        app.setOverlay(overlay);
     }
 
     @Override
@@ -118,6 +119,8 @@ public class MayanCalendar extends Interactable {
         correctPaintingsCombo = nextMayanCombo(originalArgs);
         correctSculpturesCombo = nextMayanCombo(originalArgs);
         correctArtifactsCombo = nextMayanCombo(originalArgs);
+        correctBasementCombo = nextMayanCombo(originalArgs);
+        overlay = new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo);
     }
     private int[] nextMayanCombo(Args args) {
         return Arrays.stream(args.next(" ").split(" ")).mapToInt(Integer::parseInt).toArray();

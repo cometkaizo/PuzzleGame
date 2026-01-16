@@ -15,7 +15,7 @@ import com.cometkaizo.world.Vector;
 public class MorseCodeMachine extends Interactable {
     private static final int TICKS_PER_DOT = 5; // the length of one morse code dot
     private String pattern; // the pattern, where X means on and _ means off
-    private boolean working = true;//;
+    private boolean working;
     public MorseCodeMachine(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
