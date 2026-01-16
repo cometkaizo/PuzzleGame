@@ -109,7 +109,7 @@ public class BookOverlay extends Overlay {
                     new Label("9", -39, 27)),
             // ÑŽÇäëØü
             new Content("""
-                    DICTIONARY of Runic Symbolic Words
+                    DICTIONARY of the Symbolic Language
                     
                     
                     ÑŽØŽÇ
