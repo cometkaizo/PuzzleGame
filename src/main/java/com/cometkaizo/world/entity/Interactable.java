@@ -26,7 +26,7 @@ public abstract class Interactable extends CollidableEntity {
             if (input == InputBindings.INTERACT.get()) {
                 interact();
                 room.player.onInteract();
-            } else if (input == InputBindings.SOLVE.get()) {
+            } else if (input == InputBindings.SOLVE.get() && game.isDevMode()) {
                 solve();
                 room.player.onInteract();
             }

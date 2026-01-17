@@ -47,6 +47,7 @@ public class Game implements Tickable, Renderable, InputListener {
     private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor, basementDoor;
     private final Inventory inventory = new Inventory();
+    private boolean devMode;
 
     /// Reads in a game from a previous save file
     public Game(GameApp app, Path path) throws IOException {
@@ -129,7 +130,7 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
     private void toggleDebug(KeyPressedEvent click) {
-        if (click.input() == InputBindings.TOGGLE_DEBUG.get()) app.toggleDebug();
+        if (click.input() == InputBindings.TOGGLE_DEBUG.get()) if (devMode) app.toggleDebug();
     }
 
 
@@ -350,5 +351,12 @@ public class Game implements Tickable, Renderable, InputListener {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public void setDevMode(boolean devMode) {
+        this.devMode = devMode;
+    }
+    public boolean isDevMode() {
+        return devMode;
     }
 }

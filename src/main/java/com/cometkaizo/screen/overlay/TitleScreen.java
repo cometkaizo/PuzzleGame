@@ -19,7 +19,8 @@ public class TitleScreen extends Overlay {
     private static final String TITLE = "Puzzle Game";
     private final List<Button> buttons = List.of(
             new Button(app, "New Game", 30, this::newGame, w -> w / 2 - 28, h -> h / 2 - 24, _ -> 58, _ -> 16),
-            new Button(app, "Load Game", 30, this::loadGame, w -> w / 2 - 28, h -> h / 2, _ -> 58, _ -> 16)
+            new Button(app, "Load Game", 30, this::loadGame, w -> w / 2 - 28, h -> h / 2, _ -> 58, _ -> 16),
+            new Button(app, "Debug Game", 30, this::debugGame, w -> w / 2 - 28, h -> h / 2 + 24, _ -> 58, _ -> 16)
     );
 
     public TitleScreen(GameApp app) {
@@ -32,6 +33,13 @@ public class TitleScreen extends Overlay {
     }
     private void loadGame() {
         if (app.loadGame()) {
+            app.setOverlay(null);
+        }
+    }
+    private void debugGame() {
+        if (app.loadGame()) {
+            app.getGame().setDevMode(true);
+            app.toggleDebug();
             app.setOverlay(null);
         }
     }
