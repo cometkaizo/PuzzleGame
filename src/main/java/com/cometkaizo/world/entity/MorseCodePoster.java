@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.MorseCodePosterOverlay;
 import com.cometkaizo.world.Args;
@@ -14,11 +15,25 @@ import java.awt.*;
  * Description: Interactable morse code poster
  */
 public class MorseCodePoster extends Interactable {
-    private final MorseCodePosterOverlay overlay = new MorseCodePosterOverlay(app, () -> lit);
+    private int[] noteIds;
+    private MorseCodePosterOverlay overlay;
 
     public MorseCodePoster(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 3D));
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        noteIds = originalGameState.morseCodePosterNotes;
+        overlay = new MorseCodePosterOverlay(app, () -> lit, noteIds);
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        originalGameState.morseCodePosterNotes = overlay.noteIds();
     }
 
     @Override

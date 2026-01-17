@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.overlay.LudovisiAresOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
@@ -19,6 +20,15 @@ public class LudovisiAresSculpture extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        chestOpen = originalGameState.aresChestOpen;
+        heartOpen = originalGameState.aresHeartOpen;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.aresChestOpen = chestOpen;
+        state.aresHeartOpen = heartOpen;
     }
 
     @Override

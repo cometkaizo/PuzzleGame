@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.OrganKeyItem;
 import com.cometkaizo.screen.overlay.NarrationOverlay;
 import com.cometkaizo.screen.overlay.OrganOverlay;
@@ -25,6 +26,13 @@ public class Organ extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        keyFallenOut = originalGameState.organKeyFallenOut;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.organKeyFallenOut = keyFallenOut;
     }
 
     @Override

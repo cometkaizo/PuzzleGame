@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.FeatherItem;
 import com.cometkaizo.game.item.WeighableItem;
 import com.cometkaizo.screen.Assets;
@@ -24,6 +25,15 @@ public class AnubisSculpture extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        scaleUnlocked = originalGameState.anubisScaleUnlocked;
+        weighed = originalGameState.anubisWeighedItem;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.anubisWeighedItem = weighed;
+        state.anubisScaleUnlocked = scaleUnlocked;
     }
 
     @Override

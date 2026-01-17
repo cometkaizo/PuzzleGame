@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.MachinePieceItem;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.overlay.InventoryOverlay;
@@ -25,6 +26,13 @@ public class MorseCodeMachine extends Interactable {
     public void reset() {
         super.reset();
         pattern = originalArgs.next(" ");
+        working = originalGameState.morseCodeWorking.getOrDefault(name, false);
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.morseCodeWorking.put(name, working);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.overlay.HermesOverlay;
-import com.cometkaizo.screen.overlay.LudovisiAresOverlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -17,6 +17,18 @@ public class HermesSculpture extends Interactable {
     public HermesSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        open = originalGameState.hermesSolved;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.hermesSolved = open;
     }
 
     @Override

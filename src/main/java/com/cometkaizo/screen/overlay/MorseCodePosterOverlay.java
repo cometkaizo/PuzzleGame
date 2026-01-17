@@ -8,6 +8,7 @@ import com.cometkaizo.screen.ImageClickable;
 import com.cometkaizo.screen.Text;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -37,7 +38,7 @@ public class MorseCodePosterOverlay extends Overlay {
     };
     private NoteSlot selected;
 
-    public MorseCodePosterOverlay(GameApp app, BooleanSupplier isLit) {
+    public MorseCodePosterOverlay(GameApp app, BooleanSupplier isLit, int[] noteIds) {
         super(app);
         this.isLit = isLit;
         title = new Text("""
@@ -50,6 +51,10 @@ public class MorseCodePosterOverlay extends Overlay {
                 w -> w / 2 - 58,
                 h -> h / 2 - 72,
                 116, false, false);
+        if (noteIds != null) {
+            // load in note positions
+            for (int i = 0; i < slots.length; i++) slots[i].id = noteIds[i];
+        }
     }
 
     @Override
@@ -68,6 +73,10 @@ public class MorseCodePosterOverlay extends Overlay {
         desc.render(canvas);
 
         for (var slot : slots) slot.render(canvas);
+    }
+
+    public int[] noteIds() {
+        return Arrays.stream(slots).mapToInt(slot -> slot.id).toArray();
     }
 
     public class NoteSlot extends ImageClickable {

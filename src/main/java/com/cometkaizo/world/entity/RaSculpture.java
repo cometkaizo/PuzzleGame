@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.world.*;
 
@@ -10,8 +11,8 @@ import java.awt.*;
  * Description: Sculpture of Ra
  */
 public class RaSculpture extends Interactable {
-    private Direction direction = Direction.UP;
-    private boolean emittingLight = false;
+    private Direction direction;
+    private boolean emittingLight;
     public RaSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
@@ -20,6 +21,15 @@ public class RaSculpture extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        direction = originalGameState.raDirection;
+        emittingLight = originalGameState.raEmittingLight;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.raDirection = direction;
+        state.raEmittingLight = emittingLight;
     }
 
     @Override

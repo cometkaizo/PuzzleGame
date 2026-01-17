@@ -17,7 +17,6 @@ import com.cometkaizo.world.entity.Door;
 import com.cometkaizo.world.entity.Player;
 
 import java.awt.*;
-import java.io.EOFException;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -51,8 +50,8 @@ public class Game implements Tickable, Renderable, InputListener {
         GameState state;
         try {
             state = new GameState(path.resolve(GAME_STATE_FILENAME));
-        } catch (EOFException e) {
-            Main.err("Failed to load state file: " + path.resolve(GAME_STATE_FILENAME) + " due to " + e);
+        } catch (Exception e) {
+            Main.err("Failed to load state file: " + path.resolve(GAME_STATE_FILENAME) + " due to " + e + "\nLoading fresh save...");
             state = new GameState();
         }
         this(app, new GameSettings(), state);

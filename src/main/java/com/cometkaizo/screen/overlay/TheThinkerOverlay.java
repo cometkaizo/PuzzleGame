@@ -29,13 +29,16 @@ public class TheThinkerOverlay extends Overlay {
             new StickyNote("e", "right", w -> w/2 - 10, h -> h/2 - 53),
             new StickyNote("u", "left", w -> w/2 - 47, h -> h/2 - 30)
     );
-    private boolean brainSolved;
+    public boolean brainSolved;
+    private final Runnable solveAction;
     private final Clickable brain = new ImageClickable(app, () -> {
         if (!brainSolved) app.setOverlay(new BrainOverlay(app, this::solveBrain, this));
     }, w -> w/2 + 12, h -> h/2 - 89, _ -> 32, _ -> 24, () -> "gui/sculpture/thinker/brain", -2, -2);
 
-    public TheThinkerOverlay(GameApp app) {
+    public TheThinkerOverlay(GameApp app, boolean brainSolved, Runnable solveAction) {
         super(app);
+        this.brainSolved = brainSolved;
+        this.solveAction = solveAction;
     }
 
     @Override
@@ -61,6 +64,7 @@ public class TheThinkerOverlay extends Overlay {
 
     private void solveBrain() {
         brainSolved = true;
+        solveAction.run();
         app.narrate("The immense brainpower produces what looks like a part of a machine. You take it.", this);
         app.getGame().getInventory().add(new MachinePieceItem());
     }

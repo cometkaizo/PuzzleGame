@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.LightHeartItem;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.overlay.VenusOverlay;
@@ -29,6 +30,15 @@ public class VenusDeMiloSculpture extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        chestOpen = originalGameState.venusChestOpen;
+        heartOpen = originalGameState.venusHeartOpen;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.venusChestOpen = chestOpen;
+        state.venusHeartOpen = heartOpen;
     }
 
     @Override
