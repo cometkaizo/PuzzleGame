@@ -4,6 +4,7 @@ import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 import com.cometkaizo.screen.Text;
+import com.cometkaizo.world.Args;
 
 import java.awt.*;
 
@@ -71,14 +72,19 @@ public class NoteItem extends Item implements Renderable {
             """,
     };
     public final String message;
+    private final int variant;
     private final Text text;
+    public NoteItem(Args args) {
+        this(args.nextInt(0));
+    }
     public NoteItem(int variant) {
         this.message = MESSAGES[variant];
+        this.variant = variant;
         text = new Text(message, Assets.font("BoldPixels", 20), Color.BLACK, w -> w/2 - 52, h -> h/2 - 50, 120, false, false);
     }
 
     @Override
-    protected String getTexturePathImpl() {
+    protected String getNamespace() {
         return "note";
     }
 
@@ -91,5 +97,10 @@ public class NoteItem extends Item implements Renderable {
     public void render(Canvas canvas) {
         canvas.renderCenteredImage(Assets.texture("gui/note_small"));
         text.render(canvas);
+    }
+
+    @Override
+    public String write() {
+        return new Args(getNamespace(), variant+"").toString();
     }
 }

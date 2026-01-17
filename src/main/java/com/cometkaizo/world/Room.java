@@ -2,6 +2,7 @@ package com.cometkaizo.world;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.LoadException;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Assets;
@@ -142,6 +143,13 @@ public class Room implements Tickable, Renderable, Resettable {
         if (this.player != null) walls.removeEntity(player);
         this.player = player;
         walls.addEntity(player); // the player exists on the "walls" layer
+    }
+
+    public void write(GameState state) {
+        ground.write(state);
+        walls.write(state);
+        background.write(state);
+        foreground.write(state);
     }
 
 
@@ -696,6 +704,14 @@ public class Room implements Tickable, Renderable, Resettable {
                 case DOWN -> entities.max(Comparator.comparingDouble(Entity::getY));
                 case LEFT -> entities.max(Comparator.comparingDouble(Entity::getX));
             };
+        }
+
+        public void write(GameState state) {
+            for (var row : blocks)
+                for (var block : row)
+                    block.write(state);
+            for (var entity : entities)
+                entity.write(state);
         }
     }
 

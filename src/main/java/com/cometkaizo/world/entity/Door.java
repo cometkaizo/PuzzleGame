@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.ChessKeyItem;
 import com.cometkaizo.game.item.EntranceKeyItem;
 import com.cometkaizo.screen.Assets;
@@ -47,7 +48,8 @@ public class Door extends Interactable {
     @Override
     public void reset() {
         super.reset();
-        open = false;
+        open = originalGameState.doorsOpen.getOrDefault(name, false);
+
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
@@ -62,6 +64,12 @@ public class Door extends Interactable {
     @Override
     public boolean blocksLight() {
         return !open;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.doorsOpen.put(name, open);
     }
 
     @Override

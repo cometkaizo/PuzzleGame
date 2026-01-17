@@ -7,7 +7,7 @@ package com.cometkaizo.game.item;
  */
 public class MachinePieceItem extends Item {
     @Override
-    protected String getTexturePathImpl() {
+    protected String getNamespace() {
         return "machine_piece";
     }
 

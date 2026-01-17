@@ -2,8 +2,8 @@ package com.cometkaizo.world;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.LoadException;
-import com.cometkaizo.io.PathSerializable;
 import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
@@ -20,7 +20,7 @@ import java.util.*;
  * Date Modified: 2025-12-19
  * Description: A world containing a list of rooms
  */
-public class World implements PathSerializable, Tickable, Renderable {
+public class World implements Tickable, Renderable {
     public static final String INFO_FILE_NAME = "world.info";
     public static final String NAMESPACE_KEY = "namespace";
     public static final String NAME_KEY = "name";
@@ -67,12 +67,10 @@ public class World implements PathSerializable, Tickable, Renderable {
 
     }
 
-    @Override
-    public void write(Path path) throws IOException {
-
+    public void write(GameState state) {
+        for (var room : rooms.values()) room.write(state);
     }
 
-    @Override
     public void read(Path path) throws IOException {
         rooms.clear();
 

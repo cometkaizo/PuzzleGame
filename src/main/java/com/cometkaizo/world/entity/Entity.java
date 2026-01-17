@@ -3,6 +3,7 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.app.GameApp;
 import com.cometkaizo.event.EventBus;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
@@ -16,6 +17,7 @@ import java.awt.*;
  */
 public abstract class Entity implements Tickable, Renderable, Resettable {
     protected final Args originalArgs;
+    protected final GameState originalGameState;
     protected Vector.ImmutableDouble originalPosition;
     protected Vector.MutableDouble position;
     protected Vector.ImmutableDouble oldPosition;
@@ -35,6 +37,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         this.app = game.getApp();
         this.eventBus = game.getEventBus();
         this.originalArgs = args;
+        this.originalGameState = game.getState();
         this.originalPosition = Vector.immutableDouble(position);
         reset();
     }
@@ -164,6 +167,10 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
 
     public Game getGame() {
         return game;
+    }
+
+    public void write(GameState state) {
+
     }
 
     public interface Reader {

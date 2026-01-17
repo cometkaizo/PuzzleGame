@@ -1,7 +1,6 @@
 package com.cometkaizo.world.block;
 
-import com.cometkaizo.io.DataSerializable;
-import com.cometkaizo.io.data.CompoundData;
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.AtlasTexture;
 import com.cometkaizo.screen.Canvas;
@@ -16,7 +15,7 @@ import java.awt.*;
  * Date Modified: TODO
  * Description: A single block in the world map
  */
-public abstract class Block implements Renderable, DataSerializable, Resettable {
+public abstract class Block implements Renderable, Resettable {
     public final Room room;
     public final Room.Layer layer;
     protected final Args originalArgs;
@@ -113,19 +112,13 @@ public abstract class Block implements Renderable, DataSerializable, Resettable 
         lit = direction != null;
     }
 
+    public void write(GameState state) {
+
+    }
+
 
     public interface Reader {
         Block apply(Room.Layer layer, Vector.ImmutableInt pos, Args args);
-    }
-
-    @Override
-    public CompoundData write() {
-        return null;
-    }
-
-    @Override
-    public void read(CompoundData data) {
-
     }
 
     public boolean isConnectedN() {

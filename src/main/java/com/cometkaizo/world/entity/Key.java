@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.EntranceKeyItem;
 import com.cometkaizo.game.item.Item;
 import com.cometkaizo.screen.Canvas;
@@ -17,6 +18,18 @@ import java.awt.*;
 public class Key extends Collectible {
     public Key(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        collected = originalGameState.keyCollected;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.keyCollected = collected;
     }
 
     @Override

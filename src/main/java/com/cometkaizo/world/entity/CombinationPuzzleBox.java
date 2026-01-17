@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.ChessKeyItem;
 import com.cometkaizo.game.item.MachinePieceItem;
 import com.cometkaizo.game.item.NoteItem;
@@ -114,7 +115,6 @@ public class CombinationPuzzleBox extends Interactable {
     @Override
     public void reset() {
         super.reset();
-        open = false;
         w = originalArgs.nextInt(1);
         h = originalArgs.nextInt(1);
 
@@ -135,6 +135,8 @@ public class CombinationPuzzleBox extends Interactable {
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable((double) w, h));
 
         overlay = new CombinationLockOverlay(app, correctCombination, digitOptions, this::open, overlayVariant);
+
+        open = originalGameState.locksOpen.getOrDefault(variant, false);
     }
 
     @Override
@@ -146,6 +148,12 @@ public class CombinationPuzzleBox extends Interactable {
     @Override
     public boolean isSolid(Entity entity) {
         return solid;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.locksOpen.put(variant, open);
     }
 
     @Override

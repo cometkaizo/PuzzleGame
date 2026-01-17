@@ -7,7 +7,7 @@ package com.cometkaizo.game.item;
  */
 public class FeatherItem extends WeighableItem {
     @Override
-    protected String getTexturePathImpl() {
+    protected String getNamespace() {
         return "feather";
     }
 

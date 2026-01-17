@@ -18,6 +18,10 @@ public class Args {
         args = Arrays.copyOfRange(parts, 1, parts.length);
         id = parts[0];
     }
+    public Args(String id, String... args) {
+        this.id = id;
+        this.args = args;
+    }
 
     /**
      * Removes "comments" from the given string.
@@ -60,5 +64,10 @@ public class Args {
 
     public String id() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return id + ";" + String.join(";", args);
     }
 }

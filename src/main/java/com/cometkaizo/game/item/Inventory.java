@@ -1,5 +1,7 @@
 package com.cometkaizo.game.item;
 
+import com.cometkaizo.game.GameState;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,5 +46,13 @@ public class Inventory implements Iterable<Item> {
 
     public int size() {
         return items.size();
+    }
+
+    public void write(GameState state) {
+        state.inventory = new ArrayList<>(items);
+    }
+
+    public void set(List<Item> inventory) {
+        items = new ArrayList<>(inventory);
     }
 }

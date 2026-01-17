@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.event.KeyPressedEvent;
 import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.KeyBinding;
@@ -41,9 +42,9 @@ public class Player extends MovableEntity {
     }
 
     @Override
-    public void reset() {
-        super.reset();
-        game.getState().playerPos = position;
+    public void write(GameState state) {
+        super.write(state);
+        state.playerPos = Vector.mutableDouble(position);
     }
 
     @Override
@@ -226,10 +227,10 @@ public class Player extends MovableEntity {
     }
 
     private boolean walkDisabled() {
-        return game.ended() || game.hasDialogue();
+        return game.hasDialogue();
     }
     private boolean jumpDisabled() {
-        return game.ended() || game.hasDialogue();
+        return game.hasDialogue();
     }
 
     @Override

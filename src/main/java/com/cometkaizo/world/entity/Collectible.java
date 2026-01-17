@@ -15,19 +15,17 @@ import java.awt.*;
  */
 public abstract class Collectible extends Interactable {
 
-    protected final int collectDuration = 5;
-    protected int collectTime = -1;
+    protected boolean collected;
 
     public Collectible(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
-
     @Override
     protected void interact() {
         room.player.onInteract();
-        collectTime = 0;
+        collected = true;
         app.narrate(pickupMessage(), null);
         game.getInventory().add(newItem());
         Assets.sound("notify").play();
@@ -41,13 +39,7 @@ public abstract class Collectible extends Interactable {
     }
 
     public boolean collected() {
-        return collectTime > -1;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (collected() && collectTime < collectDuration) collectTime ++;
+        return collected;
     }
 
     @Override

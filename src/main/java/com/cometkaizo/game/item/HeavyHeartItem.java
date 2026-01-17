@@ -7,7 +7,7 @@ package com.cometkaizo.game.item;
  */
 public class HeavyHeartItem extends WeighableItem {
     @Override
-    protected String getTexturePathImpl() {
+    protected String getNamespace() {
         return "heavy_heart";
     }
 

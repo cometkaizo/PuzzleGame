@@ -2,7 +2,6 @@ package com.cometkaizo.game;
 
 import com.cometkaizo.Main;
 import com.cometkaizo.app.GameApp;
-import com.cometkaizo.app.GameDriver;
 import com.cometkaizo.event.EventBus;
 import com.cometkaizo.event.SimpleEventBus;
 import com.cometkaizo.game.event.*;
@@ -18,6 +17,7 @@ import com.cometkaizo.world.entity.Door;
 import com.cometkaizo.world.entity.Player;
 
 import java.awt.*;
+import java.io.EOFException;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -41,9 +41,6 @@ public class Game implements Tickable, Renderable, InputListener {
     private Player player;
     public long tick = 0;
     private Dialogue dialogue;
-    private boolean ended;
-    private final int endFadeInDuration = 100, endFadeInFinishDuration = 50, endFadeOutDuration = 100,
-            endFadeOutStartDuration = 20, endDialogueStartDuration = 80;
     private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor, basementDoor;
     private final Inventory inventory = new Inventory();
@@ -51,7 +48,13 @@ public class Game implements Tickable, Renderable, InputListener {
 
     /// Reads in a game from a previous save file
     public Game(GameApp app, Path path) throws IOException {
-        var state = new GameState(path.resolve(GAME_STATE_FILENAME));
+        GameState state;
+        try {
+            state = new GameState(path.resolve(GAME_STATE_FILENAME));
+        } catch (EOFException e) {
+            Main.err("Failed to load state file: " + path.resolve(GAME_STATE_FILENAME) + " due to " + e);
+            state = new GameState();
+        }
         this(app, new GameSettings(), state);
     }
 
@@ -59,6 +62,8 @@ public class Game implements Tickable, Renderable, InputListener {
     public boolean write(Path path) {
         try {
             path.toFile().mkdirs();
+            inventory.write(state);
+            world.write(state);
             state.write(path.resolve(GAME_STATE_FILENAME));
             return true;
         } catch (IOException e) {
@@ -83,13 +88,15 @@ public class Game implements Tickable, Renderable, InputListener {
         eventBus.register(KeyPressedEvent.class, this::toggleDebug);
 
         try {
+            inventory.set(state.inventory);
+
             world = new World(this, Path.of("/world"));
             room = world.getRoom("lobby");
 
             if (room.getCheckpoints().isEmpty()) throw new IllegalStateException("No respawn position");
             if (state.playerPos == null) state.playerPos = Vector.mutableDouble(room.getFirstCheckpoint().pos());
 
-            player = new Player(room.walls, state.playerPos, new Args(""));
+            player = new Player(room.walls, Vector.mutableDouble(state.playerPos), new Args(""));
             room.setPlayer(player);
 
             this.cameraPosition = Vector.mutable(0D, 0D);
@@ -145,8 +152,7 @@ public class Game implements Tickable, Renderable, InputListener {
 
         eventBus.tick();
 
-        if (!ended) tick ++;
-        else tickEnd();
+        tick ++;
     }
 
     private void tickCameraPos() {
@@ -166,29 +172,6 @@ public class Game implements Tickable, Renderable, InputListener {
         this.cameraPosition.set(player.getPosition()).add(0D, 0.5D);
         this.prevCameraPosition.set(player.getPosition()).add(0D, 0.5D);
         this.targetCameraPosition.set(player.getPosition()).add(0D, 0.5D);
-    }
-
-    private void tickEnd() {
-        if (endFadeInTime > endFadeInDuration) {
-            if (dialogue == null && endFadeOutTime == -1) endFadeOutTime = 0;
-        } else if (endFadeInTime >= 0) endFadeInTime ++;
-
-        if (endFadeOutTime > endFadeOutDuration) {
-            Main.stop(0);
-        } else {
-            if (endFadeOutTime >= 0) {
-                endFadeOutTime++;
-            }
-        }
-
-        if (endFadeInTime == endDialogueStartDuration) {
-            if (finishedInTime()) setDialogue(Player.dialogue("I made it!", "0",
-                    Player.dialogue("Thanks for playing!", "0", null)));
-            else if (finishedWayTooLate()) setDialogue(Player.dialogue("AHH! The plane took off already! And it's landed already too!", "2",
-                    Player.dialogue("ASO2 3DI;[FJO WM C_OWO[D;; K3 0f23F @#0KDSO 023KKSOD __=3= s33SDFEfff", "2", null)));
-            else setDialogue(Player.dialogue("AHH! The plane took off already!", "2",
-                    Player.dialogue("ASO2 3DI;[FJO WM C_OWO[D;; K3 0f23F @#0KDSO 023KKSOD __=3= s33SDFEfff", "2", null)));
-        }
     }
 
 
@@ -263,23 +246,6 @@ public class Game implements Tickable, Renderable, InputListener {
 
     public void cleanup() {
         app.getGameInputListener().removeInputListener(this);
-    }
-
-    public void end() {
-        if (ended) return;
-        ended = true;
-        endFadeInTime = 0;
-    }
-    public boolean ended() {
-        return ended;
-    }
-
-    private boolean finishedInTime() {
-        return tick <= GameDriver.TPS * 6 * 60;
-    }
-
-    private boolean finishedWayTooLate() {
-        return tick <= GameDriver.TPS * 90 * 60;
     }
 
 
