@@ -7,7 +7,7 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: A button that can be clicked on a screen overlay
  */
 public class Button extends ImageClickable {

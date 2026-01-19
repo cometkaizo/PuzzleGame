@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Dialogue box showing dialogue and a headshot
  */
 public class Dialogue implements Tickable, Renderable {

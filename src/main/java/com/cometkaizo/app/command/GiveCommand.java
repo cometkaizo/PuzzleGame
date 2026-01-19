@@ -11,6 +11,11 @@ import com.cometkaizo.game.item.MachinePieceItem;
 
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-15
+ * Description: Specification of a command that gives the player an item
+ */
 public class GiveCommand extends Command {
 
     private final GameApp app;

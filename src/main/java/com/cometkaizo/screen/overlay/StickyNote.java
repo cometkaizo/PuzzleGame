@@ -10,7 +10,7 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-07
  * Description: Sticky notes that can contain some text
  */
 public class StickyNote implements Renderable {

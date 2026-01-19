@@ -13,7 +13,7 @@ import static com.cometkaizo.world.entity.MayanCalendar.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-16
  * Description: Screen overlay for a book
  */
 public class BookOverlay extends Overlay {

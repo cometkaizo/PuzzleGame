@@ -1,14 +1,16 @@
 package com.cometkaizo.app.command;
 
 import com.cometkaizo.app.GameApp;
-import com.cometkaizo.command.arguments.StringArgument;
-import com.cometkaizo.command.nodes.ArgumentCommandNodeBuilder;
 import com.cometkaizo.command.nodes.Command;
 import com.cometkaizo.game.Game;
-import com.cometkaizo.game.item.LightHeartItem;
 
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-08
+ * Description: Specification of a command that gets the position of the player
+ */
 public class PosCommand extends Command {
 
     private final GameApp app;

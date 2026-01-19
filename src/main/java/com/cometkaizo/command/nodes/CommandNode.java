@@ -10,6 +10,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description:
  * A CommandNode represents a single action in a command (e.g. getting user input, translating user input, executing code, etc).
  * Specific functionality is specified by subclasses.
  *
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
  * @see RootCommandNode
  * @see LiteralCommandNode
  * @see ArgumentCommandNode
- * @see SoftCommandNode
+ * @see NoArgCommandNode
  * @see ConditionalCommandNode
  */
 abstract class CommandNode {
@@ -133,7 +136,7 @@ abstract class CommandNode {
     }
 
     public final boolean acceptsArguments() {
-        return !(this instanceof SoftCommandNode);
+        return !(this instanceof NoArgCommandNode);
     }
 
     private String nextArg() {

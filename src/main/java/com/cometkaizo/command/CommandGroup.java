@@ -11,6 +11,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: A collection of commands that can be invoked by user input
+ */
 public class CommandGroup {
 
     private final List<List<String>> names;

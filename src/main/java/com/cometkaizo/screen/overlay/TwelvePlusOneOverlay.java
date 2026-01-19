@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-12
  * Description: Screen overlay for the twelve plus one puzzle
  */
 public class TwelvePlusOneOverlay extends Overlay {

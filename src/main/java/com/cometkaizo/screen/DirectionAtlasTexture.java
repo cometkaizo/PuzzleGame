@@ -1,11 +1,10 @@
 package com.cometkaizo.screen;
 
 import com.cometkaizo.world.Direction;
-import com.cometkaizo.world.Light;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Textures describing the "directional textures" tilemap
  */
 public enum DirectionAtlasTexture implements AtlasTexture {

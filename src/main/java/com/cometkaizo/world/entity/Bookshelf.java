@@ -7,7 +7,7 @@ import com.cometkaizo.world.Vector;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-09
  * Description: Interactable bookshelf with a single readable book in it
  */
 public class Bookshelf extends Interactable {

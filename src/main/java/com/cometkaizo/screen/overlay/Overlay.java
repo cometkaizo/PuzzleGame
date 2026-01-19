@@ -13,7 +13,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Screen overlay which renders over the game and can contain menu elements such as buttons and text
  */
 public abstract class Overlay implements Tickable, Renderable {

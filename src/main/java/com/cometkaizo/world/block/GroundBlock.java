@@ -7,7 +7,7 @@ import com.cometkaizo.world.entity.Entity;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-19
  * Description: Ground block
  */
 public class GroundBlock extends Block {

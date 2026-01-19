@@ -5,7 +5,7 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-27
  * Description: Interactable typewriter
  */
 public class Typewriter extends Interactable {

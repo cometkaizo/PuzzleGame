@@ -9,7 +9,7 @@ import static java.awt.event.MouseEvent.BUTTON1;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Lists all input bindings
  */
 public class InputBindings {

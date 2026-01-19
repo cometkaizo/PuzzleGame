@@ -9,6 +9,11 @@ import com.cometkaizo.world.Vector;
 
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-19
+ * Description: Specification of a command that teleports the player to a given location
+ */
 public class TPCommand extends Command {
 
     private final GameApp app;
@@ -22,8 +27,8 @@ public class TPCommand extends Command {
 
     private void tp() {
         Game game = app.getGame();
-        double x = (double) parsedArgs.get("x");
-        double y = (double) parsedArgs.get("y");
+        double x = (Double) parsedArgs.get("x");
+        double y = (Double) parsedArgs.get("y");
 
         game.getPlayer().setPosition(Vector.immutable(x, y));
     }

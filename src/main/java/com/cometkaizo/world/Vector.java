@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: A 2D (x, y) pair. Can be any number type, usually ints and doubles.
  */
 @SuppressWarnings("unused")

@@ -3,7 +3,7 @@ package com.cometkaizo.world.entity;
 import java.util.Map;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: List of all entity types and their type-codes
  */
 public class EntityTypes {

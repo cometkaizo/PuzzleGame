@@ -5,7 +5,7 @@ import com.cometkaizo.util.MathUtils;
 import java.util.Arrays;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Arguments read in from Google Sheets, to be parsed by a block or entity
  */
 public class Args {

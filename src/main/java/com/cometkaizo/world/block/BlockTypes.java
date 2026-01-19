@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-16
  * Description: List of all blocks and their type-codes
  */
 public class BlockTypes {

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Screen overlay for the lever lock
  */
 public class LeverLockOverlay extends Overlay {

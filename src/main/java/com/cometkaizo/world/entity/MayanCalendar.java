@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.Arrays;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Interactable mayan calendar
  */
 public class MayanCalendar extends Interactable {

@@ -13,7 +13,7 @@ import java.util.function.BooleanSupplier;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Screen overlay for the morse code poster
  */
 public class MorseCodePosterOverlay extends Overlay {

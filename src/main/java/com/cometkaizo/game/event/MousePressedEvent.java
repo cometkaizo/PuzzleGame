@@ -5,7 +5,7 @@ import com.cometkaizo.input.MouseButtonBinding;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-21
  * Description: This class represents a mouse pressed event
  */
 public record MousePressedEvent(MouseButtonBinding input, double x, double y, int screenX, int screenY) implements Event {

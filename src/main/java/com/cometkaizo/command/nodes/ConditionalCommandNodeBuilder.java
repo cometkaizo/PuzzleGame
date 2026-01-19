@@ -2,7 +2,12 @@ package com.cometkaizo.command.nodes;
 
 import java.util.function.Supplier;
 
-public class ConditionalCommandNodeBuilder extends SoftCommandNodeBuilder {
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-19
+ * Description: Builder for a conditional command node
+ */
+public class ConditionalCommandNodeBuilder extends NoArgCommandNodeBuilder {
 
     protected final Supplier<Boolean> condition;
     protected final String name;

@@ -2,7 +2,12 @@ package com.cometkaizo.command.nodes;
 
 import java.util.function.Supplier;
 
-class ConditionalCommandNode extends SoftCommandNode {
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Command node that succeeds if its condition is met
+ */
+class ConditionalCommandNode extends NoArgCommandNode {
 
     protected final String name;
     protected final Supplier<Boolean> condition;

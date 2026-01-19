@@ -7,7 +7,7 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Interactable ludovisi ares sculpture
  */
 public class LudovisiAresSculpture extends Interactable {

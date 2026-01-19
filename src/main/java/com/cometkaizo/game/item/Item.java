@@ -7,7 +7,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: This class represents an item that can go into the player's inventory
  */
 public abstract class Item {

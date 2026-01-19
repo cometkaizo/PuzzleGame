@@ -5,7 +5,7 @@ import com.cometkaizo.world.*;
 import com.cometkaizo.world.block.WallBlock;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Interactable painting
  */
 public class Painting extends Interactable {

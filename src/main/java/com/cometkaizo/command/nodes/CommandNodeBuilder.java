@@ -3,6 +3,11 @@ package com.cometkaizo.command.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-19
+ * Description: Builder for a command node
+ */
 public abstract class CommandNodeBuilder {
 
     protected int level;
@@ -87,7 +92,7 @@ public abstract class CommandNodeBuilder {
     }
 
     public final boolean acceptsArguments() {
-        return !(this instanceof SoftCommandNodeBuilder);
+        return !(this instanceof NoArgCommandNodeBuilder);
     }
     public final boolean isRoot() {
         return this instanceof RootCommandNodeBuilder;

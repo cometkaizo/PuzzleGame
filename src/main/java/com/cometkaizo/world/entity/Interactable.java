@@ -11,7 +11,7 @@ import com.cometkaizo.world.Vector;
 import java.awt.*;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: An entity which does something when interacted with by the player
  */
 public abstract class Interactable extends CollidableEntity {

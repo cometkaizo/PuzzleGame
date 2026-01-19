@@ -8,7 +8,7 @@ import com.cometkaizo.world.entity.Entity;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Air block
  */
 public class AirBlock extends Block {

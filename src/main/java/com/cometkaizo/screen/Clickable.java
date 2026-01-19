@@ -10,7 +10,7 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: A 2D rectangle which performs an action when clicked
  */
 public class Clickable implements Tickable, Renderable {

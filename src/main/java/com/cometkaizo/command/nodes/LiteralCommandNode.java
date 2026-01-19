@@ -1,5 +1,10 @@
 package com.cometkaizo.command.nodes;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Command node that looks for a literal word
+ */
 class LiteralCommandNode extends CommandNode {
 
     private final String literal;

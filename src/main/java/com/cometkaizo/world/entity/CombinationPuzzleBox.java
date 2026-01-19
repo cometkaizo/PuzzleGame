@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Interactable combination puzzle box
  */
 public class CombinationPuzzleBox extends Interactable {

@@ -11,8 +11,8 @@ import java.util.Set;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
- * Description: A playable sound
+ * Date Modified: 2026-01-04
+ * Description: A playable sound, represented by an array of byte (waveform)
  */
 public class Sound {
     private static final Set<Sound> PLAYED_THIS_TICK = new HashSet<>();

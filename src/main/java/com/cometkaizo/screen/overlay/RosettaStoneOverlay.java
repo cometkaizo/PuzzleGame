@@ -9,7 +9,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Screen overlay for the rosetta stone
  */
 public class RosettaStoneOverlay extends Overlay {

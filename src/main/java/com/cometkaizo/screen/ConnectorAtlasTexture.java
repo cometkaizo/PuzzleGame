@@ -4,7 +4,7 @@ import com.cometkaizo.world.block.Block;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Atlas textures which describe the position of the "connected textures" tilemap
  */
 public enum ConnectorAtlasTexture implements AtlasTexture {

@@ -14,7 +14,7 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Screen overlay for chess
  */
 public class ChessOverlay extends Overlay {

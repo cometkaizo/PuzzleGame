@@ -7,7 +7,7 @@ import com.cometkaizo.screen.Canvas;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Screen overlay for the "see" screen of a note holder
  */
 public class NoteHolderSeeOverlay extends Overlay {

@@ -10,7 +10,7 @@ import com.cometkaizo.world.Vector;
 import java.awt.*;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Interactable collectible item
  */
 public abstract class Collectible extends Interactable {

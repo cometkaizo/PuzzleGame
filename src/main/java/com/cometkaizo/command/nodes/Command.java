@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
  * The Command class and its subclasses aim to map series of user inputted strings to specific actions.
  * Subclasses define what types of arguments are to be expected, and what to do with them.
  * The {@link RootCommandNode} {@code root} field is the root of a node tree which specifies the functionality of any command.

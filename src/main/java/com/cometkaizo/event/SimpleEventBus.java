@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Simple implementation of an EventBus
  */
 public class SimpleEventBus implements EventBus {
@@ -14,8 +14,6 @@ public class SimpleEventBus implements EventBus {
     private final Set<PendingAddition<?>> pendingAddition = new LinkedHashSet<>(10);
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Posts the given event
      */
     @Override
@@ -26,8 +24,6 @@ public class SimpleEventBus implements EventBus {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Tries to notify each of the given listeners
      */
     @SuppressWarnings("unchecked")
@@ -38,8 +34,6 @@ public class SimpleEventBus implements EventBus {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Registers an event listener
      */
     @Override
@@ -48,8 +42,6 @@ public class SimpleEventBus implements EventBus {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Registers all event listeners registered with the given key
      */
     @Override
@@ -57,8 +49,6 @@ public class SimpleEventBus implements EventBus {
         pendingRemoval.add(key);
     }
 
-    /// Author: Andy Wang
-    /// Date Modified: TODO
     /// Ticks this event bus for internal operations such as adding and removing listeners
     @Override
     public void tick() {
@@ -77,8 +67,6 @@ public class SimpleEventBus implements EventBus {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: This class represents an event listener waiting to be added
      */
     private record PendingAddition<T extends Event>(Object key, Class<? extends T> type, Consumer<? super T> listener) {

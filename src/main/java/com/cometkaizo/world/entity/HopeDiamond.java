@@ -5,7 +5,7 @@ import com.cometkaizo.world.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Interactable hope diamond
  */
 public class HopeDiamond extends Interactable {

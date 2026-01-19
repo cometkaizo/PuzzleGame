@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: This class represents the player's inventory of items
  */
 public class Inventory implements Iterable<Item> {

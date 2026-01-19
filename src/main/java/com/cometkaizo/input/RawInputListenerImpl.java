@@ -10,7 +10,7 @@ import java.util.function.BooleanSupplier;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-16
  * Description: Simple implementation for RawInputListener
  */
 public class RawInputListenerImpl implements RawInputListener {

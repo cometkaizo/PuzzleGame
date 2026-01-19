@@ -2,7 +2,7 @@ package com.cometkaizo.input;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-19
  * Description: This class represents a mouse button binding
  */
 public class MouseButtonBinding implements InputBinding {

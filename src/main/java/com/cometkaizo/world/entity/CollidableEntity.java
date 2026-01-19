@@ -6,7 +6,7 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-03
  * Description: An entity with a bounding box
  */
 public abstract class CollidableEntity extends Entity {

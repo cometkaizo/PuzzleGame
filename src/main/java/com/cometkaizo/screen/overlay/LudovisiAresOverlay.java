@@ -10,7 +10,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-13
  * Description: Screen overlay for the ludovisi ares sculpture
  */
 public class LudovisiAresOverlay extends Overlay {

@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Screen overlay for the anubis sculpture
  */
 public class AnubisOverlay extends Overlay {

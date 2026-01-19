@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Light block
  */
 public class Light extends Block {

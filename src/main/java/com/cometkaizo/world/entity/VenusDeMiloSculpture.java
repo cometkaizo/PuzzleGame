@@ -11,7 +11,7 @@ import com.cometkaizo.world.Vector;
 import java.awt.*;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Interactable statue of Venus de Milo sculpture
  */
 public class VenusDeMiloSculpture extends Interactable {

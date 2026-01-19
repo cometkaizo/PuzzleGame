@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.Objects;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Player entity which is controlled by the user
  */
 public class Player extends MovableEntity {

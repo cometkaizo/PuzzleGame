@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: Settings for the game
  */
 public class GameSettings {

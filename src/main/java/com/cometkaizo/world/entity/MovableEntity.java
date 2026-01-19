@@ -8,7 +8,7 @@ import com.cometkaizo.world.Vector;
 import static com.cometkaizo.util.MathUtils.almostEquals;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-03
  * Description: An entity which can move
  */
 public abstract class MovableEntity extends CollidableEntity {

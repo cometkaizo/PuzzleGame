@@ -8,6 +8,11 @@ import com.cometkaizo.world.Args;
 
 import java.awt.*;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-17
+ * Description: This class represents a note item
+ */
 public class NoteItem extends Item implements Renderable {
     private static final String[] MESSAGES = {
             """

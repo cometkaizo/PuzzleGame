@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: List of all item types and their types
  */
 public class ItemTypes {

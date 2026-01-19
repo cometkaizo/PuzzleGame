@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-16
  * Description: Counter block (e.g., for the info desk)
  */
 public class CounterBlock extends Block {

@@ -2,7 +2,7 @@ package com.cometkaizo.screen;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-29
  * Description: A single texture within a texture atlas (like a tilemap)
  */
 public interface AtlasTexture {

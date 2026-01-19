@@ -6,7 +6,7 @@ import com.cometkaizo.world.Vector;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-27
  * Description: Interactable antikythera mechanism entity
  */
 public class Antikythera extends Interactable {

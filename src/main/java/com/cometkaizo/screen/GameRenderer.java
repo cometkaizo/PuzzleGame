@@ -13,7 +13,7 @@ import static com.cometkaizo.app.GameDriver.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-05
  * Description: Class for rendering the game and screen overlay using Canvas
  */
 public class GameRenderer extends JPanel {

@@ -10,7 +10,7 @@ import com.cometkaizo.world.Vector;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Morse code machine that blocks light in a morse code sequence
  */
 public class MorseCodeMachine extends Interactable {

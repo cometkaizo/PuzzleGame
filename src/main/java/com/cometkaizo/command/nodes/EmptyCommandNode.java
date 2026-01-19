@@ -1,6 +1,11 @@
 package com.cometkaizo.command.nodes;
 
-class EmptyCommandNode extends SoftCommandNode {
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Command node that looks for nothing
+ */
+class EmptyCommandNode extends NoArgCommandNode {
 
     protected EmptyCommandNode(EmptyCommandNodeBuilder builder) {
         super(builder);

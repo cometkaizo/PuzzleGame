@@ -18,7 +18,7 @@ import static java.lang.Math.max;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-06
  * Description: Screen overlay for the player inventory
  */
 public class InventoryOverlay extends Overlay {

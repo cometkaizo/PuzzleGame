@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-19
  * Description: Settings for the application, with a dynamic toString function
  */
 public class AppSettings {

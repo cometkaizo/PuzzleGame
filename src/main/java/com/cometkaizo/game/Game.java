@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: This class represents a running game save
  */
 public class Game implements Tickable, Renderable, InputListener {
@@ -32,7 +32,7 @@ public class Game implements Tickable, Renderable, InputListener {
     private final GameState state;
     private final EventBus eventBus;
     private final Vector.MutableDouble cameraPosition, prevCameraPosition, targetCameraPosition;
-    // todo: currently only has one save slot
+    // currently only has one save slot
     public String name = "save";
     private double cameraSpeed;
     private World world;

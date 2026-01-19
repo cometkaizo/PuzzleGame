@@ -30,7 +30,7 @@ import static com.cometkaizo.util.FileUtils.exists;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-19
  * Description: This class represents the game application.
 */
 public class GameApp extends App implements Tickable {

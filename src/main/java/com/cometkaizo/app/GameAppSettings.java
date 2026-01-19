@@ -7,7 +7,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Settings for the game application
  */
 public class GameAppSettings extends AppSettings {

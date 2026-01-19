@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-04
  * Description: A Clickable which has an image that has an outline when hovered
  */
 public class ImageClickable extends Clickable {

@@ -10,7 +10,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-29
  * Description: Invisible solid block
  */
 public class BarrierBlock extends Block {

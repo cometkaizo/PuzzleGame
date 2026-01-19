@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-16
  * Description: Screen overlay for the brain of the thinker
  */
 public class BrainOverlay extends Overlay {

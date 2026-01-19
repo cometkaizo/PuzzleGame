@@ -13,8 +13,8 @@ import java.util.Map;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
- * Description: Stores all textures, fonts, and sounds in the game
+ * Date Modified: 2026-01-09
+ * Description: Stores all textures, fonts, and sounds in the game so that they only need to be lodaed from disk once
  */
 public class Assets {
     private static final Map<String, Image> TEXTURES = Collections.synchronizedMap(new HashMap<>());

@@ -3,7 +3,7 @@ package com.cometkaizo.world.entity;
 import com.cometkaizo.world.Vector;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Describes the 2D rectangular bounding box of an entity
  */
 public class BoundingBox {

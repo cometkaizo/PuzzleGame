@@ -2,6 +2,11 @@ package com.cometkaizo.command.nodes;
 
 import com.cometkaizo.command.arguments.Argument;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Command node that looks for an argument
+ */
 class ArgumentCommandNode extends CommandNode {
 
     private final Argument argument;

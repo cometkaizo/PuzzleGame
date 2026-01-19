@@ -1,5 +1,10 @@
 package com.cometkaizo.command.nodes;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Builder for a literal command node
+ */
 public class LiteralCommandNodeBuilder extends CommandNodeBuilder {
 
     protected final String literal;

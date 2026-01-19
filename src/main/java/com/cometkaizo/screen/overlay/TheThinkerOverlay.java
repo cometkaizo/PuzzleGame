@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: Screen overlay for the thinker
  */
 public class TheThinkerOverlay extends Overlay {

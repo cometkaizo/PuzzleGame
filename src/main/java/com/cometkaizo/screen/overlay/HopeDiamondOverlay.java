@@ -6,7 +6,7 @@ import com.cometkaizo.screen.Canvas;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-06
  * Description: Screen overlay for the hope diamond
  */
 public class HopeDiamondOverlay extends Overlay {

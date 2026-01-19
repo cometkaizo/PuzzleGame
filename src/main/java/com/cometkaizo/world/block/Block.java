@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: A single block in the world map
  */
 public abstract class Block implements Renderable, Resettable {

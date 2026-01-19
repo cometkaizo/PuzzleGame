@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-19
  * Description: Registry for something that depends on the game app (e.g., input bindings)
  */
 public class Registry<T> {

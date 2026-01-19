@@ -9,7 +9,7 @@ import com.cometkaizo.screen.ImageClickable;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-13
  * Description: Screen overlay for the statue of Ludovisi Ares chest
  */
 public class AresChestOverlay extends Overlay {

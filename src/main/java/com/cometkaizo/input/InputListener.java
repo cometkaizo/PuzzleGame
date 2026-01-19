@@ -2,7 +2,7 @@ package com.cometkaizo.input;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-22
  * Description: An input listener for mouse and key events
  */
 public interface InputListener {

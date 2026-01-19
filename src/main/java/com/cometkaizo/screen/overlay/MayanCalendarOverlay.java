@@ -13,7 +13,7 @@ import static java.lang.Math.floorMod;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-15
  * Description: Screen overlay for the mayan calendar
  */
 public class MayanCalendarOverlay extends Overlay {

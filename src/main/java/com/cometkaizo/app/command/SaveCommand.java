@@ -6,6 +6,11 @@ import com.cometkaizo.command.nodes.Command;
 
 import java.util.List;
 
+/**
+ * Author: Andy Wang
+ * Date Modified: 2026-01-19
+ * Description: Specification of a command that saves the game
+ */
 public class SaveCommand extends Command {
 
     private final GameApp app;

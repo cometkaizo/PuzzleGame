@@ -1,11 +1,13 @@
 package com.cometkaizo.command.nodes;
 
 /**
- * Represents classes that do not need an argument to determine its functionality
+ * Author: Andy Wang
+ * Date Modified: 2025-01-19
+ * Description: Represents classes that do not need an argument to determine its functionality
  */
-abstract class SoftCommandNode extends CommandNode {
+abstract class NoArgCommandNode extends CommandNode {
 
-    protected SoftCommandNode(SoftCommandNodeBuilder builder) {
+    protected NoArgCommandNode(NoArgCommandNodeBuilder builder) {
         super(builder);
     }
 

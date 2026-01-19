@@ -13,13 +13,10 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
-import java.util.function.BooleanSupplier;
-import java.util.function.IntUnaryOperator;
-import java.util.function.Supplier;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-14
  * Description: Screen overlay for the ludovisi ares sculpture
  */
 public class HermesOverlay extends Overlay {

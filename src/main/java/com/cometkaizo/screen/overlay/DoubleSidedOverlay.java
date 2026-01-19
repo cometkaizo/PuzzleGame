@@ -7,7 +7,7 @@ import com.cometkaizo.screen.Canvas;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-05
  * Description: Screen overlay for the double-sided statue
  */
 public class DoubleSidedOverlay extends Overlay {

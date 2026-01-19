@@ -2,7 +2,7 @@ package com.cometkaizo.game;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2025-12-27
  * Description: Exception when loading
  */
 public class LoadException extends RuntimeException {

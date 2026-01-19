@@ -10,7 +10,7 @@ import com.cometkaizo.screen.ImageClickable;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Screen overlay for a door
  */
 public class DoorOverlay extends Overlay {

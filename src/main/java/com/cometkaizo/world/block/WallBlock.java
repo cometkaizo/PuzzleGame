@@ -12,7 +12,7 @@ import java.awt.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-08
  * Description: Wall block
  */
 public class WallBlock extends Block {

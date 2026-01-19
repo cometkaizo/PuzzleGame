@@ -28,7 +28,7 @@ import static java.lang.Math.*;
 
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: A room with a grid of blocks and entities
  */
 public class Room implements Tickable, Renderable, Resettable {

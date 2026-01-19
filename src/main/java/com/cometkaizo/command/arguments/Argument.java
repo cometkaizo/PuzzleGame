@@ -3,7 +3,9 @@ package com.cometkaizo.command.arguments;
 import java.util.function.Predicate;
 
 /**
- * Arguments are responsible for translating user inputted strings into their corresponding objects.
+ * Author: Andy Wang
+ * Date Modified: 2025-12-19
+ * Description: Arguments are responsible for translating user inputted strings into their corresponding objects.
  * (e.g. "true" -> {@code true}, "0.34" -> {@code 0.34D}, etc)
  */
 public abstract class Argument {

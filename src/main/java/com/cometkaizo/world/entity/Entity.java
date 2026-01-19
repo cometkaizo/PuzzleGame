@@ -12,7 +12,7 @@ import com.cometkaizo.world.*;
 import java.awt.*;
 /**
  * Author: Andy Wang
- * Date Modified: TODO
+ * Date Modified: 2026-01-17
  * Description: An Entity is an object which is not bound to the grid as blocks are
  */
 public abstract class Entity implements Tickable, Renderable, Resettable {
