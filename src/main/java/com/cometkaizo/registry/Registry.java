@@ -4,7 +4,6 @@ import com.cometkaizo.app.GameApp;
 import com.cometkaizo.util.CollectionUtils;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -16,18 +15,9 @@ import java.util.function.Supplier;
 public class Registry<T> {
 
     private GameApp app;
-    private final List<Consumer<T>> registerListeners = new ArrayList<>(1);
     private final Map<String, Function<GameApp, ? extends T>> entryFunctions = new LinkedHashMap<>(5);
     private final Map<String, T> entries = new LinkedHashMap<>(5);
     private Collection<T> entryView = List.of();
-
-    public void addRegisterListener(Consumer<T> listener) {
-        registerListeners.add(listener);
-    }
-
-    public void removeRegisterListener(Consumer<T> listener) {
-        registerListeners.remove(listener);
-    }
 
     @SuppressWarnings("unchecked")
     public <V extends T> Supplier<V> register(String key, Function<GameApp, V> objectFunc) {
@@ -54,7 +44,6 @@ public class Registry<T> {
     private void addEntry(String key, T value) {
         Objects.requireNonNull(value, "Contract violation: cannot add null entry");
         entries.put(key, value);
-        registerListeners.forEach(c -> c.accept(value));
     }
 
     private void throwIfDuplicateKey(String key) {

@@ -10,7 +10,6 @@ import com.cometkaizo.game.Game;
 import com.cometkaizo.game.GameSettings;
 import com.cometkaizo.game.event.*;
 import com.cometkaizo.input.*;
-import com.cometkaizo.io.data.DataTypes;
 import com.cometkaizo.screen.GameRenderer;
 import com.cometkaizo.screen.overlay.NarrationOverlay;
 import com.cometkaizo.screen.overlay.Overlay;
@@ -96,7 +95,6 @@ public class GameApp extends App implements Tickable {
 
         InputBindings.GAME.register(this);
         InputBindings.OVERLAY.register(this);
-        DataTypes.DATA_TYPES.register(this);
 
         initWindow();
         game.setup();

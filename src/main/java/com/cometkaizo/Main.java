@@ -1,7 +1,7 @@
 package com.cometkaizo;
 
 import com.cometkaizo.app.GameDriver;
-import com.cometkaizo.io.NoSuchResourceException;
+import com.cometkaizo.util.NoSuchResourceException;
 
 import java.io.InputStream;
 

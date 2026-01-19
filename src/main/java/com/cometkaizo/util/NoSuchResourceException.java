@@ -1,4 +1,4 @@
-package com.cometkaizo.io;
+package com.cometkaizo.util;
 
 public class NoSuchResourceException extends RuntimeException {
     public NoSuchResourceException(String message) {

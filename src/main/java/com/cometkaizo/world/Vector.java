@@ -1,7 +1,5 @@
 package com.cometkaizo.world;
 
-import com.cometkaizo.io.DataSerializable;
-import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.util.MathUtils;
 
 import java.util.Objects;
@@ -12,9 +10,7 @@ import java.util.Objects;
  * Description: A 2D (x, y) pair. Can be any number type, usually ints and doubles.
  */
 @SuppressWarnings("unused")
-public interface Vector<T extends Number> extends DataSerializable {
-    String X_KEY = "x";
-    String Y_KEY = "y";
+public interface Vector<T extends Number> {
 
     T getX();
     T getY();
@@ -96,19 +92,6 @@ public interface Vector<T extends Number> extends DataSerializable {
     }
     static MutableDouble mutableDouble(Vector<?> vector) {
         return new MutableDouble(vector);
-    }
-
-    static ImmutableInt immutableInt(CompoundData data) {
-        return new ImmutableInt(data);
-    }
-    static ImmutableDouble immutableDouble(CompoundData data) {
-        return new ImmutableDouble(data);
-    }
-    static MutableInt mutableInt(CompoundData data) {
-        return new MutableInt(data);
-    }
-    static MutableDouble mutableDouble(CompoundData data) {
-        return new MutableDouble(data);
     }
 
 
@@ -213,10 +196,6 @@ public interface Vector<T extends Number> extends DataSerializable {
     }
     interface Immutable<T extends Number> extends Vector<T> {
 
-        @Override
-        default void read(CompoundData data) {
-            throw new UnsupportedOperationException("Immutable; cannot read " + data);
-        }
     }
 
     class MutableInt implements Mutable<Integer>, Int {
@@ -226,26 +205,9 @@ public interface Vector<T extends Number> extends DataSerializable {
             this.x = x;
             this.y = y;
         }
-        public MutableInt(CompoundData data) {
-            read(data);
-        }
         public MutableInt(Vector<?> other) {
             this.x = other.getX().intValue();
             this.y = other.getY().intValue();
-        }
-
-        @Override
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putInt(X_KEY, x);
-            data.putInt(Y_KEY, y);
-            return data;
-        }
-
-        @Override
-        public void read(CompoundData data) {
-            x = data.getInt(X_KEY);
-            y = data.getInt(Y_KEY);
         }
 
         @Override
@@ -365,26 +327,9 @@ public interface Vector<T extends Number> extends DataSerializable {
             this.x = x;
             this.y = y;
         }
-        public MutableDouble(CompoundData data) {
-            read(data);
-        }
         public MutableDouble(Vector<?> other) {
             this.x = other.getX().doubleValue();
             this.y = other.getY().doubleValue();
-        }
-
-        @Override
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putDouble(X_KEY, x);
-            data.putDouble(Y_KEY, y);
-            return data;
-        }
-
-        @Override
-        public void read(CompoundData data) {
-            x = data.getDouble(X_KEY);
-            y = data.getDouble(Y_KEY);
         }
 
         @Override
@@ -508,19 +453,6 @@ public interface Vector<T extends Number> extends DataSerializable {
             this.y = other.getY().intValue();
         }
 
-        public ImmutableInt(CompoundData data) {
-            x = data.getInt(X_KEY);
-            y = data.getInt(Y_KEY);
-        }
-
-        @Override
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putInt(X_KEY, x);
-            data.putInt(Y_KEY, y);
-            return data;
-        }
-
         @Override
         public Integer getX() {
             return x;
@@ -575,19 +507,6 @@ public interface Vector<T extends Number> extends DataSerializable {
         public ImmutableDouble(Vector<?> other) {
             this.x = other.getX().doubleValue();
             this.y = other.getY().doubleValue();
-        }
-
-        public ImmutableDouble(CompoundData data) {
-            x = data.getDouble(X_KEY);
-            y = data.getDouble(Y_KEY);
-        }
-
-        @Override
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putDouble(X_KEY, x);
-            data.putDouble(Y_KEY, y);
-            return data;
         }
 
         @Override

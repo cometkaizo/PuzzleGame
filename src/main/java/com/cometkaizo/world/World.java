@@ -4,14 +4,10 @@ import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
 import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.LoadException;
-import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -21,9 +17,6 @@ import java.util.*;
  * Description: A world containing a list of rooms
  */
 public class World implements Tickable, Renderable {
-    public static final String INFO_FILE_NAME = "world.info";
-    public static final String NAMESPACE_KEY = "namespace";
-    public static final String NAME_KEY = "name";
     private final Game game;
     private String namespace;
     private String name;
@@ -81,26 +74,6 @@ public class World implements Tickable, Renderable {
         } catch (Exception e) {
             throw new LoadException("World failed to load", e);
         }
-    }
-
-    private static void throwIfNoInfoFile(File[] files, Path path) throws FileNotFoundException {
-        if (Arrays.stream(files).noneMatch(World::isInfoFile)) throw new FileNotFoundException("No " + INFO_FILE_NAME + " file in " + path);
-    }
-
-    private static void throwIfInvalidDir(File saveDirectory) throws NoSuchFileException {
-        if (!saveDirectory.exists()) throw new NoSuchFileException("Path '" + saveDirectory + "' does not exist");
-        if (!saveDirectory.isDirectory()) throw new IllegalArgumentException("Path '" + saveDirectory + "' is not a directory");
-    }
-
-    private static boolean isInfoFile(File f) {
-        return f.getName().equals(INFO_FILE_NAME);
-    }
-
-    private void readInfo(Path infoPath) throws IOException {
-        CompoundData data = CompoundData.of(infoPath);
-
-        namespace = data.getString(NAMESPACE_KEY);
-        name = data.getString(NAME_KEY);
     }
 
     public String getNamespace() {

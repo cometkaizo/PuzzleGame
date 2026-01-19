@@ -4,7 +4,6 @@ import com.cometkaizo.Main;
 import com.cometkaizo.game.Game;
 import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.LoadException;
-import com.cometkaizo.io.data.CompoundData;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
@@ -23,8 +22,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import static com.cometkaizo.util.MathUtils.almostEquals;
 import static java.lang.Math.*;
@@ -42,7 +39,6 @@ public class Room implements Tickable, Renderable, Resettable {
     public String namespace;
     public final World world;
     public String name;
-    public ConnectionSet connectionSet = new ConnectionSet(null, null, null, null);
     public List<Checkpoint> checkpoints;
     public List<CameraLock> cameraLocks;
     public List<Trigger> triggers;
@@ -71,10 +67,6 @@ public class Room implements Tickable, Renderable, Resettable {
     }
 
     void onAddedTo(World world) {
-    }
-
-    public Connection getConnection(Direction direction) {
-        return connectionSet.get(direction);
     }
 
     public void lockCamera(Vector.MutableDouble cameraPos) {
@@ -150,98 +142,6 @@ public class Room implements Tickable, Renderable, Resettable {
         walls.write(state);
         background.write(state);
         foreground.write(state);
-    }
-
-
-    public static class ConnectionSet {
-        private final Map<Direction, Connection> connections = new HashMap<>(4);
-        public ConnectionSet(Connection upConnection,
-                             Connection downConnection,
-                             Connection leftConnection,
-                             Connection rightConnection) {
-            if (upConnection != null) connections.put(Direction.UP, upConnection);
-            if (downConnection != null) connections.put(Direction.DOWN, downConnection);
-            if (leftConnection != null) connections.put(Direction.LEFT, leftConnection);
-            if (rightConnection != null) connections.put(Direction.RIGHT, rightConnection);
-        }
-        private ConnectionSet(Map<Direction, Connection> connections) {
-            this.connections.putAll(connections);
-        }
-
-        public static ConnectionSet of(CompoundData data, Map<String, Room> rooms) {
-            Map<Direction, Connection> connections = new HashMap<>(4);
-
-            for (String key : data.asMap().keySet()) {
-                var direction = Direction.valueOf(key);
-                var connection = Connection.of(data.getCompound(key), rooms);
-                connections.put(direction, connection);
-            }
-            return new ConnectionSet(connections);
-        }
-
-        public static ConnectionSet of(String data, Map<String, Room> rooms) {
-            CompoundData compound = new CompoundData();
-
-            Stream<String> lines = data.lines();
-            for (String line : lines.toList()) {
-                String[] parts = line.split(",");
-
-                String direction = parts[0];
-                int start = Integer.parseInt(parts[1]);
-                int length = Integer.parseInt(parts[2]);
-                String destination = parts[3];
-
-                compound.put(direction, new Connection(start, length, destination, rooms).write());
-            }
-
-            return of(compound, rooms);
-        }
-
-        public Connection get(Direction direction) {
-            return connections.get(direction);
-        }
-
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            for (Direction key : connections.keySet()) {
-                var respawnPos = connections.get(key);
-                if (respawnPos != null) data.put(key.name(), respawnPos.write());
-            }
-            return data;
-        }
-
-    }
-
-    public record Connection(int start, int length, Supplier<Room> destination) {
-        public static final String DESTINATION_KEY = "destination";
-        public static final String START_KEY = "start";
-        public static final String LENGTH_KEY = "length";
-
-        public Connection(int start, int length, String destination, Map<String, Room> rooms) {
-            this(start, length, () -> getRoom(destination, rooms));
-        }
-
-        private static Room getRoom(String namespace, Map<String, Room> rooms) {
-            Room room = rooms.get(namespace);
-            if (room == null) throw new NoSuchElementException("Unknown room with namespace '" + namespace + "'; available rooms are: " + rooms);
-            return room;
-        }
-
-        public CompoundData write() {
-            CompoundData data = new CompoundData();
-            data.putString(DESTINATION_KEY, destination.get().getNamespace());
-            data.putInt(START_KEY, start);
-            data.putInt(LENGTH_KEY, length);
-            return data;
-        }
-
-        public static Connection of(CompoundData data, Map<String, Room> rooms) {
-            String destination = data.getString(DESTINATION_KEY);
-            int start = data.getInt(START_KEY);
-            int length = data.getInt(LENGTH_KEY);
-
-            return new Connection(start, length, destination, rooms);
-        }
     }
 
     public class Layer implements Tickable, Renderable, Resettable {
