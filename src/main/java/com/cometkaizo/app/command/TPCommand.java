@@ -1,11 +1,11 @@
 package com.cometkaizo.app.command;
 
-import com.cometkaizo.Main;
 import com.cometkaizo.app.GameApp;
-import com.cometkaizo.command.arguments.IntArgument;
+import com.cometkaizo.command.arguments.DoubleArgument;
 import com.cometkaizo.command.nodes.ArgumentCommandNodeBuilder;
 import com.cometkaizo.command.nodes.Command;
 import com.cometkaizo.game.Game;
+import com.cometkaizo.world.Vector;
 
 import java.util.List;
 
@@ -15,20 +15,17 @@ public class TPCommand extends Command {
 
     public TPCommand(GameApp app) {
         this.app = app;
-        rootNode.split(
-                new ArgumentCommandNodeBuilder(new IntArgument("checkpointId")).executes(this::tp)
-        );
+        rootNode.then(new ArgumentCommandNodeBuilder(new DoubleArgument("x")))
+                .then(new ArgumentCommandNodeBuilder(new DoubleArgument("y")))
+                .executes(this::tp);
     }
 
     private void tp() {
         Game game = app.getGame();
-        var checkpoints = game.room.getCheckpoints();
-        int checkpointId = (Integer) parsedArgs.get("checkpointId");
-        if (checkpointId < 0 || checkpointId >= checkpoints.size()) Main.err("Out of bounds, must be between 0 and " + (checkpoints.size() - 1) + " (inclusive)");
-        else {
-            var checkpoint = checkpoints.get(checkpointId);
-            game.getPlayer().setPosition(checkpoint.pos());
-        }
+        double x = (double) parsedArgs.get("x");
+        double y = (double) parsedArgs.get("y");
+
+        game.getPlayer().setPosition(Vector.immutable(x, y));
     }
 
 

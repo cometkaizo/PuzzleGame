@@ -60,7 +60,7 @@ public class GameApp extends App implements Tickable {
         this.settings = (GameAppSettings) super.getSettings();
         this.commandGroup = new CommandGroup(
                 () -> new ExitCommand(this),
-                () -> new GameCommand(this),
+                () -> new SaveCommand(this),
                 () -> new GiveCommand(this),
                 () -> new PosCommand(this),
                 () -> new TPCommand(this)
