@@ -83,7 +83,6 @@ public class Game implements Tickable, Renderable, InputListener {
         this.state = state;
         this.eventBus = new SimpleEventBus();
         eventBus.register(PlayerDeathEvent.class, this::onPlayerDeath);
-        eventBus.register(RoomSwitchEvent.class, this::onRoomSwitch);
         eventBus.register(KeyPressedEvent.class, this::toggleDebug);
 
         try {
@@ -128,11 +127,6 @@ public class Game implements Tickable, Renderable, InputListener {
     private void onPlayerDeath(PlayerDeathEvent event) {
         if (event.player() != player) throw new IllegalStateException("Different players: " + player + " and " + event.player());
         room.reset();
-    }
-
-    private void onRoomSwitch(RoomSwitchEvent event) {
-        if (event.player() != player) throw new IllegalStateException("Different players: " + player + " and " + event.player());
-        this.room = event.to();
     }
 
     private void toggleDebug(KeyPressedEvent click) {
