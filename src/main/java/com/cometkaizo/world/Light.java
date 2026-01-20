@@ -22,9 +22,7 @@ public class Light extends Block {
     private final boolean first;
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
-     * Description: Constructs a light block on the given layer with the given position and direction
+     * Constructs a light block on the given layer with the given position and direction
      */
     public Light(Room.Layer layer, Vector.Int pos, Direction direction, CollidableEntity collisionEntity, boolean first) {
         super(layer, Vector.immutableInt(pos), new Args("light"));

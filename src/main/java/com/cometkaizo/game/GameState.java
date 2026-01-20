@@ -22,7 +22,6 @@ import java.util.Map;
  * Description: This class represents a single game save state which can be written to and loaded from files
  */
 public class GameState {
-    // todo: save notes from noteholder too
     public Vector.Double playerPos;
     public List<Item> inventory = new ArrayList<>();
     public boolean keyCollected;
