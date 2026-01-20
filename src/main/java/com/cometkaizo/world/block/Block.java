@@ -24,6 +24,7 @@ public abstract class Block implements Renderable, Resettable {
     private Boolean connectedN, connectedE, connectedS, connectedW;
     protected boolean lit;
 
+    /// Creates a new block
     public Block(Room.Layer layer, Vector.ImmutableInt position, Args args) {
         this.room = layer.room;
         this.layer = layer;
@@ -38,6 +39,7 @@ public abstract class Block implements Renderable, Resettable {
         this.name = originalArgs.next();
     }
 
+    /// Returns whether this block is solid
     public abstract boolean isSolid(Entity entity);
 
     public void resetLight() {
@@ -59,15 +61,19 @@ public abstract class Block implements Renderable, Resettable {
         );
     }
 
+    /// Gets the path to the texture atlas for this block
     protected abstract String getTexturePath();
+    /// Gets the texture atlas for this block
     protected Image getTextureAtlas() {
         var texturePath = getTexturePath();
         if (texturePath == null) return null;
         return Assets.texture("block/" + texturePath);
     }
+    /// Returns the height of this block
     protected double getTextureHeight() {
         return 1;
     }
+    /// Gets the atlas texture for this block
     protected AtlasTexture getAtlasTexture() {
         return AtlasTexture.SINGLE_BLOCK;
     }
@@ -105,6 +111,7 @@ public abstract class Block implements Renderable, Resettable {
     }
 
 
+    /// Returns whether this block blocks light
     public boolean blocksLight() {
         return true;
     }
@@ -116,7 +123,8 @@ public abstract class Block implements Renderable, Resettable {
 
     }
 
-
+    /// Functional interface for reading in a block
+    @FunctionalInterface
     public interface Reader {
         Block apply(Room.Layer layer, Vector.ImmutableInt pos, Args args);
     }

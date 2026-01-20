@@ -16,6 +16,7 @@ public class NoteOverlay extends Overlay {
     private final Text content;
     private final String variant;
 
+    /// Creates a new overlay
     public NoteOverlay(GameApp app, String message, String variant) {
         super(app);
         content = new Text(message, Assets.font(20), Color.BLACK,
@@ -25,6 +26,7 @@ public class NoteOverlay extends Overlay {
         this.variant = variant;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

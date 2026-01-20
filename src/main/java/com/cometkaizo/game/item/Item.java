@@ -11,27 +11,31 @@ import java.awt.*;
  * Description: This class represents an item that can go into the player's inventory
  */
 public abstract class Item {
-    protected String getTexturePathImpl() {
-        return getNamespace();
-    }
+    /// Gets the namespace (id) of this item
     protected abstract String getNamespace();
+    /// Gets the path to the texture
     public String getTexturePath() {
-        String texturePath = getTexturePathImpl();
+        String texturePath = getNamespace();
         if (texturePath == null) return null;
         return "gui/item/" + texturePath;
     }
+    /// Gets the texture for this item
     public Image getTexture() {
-        String texturePath = getTexturePathImpl();
+        String texturePath = getNamespace();
         if (texturePath == null) return null;
         return Assets.texture("gui/item/" + texturePath);
     }
 
+    /// Gets the display name of this item
     public abstract String getName();
 
+    /// Writes this item into a string that can be read in again
     public String write() {
         return new Args(getNamespace(), new String[0]).toString();
     }
 
+    /// An interface for the reading an item in from arguments
+    @FunctionalInterface
     public interface Reader {
         Item apply(Args args);
     }

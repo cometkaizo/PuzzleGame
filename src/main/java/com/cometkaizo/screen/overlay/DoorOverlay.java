@@ -18,24 +18,28 @@ public class DoorOverlay extends Overlay {
     private final Runnable openAction;
     private final Clickable keyhole;
 
+    /// Creates a new overlay
     public DoorOverlay(GameApp app, Class<? extends Item> type, Runnable openAction) {
         super(app);
         this.type = type;
         this.openAction = openAction;
-        keyhole = new ImageClickable(this.app, this::tryOpen, w -> w/2 - 8, h -> h/2 - 8, _ -> 16, _ -> 16, () -> "gui/door/keyhole", 0, 0);
+        keyhole = new ImageClickable(this.app, this::useKeyhole, w -> w/2 - 8, h -> h/2 - 8, _ -> 16, _ -> 16, () -> "gui/door/keyhole", 0, 0);
     }
 
-    public void tryOpen() {
+    /// Attempts to open this door by using an item on the keyhole
+    public void useKeyhole() {
         app.setOverlay(new InventoryOverlay(app, item -> {
             if (type.isInstance(item)) open();
             else Assets.sound("wrong").play();
         }, this));
     }
+    /// Actually opens this door
     private void open() {
         openAction.run();
         app.setOverlay(null);
     }
 
+    /// Renders this overlay
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -43,12 +47,14 @@ public class DoorOverlay extends Overlay {
         keyhole.render(canvas);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         keyhole.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

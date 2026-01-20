@@ -21,6 +21,7 @@ public class BrainOverlay extends Overlay {
     private final List<Button> buttons = new ArrayList<>();
     private final Runnable solveAction;
 
+    /// Creates a new overlay
     public BrainOverlay(GameApp app, Runnable solveAction, Overlay prev) {
         super(app, prev);
         this.solveAction = solveAction;
@@ -32,15 +33,18 @@ public class BrainOverlay extends Overlay {
             }
         }
     }
+    /// Returns whether there is a neuron at the given coordinates
     private boolean hasNeuronAt(int r, int c) {
         if (r < 0 || r >= neurons.length || c < 0 || c >= neurons[0].length) return false;
         return !((r == 0 && c == 0) || (r == 1 && c == 0) || (r == 3 && c == 0) || (r == 0 && c == 5) || (r == 3 && c == 5));
     }
+    /// Returns whether there can be a button placed at the given coordinates
     public boolean isValidButtonPos(int r, int c, boolean otherTwoNeuronsAbove) {
         return hasNeuronAt(r, c) &&
                 hasNeuronAt(r + (otherTwoNeuronsAbove ? -1 : 1), c + (r % 2 == 1 ? -1 : 0)) &&
                 hasNeuronAt(r + (otherTwoNeuronsAbove ? -1 : 1), c + (r % 2 == 1 ? 0 : 1));
     }
+    /// Returns the neuron at the given coordinates starts active
     private boolean neuronStartsOnAt(int r, int c) {
         return switch (r) {
             case 0 -> switch (c) {case 1, 3 -> true; default -> false;};
@@ -51,6 +55,7 @@ public class BrainOverlay extends Overlay {
         };
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -63,6 +68,7 @@ public class BrainOverlay extends Overlay {
         text.render(canvas);
     }
 
+    /// Ticks this screen overlay
     @Override
     public void tick() {
         super.tick();
@@ -72,23 +78,27 @@ public class BrainOverlay extends Overlay {
         for (var button : buttons) button.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
         for (var button : buttons) button.onClick(click);
     }
 
+    /// Represents a single neuron in the brain
     public class Neuron implements Renderable, Tickable {
         public boolean on;
         public boolean hovered;
         public final int r, c;
 
+        /// Creates a neuron at the given coordinates
         public Neuron(int r, int c) {
             this.r = r;
             this.c = c;
             on = neuronStartsOnAt(r, c);
         }
 
+        /// Renders this neuron to the screen
         @Override
         public void render(Canvas canvas) {
             int x = canvas.scale(canvas.halfPixelWidth() + getDX(r, c));
@@ -98,35 +108,43 @@ public class BrainOverlay extends Overlay {
             canvas.renderDebugString("(" + r + ", " + c + ")", Color.YELLOW, x + canvas.scale(14), y + canvas.scale(14));
         }
 
+        /// Gets the y position of the neuron at the given coords relative to the center of the screen
         private static int getDY(int r, int c) {
             return - 68 + r * 28;
         }
 
+        /// Gets the x position of the neuron at the given coords relative to the center of the screen
         private static int getDX(int r, int c) {
             return - 88 + c * 28 + (r % 2 == 1 ? -14 : 0);
         }
 
+        /// Gets the texture path for this neuron
         private String getTexturePath() {
             return "gui/sculpture/thinker/neuron" + (on ? "_on" : "_off");
         }
+        /// Returns whether this neuron is outlined
         private boolean isOutlined() {
             return hovered;
         }
 
+        /// toggles this neuron from on/off to off/on
         public void toggle() {
             on = !on;
         }
 
+        /// Resets this neuron to not-hovered every tick
         @Override
         public void tick() {
             hovered = false;
         }
     }
 
+    /// A button to turn toggle 3 neurons at a time
     public class Button extends Clickable {
         private final int r, c;
         private final boolean otherTwoNeuronsAbove;
 
+        /// Creates a new button
         public Button(int r, int c, boolean otherTwoNeuronsAbove) {
             super(BrainOverlay.this.app, () -> {}, w -> w/2 + Neuron.getDX(r, c) + 11, h -> h/2 + Neuron.getDY(r, c) + (otherTwoNeuronsAbove ? -14 : 14), _ -> 13, _ -> 28);
             this.action = this::toggleSurroundingNeurons;
@@ -135,6 +153,7 @@ public class BrainOverlay extends Overlay {
             this.otherTwoNeuronsAbove = otherTwoNeuronsAbove;
         }
 
+        /// Gets the neurons turned on/off by this button
         private Neuron[] getNeurons() {
             return new Neuron[] {
                     neurons[r][c],
@@ -143,12 +162,14 @@ public class BrainOverlay extends Overlay {
             };
         }
 
+        /// Toggles the affected neurons
         private boolean toggleSurroundingNeurons() {
             for (var neuron : getNeurons()) neuron.toggle();
             checkIfSolved();
             return true;
         }
 
+        /// Updates the hover status of the affected neurons
         @Override
         public void tick() {
             super.tick();
@@ -157,12 +178,14 @@ public class BrainOverlay extends Overlay {
         }
     }
 
+    /// Checks if the brain is solved
     private void checkIfSolved() {
         if (solved()) {
             solveAction.run();
         }
     }
 
+    /// Returns whether all the neurons are solved
     private boolean solved() {
         for (var row : neurons)
             for (var neuron : row)

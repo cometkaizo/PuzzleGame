@@ -15,11 +15,13 @@ import java.awt.*;
  * Description: An entity which does something when interacted with by the player
  */
 public abstract class Interactable extends CollidableEntity {
+    /// Creates a new interactable entity
     public Interactable(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
     }
 
+    /// Possibly performs an action when a key is pressed
     private void onKeyPressed(KeyPressedEvent event) {
         KeyBinding input = event.input();
         if (canBeInteracted()) {
@@ -33,18 +35,23 @@ public abstract class Interactable extends CollidableEntity {
         }
     }
 
+    /// Returns whether this entity can be interacted
     protected boolean canBeInteracted() {
         return isTouching(room.player, interactDistance()) && room.player.canInteract();
     }
 
+    /// Performs an action when the player interacts with this entity
     protected abstract void interact();
+    /// Forcibly solves this interactable
     protected void solve() {
 
     }
 
+    /// Returns the distance that the player must be in order to interact with this entity
     protected double interactDistance() {
         return 0.1;
     }
+    /// Gets this entity's texture
     protected Image getTexture() {
         String texturePath = getTexturePath();
         if (texturePath == null) return null;

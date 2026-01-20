@@ -18,18 +18,21 @@ public class AresChestOverlay extends Overlay {
 
     private final Clickable heart;
 
+    /// Creates a new screen overlay
     public AresChestOverlay(GameApp app, Runnable openHeartAction, Overlay next) {
         super(app, next);
         this.openHeartAction = openHeartAction;
         heart = new ImageClickable(this.app, this::openHeart, w -> w/2 - 6, h -> h/2 - 23, _ -> 10, _ -> 27, () -> "gui/sculpture/ares/heart", -2, -2);
     }
 
+    /// Opens the heart of the statue
     private void openHeart() {
         if (heartOpen) return;
         openHeartAction.run();
         heartOpen = true;
     }
 
+    /// Renders this overlay onto the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -37,12 +40,14 @@ public class AresChestOverlay extends Overlay {
         heart.render(canvas);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         heart.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

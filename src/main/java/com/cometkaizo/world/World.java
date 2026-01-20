@@ -7,7 +7,6 @@ import com.cometkaizo.game.LoadException;
 import com.cometkaizo.screen.Canvas;
 import com.cometkaizo.screen.Renderable;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -22,6 +21,7 @@ public class World implements Tickable, Renderable {
     private String name;
     private final Map<String, Room> rooms = new HashMap<>(2);
 
+    /// Creates a new world with the given rooms
     public World(Game game, String namespace, String name, List<Room> rooms) {
         this.game = game;
         this.namespace = namespace;
@@ -29,21 +29,24 @@ public class World implements Tickable, Renderable {
         rooms.forEach(this::addRoom);
     }
 
-    public World(Game game, Path directoryPath) throws IOException {
+    /// Creates a new world by reading it from the given path
+    public World(Game game, Path directoryPath) {
         this.game = game;
         read(directoryPath);
     }
 
 
+    /// Adds a room to this world
     void addRoom(Room room) {
         rooms.put(room.getNamespace(), room);
-        room.onAddedTo(this);
     }
 
+    /// Gets all the rooms in this world
     public Map<String, Room> getRooms() {
         return rooms;
     }
 
+    /// Gets the room with the given id, or throws an exception if it does not exist
     public Room getRoom(String namespace) {
         Room room = rooms.get(namespace);
         if (room == null) throw new NoSuchElementException("Unknown room '" + namespace + "'; available rooms: " + rooms.values().stream().map(Room::getNamespace).toList());
@@ -51,20 +54,24 @@ public class World implements Tickable, Renderable {
     }
 
 
+    /// Updates this world every tick
     @Override
     public void tick() {
     }
 
+    /// Render this world to the screen
     @Override
     public void render(Canvas canvas) {
 
     }
 
+    /// Saves this world to the game state
     public void write(GameState state) {
         for (var room : rooms.values()) room.write(state);
     }
 
-    public void read(Path path) throws IOException {
+    /// Reads this world in from the given path
+    public void read(Path path) {
         rooms.clear();
 
         try (Scanner in = new Scanner(Main.getResource(path + "/info.txt"))) {
@@ -76,64 +83,14 @@ public class World implements Tickable, Renderable {
         }
     }
 
+    /// Returns the id of this room
     public String getNamespace() {
         return namespace;
     }
 
+    /// Returns the name of this room
     public String getName() {
         return name;
-    }
-
-    @SuppressWarnings("unused")
-    public static class Builder {
-        private Game game;
-        private String namespace;
-        private String name;
-        private List<Room> rooms;
-
-        public Builder(Game game, String namespace, String name, List<Room> rooms) {
-            this.game = game;
-            this.namespace = namespace;
-            this.name = name;
-            this.rooms = rooms;
-        }
-
-        public Builder(Game game, String namespace, String name) {
-            this(game, namespace, name, new ArrayList<>(1));
-        }
-
-        public Builder(World world) {
-            this(world.game, world.namespace, world.name, List.copyOf(world.rooms.values()));
-        }
-
-        public Builder setGame(Game game) {
-            this.game = game;
-            return this;
-        }
-
-        public Builder setNamespace(String namespace) {
-            this.namespace = namespace;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setRooms(List<Room> rooms) {
-            this.rooms = rooms;
-            return this;
-        }
-
-        public Builder withRoom(Room room) {
-            this.rooms.add(room);
-            return this;
-        }
-
-        public World build() {
-            return new World(game, namespace, name, rooms);
-        }
     }
 
 }

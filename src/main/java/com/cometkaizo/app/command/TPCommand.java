@@ -18,6 +18,7 @@ public class TPCommand extends Command {
 
     private final GameApp app;
 
+    /// Creates a new teleport command
     public TPCommand(GameApp app) {
         this.app = app;
         rootNode.then(new ArgumentCommandNodeBuilder(new DoubleArgument("x")))
@@ -25,6 +26,7 @@ public class TPCommand extends Command {
                 .executes(this::tp);
     }
 
+    /// teleports the player to the given coords
     private void tp() {
         Game game = app.getGame();
         double x = (Double) parsedArgs.get("x");
@@ -34,6 +36,7 @@ public class TPCommand extends Command {
     }
 
 
+    /// gets the list of names for this command
     @Override
     public List<String> getNames() {
         return List.of("tp");

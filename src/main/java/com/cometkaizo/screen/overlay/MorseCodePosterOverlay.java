@@ -38,6 +38,7 @@ public class MorseCodePosterOverlay extends Overlay {
     };
     private NoteSlot selected;
 
+    /// Creates a new overlay
     public MorseCodePosterOverlay(GameApp app, BooleanSupplier isLit, int[] noteIds) {
         super(app);
         this.isLit = isLit;
@@ -57,6 +58,7 @@ public class MorseCodePosterOverlay extends Overlay {
         }
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -75,13 +77,16 @@ public class MorseCodePosterOverlay extends Overlay {
         for (var slot : slots) slot.render(canvas);
     }
 
+    /// Returns an array of note ids so that the state of this poster can be written to and loaded from disk
     public int[] noteIds() {
         return Arrays.stream(slots).mapToInt(slot -> slot.id).toArray();
     }
 
+    /// A single slot that may or may not contain a note
     public class NoteSlot extends ImageClickable {
         public int id;
 
+        /// Creates a new note slot
         public NoteSlot(int id, int dx, int dy) {
             super(MorseCodePosterOverlay.this.app, () -> {}, w -> w/2 + dx, null, _ -> 16, _ -> 16, null, -2, -2);
             this.y = h -> h/2 + dy + (this == selected ? -4 : 0);
@@ -90,6 +95,9 @@ public class MorseCodePosterOverlay extends Overlay {
             this.id = id;
         }
 
+        /// Called when clicked.
+        /// If no other note has been selected, selects this note.
+        /// Otherwise, swaps this note with the selected note.
         private boolean selectOrSwap() {
             if (selected == null) {
                 if (id != -1) selected = this;
@@ -102,11 +110,13 @@ public class MorseCodePosterOverlay extends Overlay {
             return true;
         }
 
+        /// Returns whether this slot is outlined
         @Override
         protected boolean isOutlined() {
             return super.isOutlined() || selected == this;
         }
 
+        /// Renders this note slot to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -114,12 +124,14 @@ public class MorseCodePosterOverlay extends Overlay {
         }
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         for (var slot : slots) slot.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

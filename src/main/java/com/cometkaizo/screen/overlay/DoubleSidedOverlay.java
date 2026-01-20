@@ -1,40 +1,30 @@
 package com.cometkaizo.screen.overlay;
 
 import com.cometkaizo.app.GameApp;
-import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
 
 /**
  * Author: Andy Wang
  * Date Modified: 2026-01-05
- * Description: Screen overlay for the double-sided statue
+ * Description: Screen overlay for the double-sided statue, Mephistopheles and Margaretta
  */
 public class DoubleSidedOverlay extends Overlay {
-    private boolean mirrorRemoved;
 
-    public DoubleSidedOverlay(GameApp app, boolean mirrorRemoved) {
+    /// Creates a new overlay
+    public DoubleSidedOverlay(GameApp app) {
         super(app);
-        this.mirrorRemoved = mirrorRemoved;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         canvas.renderCenteredImage(Assets.texture(getTexturePath()));
     }
 
+    /// Gets the path to the background texture
     private String getTexturePath() {
-        return "gui/sculpture/double_sided/" + (mirrorRemoved ? "no_mirror" : "regular");
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
-    protected void onClick(MousePressedEvent click) {
-        super.onClick(click);
+        return "gui/sculpture/double_sided/regular";
     }
 }

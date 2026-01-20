@@ -41,11 +41,11 @@ public class Room implements Tickable, Renderable, Resettable {
     public String name;
     public List<Checkpoint> checkpoints;
     public List<CameraLock> cameraLocks;
-    public List<Trigger> triggers;
     public Player player;
 
     public Layer ground, walls, background, foreground;
 
+    /// Creates a new room in the given world, and reads the room layout from the given path
     public Room(Game game, World world, Path path) throws IOException {
         this.game = game;
         this.world = world;
@@ -63,12 +63,10 @@ public class Room implements Tickable, Renderable, Resettable {
 
         checkpoints = walls.checkpoints;
         cameraLocks = background.cameraLocks;
-        triggers = walls.triggers;
     }
 
-    void onAddedTo(World world) {
-    }
 
+    /// Calculates the camera position that is enforced by any active camera locks
     public void lockCamera(Vector.MutableDouble cameraPos) {
         var closestLockPos = cameraLocks.stream()
                 .filter(l -> l.isActive(player.getPosition())) // filter for active camera locks
@@ -78,6 +76,7 @@ public class Room implements Tickable, Renderable, Resettable {
     }
 
 
+    /// Updates the blocks and entities in this room every tick
     @Override
     public void tick() {
         ground.tick();
@@ -86,6 +85,7 @@ public class Room implements Tickable, Renderable, Resettable {
         foreground.tick();
     }
 
+    /// Renders this room to the screen
     @Override
     public void render(Canvas canvas) {
         background.render(canvas);
@@ -95,6 +95,7 @@ public class Room implements Tickable, Renderable, Resettable {
         cameraLocks.forEach(l -> l.render(canvas));
     }
 
+    /// Returns the object with the given name, or null if there is no such block or entity
     public Object getBlockOrEntity(String name) {
         Object result;
         if ((result = ground.getBlockOrEntity(name)) != null) return result;
@@ -104,21 +105,26 @@ public class Room implements Tickable, Renderable, Resettable {
         return null;
     }
 
+    /// Gets this room's ID
     public String getNamespace() {
         return namespace;
     }
 
+    /// Gets this room's name
     public String getName() {
         return name;
     }
 
+    /// Gets the checkpoints in this room
     public List<Checkpoint> getCheckpoints() {
         return checkpoints;
     }
+    /// Gets the checkpoint that the player spawns at
     public Checkpoint getFirstCheckpoint() {
         return (Checkpoint) walls.named.get("first");
     }
 
+    /// Resets everything in the room
     @Override
     public void reset() {
         ground.reset();
@@ -127,16 +133,14 @@ public class Room implements Tickable, Renderable, Resettable {
         foreground.reset();
     }
 
-    public List<Block> getGroundBeneath(CollidableEntity entity) {
-        return ground.getBlocksWithin(entity.getBoundingBox(), b -> b.isSolid(entity));
-    }
-
+    /// Sets the player in this room
     public void setPlayer(Player player) {
         if (this.player != null) walls.removeEntity(player);
         this.player = player;
         walls.addEntity(player); // the player exists on the "walls" layer
     }
 
+    /// Writes this room to the game state
     public void write(GameState state) {
         ground.write(state);
         walls.write(state);
@@ -144,8 +148,9 @@ public class Room implements Tickable, Renderable, Resettable {
         foreground.write(state);
     }
 
+    /// A single layer in the room
     public class Layer implements Tickable, Renderable, Resettable {
-        public static final String RESPAWN_ID = "R", CAMERA_LOCK_ID = "CL", TRIGGER_ID = "T";
+        public static final String RESPAWN_ID = "R", CAMERA_LOCK_ID = "CL";
         public final Room room = Room.this;
         public final Block[][] blocks;
         public final Light[][] light;
@@ -154,10 +159,10 @@ public class Room implements Tickable, Renderable, Resettable {
         public final Map<String, Object> named = new HashMap<>();
         public final List<Checkpoint> checkpoints;
         public final List<CameraLock> cameraLocks;
-        public final List<Trigger> triggers;
         public final String name;
         public final Image baseImage;
 
+        /// Reads the layer in from the given input stream
         public Layer(String name, InputStream is) throws IOException {
             this.name = name;
             baseImage = Assets.texture("layer/" + name);
@@ -168,7 +173,6 @@ public class Room implements Tickable, Renderable, Resettable {
             var blocks = new ArrayList<List<Block>>();
             checkpoints = new ArrayList<>();
             cameraLocks = new ArrayList<>();
-            triggers = new ArrayList<>();
 
             for (int r = 0; r < lines.size(); r ++) { // for each row index r
                 var line = lines.get(r);
@@ -214,12 +218,14 @@ public class Room implements Tickable, Renderable, Resettable {
             in.close();
         }
 
+        /// Gets the error message for an unknown object id
         private static String getUnknownObjectIdMsg(String name, String id, List<String> lines, int r, int c) {
             return name + " - unknown object id: " + id +
                     " at (" + (lines.size() - r) + "," + (c + 1) + ")" +
                     " or (" + MathUtils.toSheetCol(c) + (lines.size() - r) + ")";
         }
 
+        /// Reads a special value such as a camera lock or checkpoint
         private boolean readSpecialValue(String id, int r, int c, Args args) {
             switch (id) {
                 case RESPAWN_ID -> {
@@ -232,16 +238,13 @@ public class Room implements Tickable, Renderable, Resettable {
                     cameraLocks.add(new CameraLock(args, r, c));
                     return true;
                 }
-                case TRIGGER_ID -> {
-                    triggers.add(new Trigger(r, c, args.nextInt(0), args.nextInt(0), args.nextInt(4), args.nextInt(4), args.nextInt(-1)));
-                    return true;
-                }
                 case null, default -> {
                 }
             }
             return false;
         }
 
+        /// Reads a block in and stores it in the given row
         private boolean readBlock(String id, int c, int r, Args args, ArrayList<Block> row) {
             if (BlockTypes.BLOCKS.containsKey(id)) {
                 var b = BlockTypes.BLOCKS.get(id).apply(this, Vector.immutable(c, r), args);
@@ -255,6 +258,7 @@ public class Room implements Tickable, Renderable, Resettable {
             return false;
         }
 
+        /// Reads an entity in and stores it in the entities list
         private boolean readEntity(String id, int c, int r, Args args) {
             if (EntityTypes.ENTITIES.containsKey(id)) {
                 var e = EntityTypes.ENTITIES.get(id).apply(this, Vector.mutable((double) c, r), args);
@@ -265,10 +269,13 @@ public class Room implements Tickable, Renderable, Resettable {
             return false;
         }
 
+        /// Creates a new air block at the given position
         private Block newAirBlock(int c, int r) {
             return BlockTypes.BLOCKS.get("").apply(this, Vector.immutable(c, r), Args.EMPTY);
         }
 
+        /// Calculates the allowed movement from the given starting position to the given ending position that the given
+        /// entity is performing, and stores the resulting allowed movement (after collision checks) into the given result vector
         public void calcAllowedMovement(Vector.Double from, Vector.Double to, CollidableEntity entity, Vector.MutableDouble result, boolean canBlip) {
             if (entity == null) return;
             var boundingBox = entity.getBoundingBox();
@@ -286,6 +293,7 @@ public class Room implements Tickable, Renderable, Resettable {
             boundingBox.position.x = result.x - bbOffsetX;
         }
 
+        /// Calculates the allowed vertical movement from the given starting position to the given ending position
         private void calcAllowedOnlyYMovement(Vector.Double f, Vector.Double t, CollidableEntity entity, Vector.MutableDouble result, boolean canBlip) {
             double from = f.getY(), to = t.getY();
             var boundingBox = entity.getBoundingBox();
@@ -332,6 +340,7 @@ public class Room implements Tickable, Renderable, Resettable {
             result.y = to;
         }
 
+        /// Calculates the allowed horizontal movement from the given starting position to the given ending position
         private void calcAllowedOnlyXMovement(Vector.Double f, Vector.Double t, CollidableEntity entity, Vector.MutableDouble result, boolean canBlip) {
             double from = f.getX(), to = t.getX();
             var boundingBox = entity.getBoundingBox();
@@ -379,6 +388,7 @@ public class Room implements Tickable, Renderable, Resettable {
             result.x = to;
         }
 
+        /// Truncates the movement vertically according to solid block and entity collision, and returns the truncated y value
         private static double getTruncatedYMovement(BoundingBox boundingBox, List<Block> solidBlocks, List<Entity> solidEntities, boolean truncateUnder, double bbOffset) {
             if (solidBlocks.isEmpty() && solidEntities.isEmpty()) return boundingBox.position.y;
             if (truncateUnder) {
@@ -398,6 +408,7 @@ public class Room implements Tickable, Renderable, Resettable {
             }
         }
 
+        /// Truncates the movement horizontally according to solid block and entity collision, and returns the truncated x value
         private static double getTruncatedXMovement(BoundingBox boundingBox, List<Block> solidBlocks, List<Entity> solidEntities, boolean truncateToLeft, double bbOffset) {
             if (solidBlocks.isEmpty() && solidEntities.isEmpty()) return boundingBox.position.x;
             if (truncateToLeft) {
@@ -417,10 +428,12 @@ public class Room implements Tickable, Renderable, Resettable {
             }
         }
 
+        /// Gets all blocks within the given bounding box
         public List<Block> getBlocksWithin(BoundingBox boundingBox) {
             return getBlocksWithin(boundingBox, b -> true);
         }
 
+        /// Gets all blocks within the given bounding box that satisfy the given condition
         public List<Block> getBlocksWithin(BoundingBox boundingBox, Predicate<? super Block> condition) {
             int fromX = (int) floor(boundingBox.getLeft() + 1E-5);
             int fromY = (int) floor(boundingBox.getBottom() + 1E-5);
@@ -440,13 +453,16 @@ public class Room implements Tickable, Renderable, Resettable {
             return result;
         }
 
+        /// Gets all entities within the given block
         private List<Entity> getEntitiesWithinBlock(Vector.Int pos) {
             return getEntitiesWithin(new BoundingBox(Vector.mutableDouble(pos), Vector.immutable(1D, 1D)));
         }
+        /// Gets all entities within the given bounding box
         public List<Entity> getEntitiesWithin(BoundingBox boundingBox) {
             return getEntitiesWithin(boundingBox, b -> true);
         }
 
+        /// Gets all entities within the given bounding box that satisfy the given condition
         public List<Entity> getEntitiesWithin(BoundingBox boundingBox, Predicate<? super Entity> condition) {
             var result = new ArrayList<Entity>();
             for (var e : entities) {
@@ -459,50 +475,38 @@ public class Room implements Tickable, Renderable, Resettable {
             return result;
         }
 
+        /// Gets the block at the given position, if it exists
         public Optional<Block> getBlock(Vector.Int position) {
             return getBlock(position.getX(), position.getY());
         }
+        /// Gets the block at the given position, if it exists
         public Optional<Block> getBlock(int x, int y) {
             if (y < 0 || y >= blocks.length) return Optional.empty();
             var row = blocks[y];
             if (x < 0 || x >= row.length) return Optional.empty();
             return Optional.of(row[x]);
         }
+        /// Gets the block type at the given position, if it exists
         public Optional<Class<? extends Block>> getBlockType(int x, int y) {
             return getBlock(x, y).map(Block::getClass);
         }
+        /// Returns whether the block at the given position is of the given type
         public boolean isBlockType(int x, int y, Class<? extends Block> type) {
             return getBlockType(x, y).orElse(null) == type;
         }
 
-        public Optional<Light> getLight(Vector.Int pos) {
-            return getLight(pos.getX(), pos.getY());
-        }
-        public Optional<Light> getLight(int x, int y) {
-            if (y < 0 || y >= light.length) return Optional.empty();
-            var row = light[y];
-            if (x < 0 || x >= row.length) return Optional.empty();
-            return Optional.of(row[x]);
-        }
-        public void setLight(Vector.Int pos, Light l) {
-            setLight(pos.getX(), pos.getY(), l);
-        }
-        public void setLight(int x, int y, Light l) {
-            if (y < 0 || y >= light.length) return;
-            var row = light[y];
-            if (x < 0 || x >= row.length) return;
-            row[x] = l;
-        }
-
+        /// Returns whether the given bounding box contains a block or entity that is solid to the given entity
         public boolean containsSolid(BoundingBox boundingBox, Entity entity) {
             return !getBlocksWithin(boundingBox, block -> block.isSolid(entity)).isEmpty() ||
                     !getEntitiesWithin(boundingBox, e -> e instanceof CollidableEntity c && c.isSolid(entity)).isEmpty();
         }
 
+        /// Returns the block or entity with the given name, or null if there is no such object
         public Object getBlockOrEntity(String name) {
             return name == null ? null : named.get(name);
         }
 
+        /// Updates the blocks and entities on this layer
         @Override
         public void tick() {
             for (var row : light) Arrays.fill(row, null); // reset light every single tick
@@ -518,6 +522,7 @@ public class Room implements Tickable, Renderable, Resettable {
             this.entitiesSortedByY = entitiesSortedByY;
         }
 
+        /// Renders this layer to the screen
         @Override
         public void render(Canvas canvas) {
             int nextRenderEntityId = 0; // keep track of which entity we are yet to render
@@ -551,22 +556,26 @@ public class Room implements Tickable, Renderable, Resettable {
             canvas.renderImage(baseImage, -14D, -10D, 0, -1);
         }
 
+        /// Resets this layer
         public void reset() {
             entities.forEach(Entity::reset);
             for (var row : blocks) for (var b : row) b.reset();
         }
 
+        /// Adds an entity to this layer
         public <T extends Entity> T addEntity(T entity) {
             entities.add(entity);
             if (entity.hasName()) named.put(entity.getName(), entity);
             return entity;
         }
+        /// Removes an entity from this layer
         public <T extends Entity> T removeEntity(T entity) {
             entities.remove(entity);
             if (entity.hasName()) named.remove(entity.getName(), entity);
             return entity;
         }
 
+        /// Lights up a line of blocks starting from the given position and traveling in the given direction
         public void lightUp(Vector.Int fromPos, Direction direction, Object emitter) {
             var pos = Vector.mutableInt(fromPos);
             while (!getBlock(pos).map(Block::blocksLight).orElse(true)) {
@@ -592,6 +601,30 @@ public class Room implements Tickable, Renderable, Resettable {
             getBlock(pos).ifPresent(b -> b.updateLight(direction));
         }
 
+        /// Gets the light at the given position
+        public Optional<Light> getLight(Vector.Int pos) {
+            return getLight(pos.getX(), pos.getY());
+        }
+        /// Gets the light at the given position
+        public Optional<Light> getLight(int x, int y) {
+            if (y < 0 || y >= light.length) return Optional.empty();
+            var row = light[y];
+            if (x < 0 || x >= row.length) return Optional.empty();
+            return Optional.of(row[x]);
+        }
+        /// Sets the light at the given position
+        public void setLight(Vector.Int pos, Light l) {
+            setLight(pos.getX(), pos.getY(), l);
+        }
+        /// Sets the light at the given position
+        public void setLight(int x, int y, Light l) {
+            if (y < 0 || y >= light.length) return;
+            var row = light[y];
+            if (x < 0 || x >= row.length) return;
+            row[x] = l;
+        }
+
+        /// Finds the first entity collision at the given position in the given direction
         private Optional<CollidableEntity> findFirstEntityCollision(Vector.MutableInt pos, Direction direction, Object emitter) {
             var entities = getEntitiesWithinBlock(pos).stream()
                     .filter(CollidableEntity.class::isInstance)
@@ -606,6 +639,7 @@ public class Room implements Tickable, Renderable, Resettable {
             };
         }
 
+        /// Saves this layer to the game state
         public void write(GameState state) {
             for (var row : blocks)
                 for (var block : row)
@@ -615,42 +649,25 @@ public class Room implements Tickable, Renderable, Resettable {
         }
     }
 
+    /// A checkpoint
     public record Checkpoint(Vector.ImmutableDouble pos, BoundingBox activationArea, String name) {
+        /// Creates a new checkpoint
         public Checkpoint(int r, int c, int left, int right, int up, int down, String name) {
             // its mutable and I don't think records are supposed to be mutable but whatever
             this(Vector.immutable(c + 0.5, r), new BoundingBox(Vector.mutable((double) c - left, r - down), Vector.immutable((double) left + 1 + right, up + 1 + down)), name);
         }
     }
 
-    public record Trigger(BoundingBox activationArea, int id) {
-        public static final int LUGGAGE_CP0 = 0, WIN = 1; // cp0 haha
-        public Trigger(int r, int c, int left, int right, int up, int down, int id) {
-            // its mutable and I don't think records are supposed to be mutable but whatever
-            this(new BoundingBox(Vector.mutable((double) c - left, r - down), Vector.immutable((double) left + 1 + right, up + 1 + down)), id);
-        }
-        public void activate(Player player) { // should this be called the other way, where Trigger is ticked?
-            switch (id) {
-                case LUGGAGE_CP0 -> luggageCP0(player);
-                case WIN -> win(player);
-                default -> throw new IllegalStateException("Unexpected trigger id: " + id);
-            }
-        }
-
-        private void luggageCP0(Player player) {
-        }
-
-        private void win(Player player) {
-
-        }
-    }
-
+    /// A region which restricts the camera
     public static class CameraLock implements Renderable {
         protected final int left, right, top, bottom;
         protected final BoundingBox activationArea;
 
+        /// Reads a camera lock in from the Args instance
         public CameraLock(Args args, int r, int c) {
             this(c, r, args.nextInt(0), args.nextInt(0), args.nextInt(5), args.nextInt(3), args.nextInt(5), args.nextInt(3));
         }
+        /// Creates a new camera lock
         public CameraLock(int left, int bottom, int width, int height, int leftRange, int topRange, int rightRange, int bottomRange) {
             int right = left + width;
             int top = bottom + height;
@@ -662,13 +679,16 @@ public class Room implements Tickable, Renderable, Resettable {
             this.bottom = bottom;
         }
 
+        /// Returns the restricted camera position given an initial camera position
         public Vector.ImmutableDouble restrict(Vector.Double pos) {
             return Vector.immutable(clamp(pos.getX(), left, right), clamp(pos.getY(), bottom, top));
         }
+        /// Returns whether the given position is within this camera lock's activation area
         public boolean isActive(Vector.Double pos) {
             return activationArea.contains(pos);
         }
 
+        /// Renders this camera lock to the screen
         @Override
         public void render(Canvas canvas) {
             canvas.renderDebugBoundingBox(activationArea, Color.ORANGE);

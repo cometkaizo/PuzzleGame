@@ -32,6 +32,7 @@ public class ImageUtils {
         return dest;
     }
 
+    /// Reads the image in the given file
     public static BufferedImage readImage(File file) {
         try {
             return ImageIO.read(file);
@@ -40,6 +41,7 @@ public class ImageUtils {
         }
     }
 
+    /// Reads the image from the given resource path (in the resources folder)
     public static BufferedImage readImage(String resourceLoc) {
         try {
             return ImageIO.read(Main.getResource(resourceLoc));
@@ -48,6 +50,7 @@ public class ImageUtils {
         }
     }
 
+    /// Reads the image from the given resource path, or returns null if it does not exist
     public static BufferedImage readImageOrNull(String resourceLoc) {
         try {
             return ImageIO.read(Main.getResource(resourceLoc));

@@ -8,43 +8,49 @@ package com.cometkaizo.input;
 public class MouseButtonBinding implements InputBinding {
     public final String name;
     public int button;
-    public final int defaultKey;
+    public final int defaultButton;
     public boolean isDown;
 
-    public MouseButtonBinding(String name, int defaultKey, int button) {
+    /// Creates a new mouse binding
+    public MouseButtonBinding(String name, int defaultButton, int button) {
         this.name = name;
         this.button = button;
-        this.defaultKey = defaultKey;
+        this.defaultButton = defaultButton;
     }
-    public MouseButtonBinding(String name, int defaultKey) {
-        this(name, defaultKey, defaultKey);
+    /// Creates a new mouse binding
+    public MouseButtonBinding(String name, int defaultButton) {
+        this(name, defaultButton, defaultButton);
     }
 
+    /// Gets the button for this binding
     public int getButton() {
         return button;
     }
-
+    /// Sets the button for this binding
     public void setButton(int button) {
         this.button = button;
     }
-
-    public void resetKey() {
-        this.button = this.defaultKey;
+    /// Resets the button to the default button
+    public void resetButton() {
+        this.button = this.defaultButton;
+    }
+    /// Gets the default button
+    public int getDefaultButton() {
+        return defaultButton;
     }
 
-    public int getDefaultKey() {
-        return defaultKey;
-    }
-
+    /// Returns whether this binding is currently active
     @Override
     public boolean isActive() {
         return isDown;
     }
 
+    /// Sets whether this binding is currently active
     public void setDown(boolean down) {
         isDown = down;
     }
 
+    /// Gets the name of this binding
     @Override
     public String getName() {
         return name;

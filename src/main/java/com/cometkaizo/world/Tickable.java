@@ -6,5 +6,6 @@ package com.cometkaizo.world;
  * Description: An object which can be ticked, or updated, many times a second
  */
 public interface Tickable {
+    /// Updates this object every tick
     void tick();
 }

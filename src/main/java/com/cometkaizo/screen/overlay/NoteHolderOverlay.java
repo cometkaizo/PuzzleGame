@@ -15,14 +15,13 @@ import com.cometkaizo.screen.ImageClickable;
  */
 public class NoteHolderOverlay extends Overlay {
 
-    private final boolean lit;
     private final Clickable seeClickable;
     private final NoteItem[] notes;
     private final Slot[] slots;
 
+    /// Creates a new overlay
     public NoteHolderOverlay(GameApp app, boolean lit, NoteItem[] notes) {
         super(app);
-        this.lit = lit;
         this.notes = notes;
 
         this.slots = new Slot[notes.length];
@@ -40,18 +39,20 @@ public class NoteHolderOverlay extends Overlay {
                 () -> "gui/note_holder/see", -2, -2);
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
-//        canvas.renderCenteredImage(Assets.texture("gui/note_holder/regular"));
 
         for (Slot slot : slots) slot.render(canvas);
         seeClickable.render(canvas);
     }
 
+    /// A slot that can contain a note
     public class Slot extends ImageClickable {
         private final int index;
 
+        /// Creates a new slot
         public Slot(int index) {
             super(NoteHolderOverlay.this.app, () -> {}, w -> w/2 - 32, h -> h/2 + index * 10, _ -> 64, _ -> 10, null, -2, -2);
             this.index = index;
@@ -63,10 +64,12 @@ public class NoteHolderOverlay extends Overlay {
             this.texturePath = () -> "gui/note_holder/" + (note() == null ? "slot" : "slot_filled");
         }
 
+        /// Gets the note in this slot (may be null)
         private NoteItem note() {
             return notes[index];
         }
 
+        /// opens the inventory to place a note into this slot
         private void placeNote() {
             app.setOverlay(new InventoryOverlay(app, item -> {
                 if (item instanceof NoteItem note) {
@@ -80,17 +83,14 @@ public class NoteHolderOverlay extends Overlay {
             }, NoteHolderOverlay.this));
         }
 
+        /// picks up the note from this slot and places it into the inventory
         private void pickUpNote() {
             app.getGame().getInventory().add(note());
             notes[index] = null;
         }
-
-        @Override
-        public void render(Canvas canvas) {
-            super.render(canvas);
-        }
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -98,6 +98,7 @@ public class NoteHolderOverlay extends Overlay {
         seeClickable.onClick(click);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();

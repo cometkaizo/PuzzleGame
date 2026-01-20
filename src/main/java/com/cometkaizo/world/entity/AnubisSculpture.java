@@ -17,11 +17,13 @@ import com.cometkaizo.world.Vector;
 public class AnubisSculpture extends Interactable {
     private boolean scaleUnlocked;
     private WeighableItem weighed;
+    /// Creates a new Anubis sculpture
     public AnubisSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -29,6 +31,7 @@ public class AnubisSculpture extends Interactable {
         weighed = originalGameState.anubisWeighedItem;
     }
 
+    /// Saves this entity to the game state
     @Override
     public void write(GameState state) {
         super.write(state);
@@ -36,6 +39,7 @@ public class AnubisSculpture extends Interactable {
         state.anubisScaleUnlocked = scaleUnlocked;
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         if (scaleUnlocked) app.setOverlay(new AnubisOverlay(app, weighed, this::onWeigh));
@@ -54,24 +58,29 @@ public class AnubisSculpture extends Interactable {
         }
     }
 
-    private void onWeigh(WeighableItem item, AnubisOverlay.WeighResult weighResult) {
+    /// Updates the currently weighed item
+    private void onWeigh(WeighableItem item) {
         this.weighed = item;
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "sculpture/anubis";
     }
 
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaX() {
         return -2;
     }
+    /// Gets the y translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaY() {
         return 2;

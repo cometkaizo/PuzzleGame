@@ -16,18 +16,18 @@ import java.util.List;
  * Description: Screen overlay for the thinker
  */
 public class TheThinkerOverlay extends Overlay {
-    private final List<StickyNote> notes = List.of(
-            new StickyNote("w", "right", w -> w/2 + 30, h -> h/2 - 80),
-            new StickyNote("i", "right", w -> w/2 + 26, h -> h/2 - 60),
-            new StickyNote("ll", "right", w -> w/2 + 32, h -> h/2 + 5),
-            new StickyNote("a", "left", w -> w/2 - 38, h -> h/2 - 49),
-            new StickyNote("a", "left", w -> w/2 - 38, h -> h/2 - 49),
-            new StickyNote("g", "left", w -> w/2 - 20, h -> h/2 + 20),
-            new StickyNote("p", "left", w -> w/2 - 20, h -> h/2 - 20),
-            new StickyNote("b", "left", w -> w/2 - 30, h -> h/2 + 2),
-            new StickyNote("ff", "right", w -> w/2 - 30, h -> h/2 + 70),
-            new StickyNote("e", "right", w -> w/2 - 10, h -> h/2 - 53),
-            new StickyNote("u", "left", w -> w/2 - 47, h -> h/2 - 30)
+    private final List<RedLabel> notes = List.of(
+            new RedLabel("w", w -> w/2 + 30, h -> h/2 - 80),
+            new RedLabel("i", w -> w/2 + 26, h -> h/2 - 60),
+            new RedLabel("ll", w -> w/2 + 32, h -> h/2 + 5),
+            new RedLabel("a", w -> w/2 - 38, h -> h/2 - 49),
+            new RedLabel("a", w -> w/2 - 38, h -> h/2 - 49),
+            new RedLabel("g", w -> w/2 - 20, h -> h/2 + 20),
+            new RedLabel("p", w -> w/2 - 20, h -> h/2 - 20),
+            new RedLabel("b", w -> w/2 - 30, h -> h/2 + 2),
+            new RedLabel("ff", w -> w/2 - 30, h -> h/2 + 70),
+            new RedLabel("e", w -> w/2 - 10, h -> h/2 - 53),
+            new RedLabel("u", w -> w/2 - 47, h -> h/2 - 30)
     );
     public boolean brainSolved;
     private final Runnable solveAction;
@@ -35,33 +35,38 @@ public class TheThinkerOverlay extends Overlay {
         if (!brainSolved) app.setOverlay(new BrainOverlay(app, this::solveBrain, this));
     }, w -> w/2 + 12, h -> h/2 - 89, _ -> 32, _ -> 24, () -> "gui/sculpture/thinker/brain", -2, -2);
 
+    /// Creates a new overlay
     public TheThinkerOverlay(GameApp app, boolean brainSolved, Runnable solveAction) {
         super(app);
         this.brainSolved = brainSolved;
         this.solveAction = solveAction;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         canvas.renderCenteredImage(Assets.texture("gui/sculpture/thinker/regular"));
 
         brain.render(canvas);
-        for (StickyNote note : notes) note.render(canvas);
+        for (RedLabel note : notes) note.render(canvas);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         brain.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
         brain.onClick(click);
     }
 
+    /// Solves the brain
     private void solveBrain() {
         brainSolved = true;
         solveAction.run();

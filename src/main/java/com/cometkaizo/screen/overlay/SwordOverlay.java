@@ -31,11 +31,13 @@ public class SwordOverlay extends Overlay {
     private final Clickable submit = new ImageClickable(app, this::open, w -> w/2 - 90, h -> h/2 - 6, _ -> 26, _ -> 26, () -> "gui/sculpture/ares/submit", -2, -2);
     private final Runnable openAction;
 
+    /// Creates a new overlay
     public SwordOverlay(GameApp app, Runnable openAction, Overlay next) {
         super(app, next);
         this.openAction = openAction;
     }
 
+    /// Solve this puzzle
     private void open() {
         if (isCorrectCombo()) {
             openAction.run();
@@ -46,6 +48,7 @@ public class SwordOverlay extends Overlay {
         }
     }
 
+    /// Returns whether the current combination is the correct combination
     private boolean isCorrectCombo() {
         for (var segment : segments) {
             if (segment.rotated) return false;
@@ -53,6 +56,7 @@ public class SwordOverlay extends Overlay {
         return true;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -70,10 +74,12 @@ public class SwordOverlay extends Overlay {
         submit.render(canvas);
     }
 
+    /// Gets the path to the background texture
     private String getTexturePath() {
         return "gui/sculpture/ares/sword";
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
@@ -81,6 +87,7 @@ public class SwordOverlay extends Overlay {
         submit.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -88,10 +95,12 @@ public class SwordOverlay extends Overlay {
         submit.onClick(click);
     }
 
+    /// A single rotatable segment of the sword
     public class Segment extends ImageClickable {
         private int rotStep = -1, rotTick = 0;
         public final int id;
         public boolean rotated;
+        /// Creates a new rotatable segment
         public Segment(int id, boolean rotated) {
             super(SwordOverlay.this.app, () -> {}, w -> w/2 + 5 + id * 4, h -> h/2 - 18, _ -> 4, _ -> 45, null, -2, -2);
             this.id = id;
@@ -100,6 +109,7 @@ public class SwordOverlay extends Overlay {
             this.texturePath = this::getTexturePath;
         }
 
+        /// Rotates this segment
         private boolean rotate() {
             if (rotStep == -1) {
                 this.rotated = !this.rotated;
@@ -108,11 +118,13 @@ public class SwordOverlay extends Overlay {
             return true;
         }
 
+        /// Gets the path to the texture for this segment at this moment
         private String getTexturePath() {
             if (rotStep != -1) return "gui/sculpture/ares/blade_spin/" + rotStep;
             return "gui/sculpture/ares/blade" + (this.rotated ? "_back/" : "_front/") + id;
         }
 
+        /// Ticks this segment, rotating it if necessary
         @Override
         public void tick() {
             super.tick();

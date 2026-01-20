@@ -12,15 +12,13 @@ public class ConditionalCommandNodeBuilder extends NoArgCommandNodeBuilder {
     protected final Supplier<Boolean> condition;
     protected final String name;
 
-    public ConditionalCommandNodeBuilder(Supplier<Boolean> condition) {
-        this(condition, "CONDITIONAL");
-    }
-
+    /// Creates a new command node builder
     public ConditionalCommandNodeBuilder(Supplier<Boolean> condition, String name) {
         this.condition = condition;
         this.name = name;
     }
 
+    /// Builds this command node
     @Override
     protected ConditionalCommandNode build() {
         return new ConditionalCommandNode(this);

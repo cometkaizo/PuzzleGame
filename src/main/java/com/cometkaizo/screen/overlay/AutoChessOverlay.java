@@ -15,6 +15,7 @@ public class AutoChessOverlay extends ChessOverlay {
     private long autoMoveTime = -1;
     private Move nextAutoMove;
 
+    /// Creates a new overlay
     public AutoChessOverlay(GameApp app, String pieces) {
         super(app, pieces);
         // each auto move on the right is a reaction to the player move on the left
@@ -35,12 +36,13 @@ public class AutoChessOverlay extends ChessOverlay {
         putMove(new Move("h7", "h8"), new Move("g5", "g6"));
     }
 
+    /// adds the moves and their inverses in case the player goes backwards
     private void putMove(Move playerMove, Move autoMove) {
-        // add the moves and their inverses in case the player goes backwards
         autoMoves.put(playerMove, autoMove);
         autoMoves.put(playerMove.inverse(), autoMove.inverse());
     }
 
+    /// Ticks this screen overlay
     @Override
     public void tick() {
         super.tick();
@@ -50,6 +52,7 @@ public class AutoChessOverlay extends ChessOverlay {
         if (autoMoveTime >= 0) autoMoveTime --;
     }
 
+    /// moves the piece
     @Override
     protected void movePiece(int fromR, int fromC, int toR, int toC) {
         var piece = pieceAt(fromR, fromC);
@@ -69,11 +72,13 @@ public class AutoChessOverlay extends ChessOverlay {
         super.movePiece(fromR, fromC, toR, toC);
     }
 
+    /// returns whether the given piece can be picked up
     @Override
     protected boolean canPickUp(Piece piece) {
         return piece.white && autoMoveTime == -1; // can only pick up white pieces, when not auto-moving
     }
 
+    /// Represents a single move from a coordinate on the board to another
     public record Move(int fromR, int fromC, int toR, int toC) {
         /// Constructs a new move using chess cell notation
         public Move(String from, String to) {

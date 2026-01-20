@@ -33,15 +33,18 @@ public class Light extends Block {
         this.first = first;
     }
 
+    /// Returns whether this block is solid
     @Override
     public boolean isSolid(Entity entity) {
         return false;
     }
+    /// Returns whether this block stops light from passing through it
     @Override
     public boolean blocksLight() {
         return false;
     }
 
+    /// Renders this light to the screen
     @Override
     public void render(Canvas canvas) {
         calculateCollisionOffset(canvas);
@@ -61,6 +64,7 @@ public class Light extends Block {
         canvas.renderDebugBlock(position, Color.YELLOW);
     }
 
+    /// Clips the canvas to prevent drawing outside the block weirdly
     private void applyClip(Canvas canvas) {
         // clip the drawing area so that we don't draw outside the block in weird ways
         // the first light block in a ray of light has about half the drawing area as other light blocks, since it starts in the middle
@@ -72,6 +76,7 @@ public class Light extends Block {
         );
     }
 
+    /// Renders the base light texture
     private void renderBase(Canvas canvas, Image atlas, AtlasTexture texture) {
         canvas.blitImage(atlas,
                 texture.x(), texture.y(), // src
@@ -80,6 +85,7 @@ public class Light extends Block {
         );
     }
 
+    /// Renders the "collision" light texture
     private void renderCollision(Canvas canvas, AtlasTexture texture) {
         canvas.blitImage(getCollisionTextureAtlas(),
                 texture.x(), texture.y(), // src
@@ -88,13 +94,16 @@ public class Light extends Block {
         );
     }
 
+    /// Gets the y render offset
     private double getRenderOffsetY() {
         return direction == Direction.UP ? 0.5 : direction == Direction.DOWN ? -0.4 : 0;
     }
+    /// Gets the x render offset
     private double getRenderOffsetX() {
         return direction == Direction.LEFT ? -0.2 : direction == Direction.RIGHT ? 0 : 0;
     }
 
+    /// Returns whether the base light texture should be rendered
     private boolean shouldRenderBase() {
         return collisionEntity == null || switch (direction) {
             case UP -> collisionOffset.y + getRenderOffsetY() > 0;
@@ -103,10 +112,12 @@ public class Light extends Block {
             case RIGHT -> collisionOffset.x + getRenderOffsetX() > 0;
         };
     }
+    /// Returns whether the "collision" light texture should be rendered
     private boolean shouldRenderCollision() {
         return collisionEntity != null;
     }
 
+    /// Calculates the offset to the "collision" light texture caused by the collided entity
     private void calculateCollisionOffset(Canvas canvas) {
         if (collisionEntity == null) this.collisionOffset.set(0D, 0D);
         else {
@@ -130,19 +141,23 @@ public class Light extends Block {
         }
     }
 
+    /// Returns whether this block should render behind other entities in the same y interval
     @Override
     public boolean shouldRenderBehindEntities() {
         return collisionEntity != null && direction == Direction.DOWN;
     }
 
+    /// Gets the atlas texture for this block
     @Override
     protected AtlasTexture getAtlasTexture() {
         return DirectionAtlasTexture.get(direction);
     }
+    /// Gets the path to the texture atlas for this block
     @Override
     protected String getTexturePath() {
         return "light/" + (first ? "3" : "1");
     }
+    /// Returns the texture atlas for the "collision" light textures
     private Image getCollisionTextureAtlas() {
         return Assets.texture("block/light/2");
     }

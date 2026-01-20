@@ -7,6 +7,7 @@ package com.cometkaizo.command.nodes;
  */
 public class EmptyCommandNodeBuilder extends NoArgCommandNodeBuilder {
 
+    /// Builds this command node
     @Override
     protected EmptyCommandNode build() {
         return new EmptyCommandNode(this);

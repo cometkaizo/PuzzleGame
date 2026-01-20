@@ -31,6 +31,7 @@ public enum ConnectorAtlasTexture implements AtlasTexture {
             ALL[val.n?1:0][val.e?1:0][val.s?1:0][val.w?1:0] = val;
         }
     }
+    /// Gets the connected atlas texture associated with the given connections
     public static ConnectorAtlasTexture get(boolean n, boolean e, boolean s, boolean w) {
         return ALL[n?1:0][e?1:0][s?1:0][w?1:0];
     }
@@ -38,6 +39,7 @@ public enum ConnectorAtlasTexture implements AtlasTexture {
     public final double x, y;
     public final boolean n, e, s, w;
 
+    /// Creates a new connected atlas texture
     ConnectorAtlasTexture(double x, double y, boolean n, boolean e, boolean s, boolean w) {
         this.x = x;
         this.y = y;
@@ -47,20 +49,27 @@ public enum ConnectorAtlasTexture implements AtlasTexture {
         this.w = w;
     }
 
+    /// Gets the connected atlas texture associated with the connection state of the given block
     public static AtlasTexture get(Block block) {
         return get(block.isConnectedN(), block.isConnectedE(), block.isConnectedS(), block.isConnectedW());
     }
 
+    /// The x position of this texture in the atlas in blocks
     @Override
     public double x() {
         return x;
     }
 
+    /// The y position of this texture in the atlas in blocks
     @Override
     public double y() {
         return y;
     }
 
+    /// Returns true if this texture extends downwards for the full height, and false otherwise.
+    /// This is useful for making textures for blocks that have block states where some
+    /// other block is obscuring part of the texture and so that part of the texture can
+    /// be omitted from the texture atlas to minimize space
     @Override
     public boolean hasYExtension() {
         return !s;

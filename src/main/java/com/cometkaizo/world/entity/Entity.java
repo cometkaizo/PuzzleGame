@@ -21,7 +21,6 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     protected Vector.ImmutableDouble originalPosition;
     protected Vector.MutableDouble position;
     protected Vector.ImmutableDouble oldPosition;
-    protected boolean removed;
     protected final GameApp app;
     protected final Game game;
     protected final EventBus eventBus;
@@ -30,6 +29,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
     protected String name;
     protected boolean lit;
 
+    /// Creates a new entity
     public Entity(Room.Layer layer, Vector.MutableDouble position, Args args) {
         this.room = layer.room;
         this.layer = layer;
@@ -42,6 +42,7 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         reset();
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         originalArgs.reset();
@@ -50,21 +51,31 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         this.name = originalArgs.next();
     }
 
+    /// Saves this entity to the game state
+    public void write(GameState state) {
+
+    }
+
+    /// Updates this entity, called every tick
     @Override
     public void tick() {
         updateOldPosition();
     }
+    /// Sets this entity to "unlit"
     public void resetLight() {
         lit = false;
     }
+    /// Called every tick to update light emission
     public void tickLightEmission() {
 
     }
 
+    /// Updates the position last tick
     protected void updateOldPosition() {
         this.oldPosition = Vector.immutableDouble(position);
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         var texture = getTexture();
@@ -73,73 +84,73 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         int y = canvas.toScreenY(canvas.lerp(oldPosition.y, getY())) + canvas.scale(getTextureDeltaY());
         canvas.renderImage(texture, x, y, getTextureDeltaXFactor(), getTextureDeltaYFactor());
     }
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     protected int getTextureDeltaX() {
         return 0;
     }
+    /// Gets the y translation to be applied to the texture, in unscaled texture pixels
     protected int getTextureDeltaY() {
         return 0;
     }
+    /// Gets the x translation applied to the texture, as a percentage of the width of the image
     protected double getTextureDeltaXFactor() {
         return 0;
     }
+    /// Gets the y translation applied to the texture, as a percentage of the height of the image
     protected double getTextureDeltaYFactor() {
         return -1;
     }
+    /// Gets the path to the texture
     protected abstract String getTexturePath();
+    /// Gets this entity's texture
     protected Image getTexture() {
         String texturePath = getTexturePath();
         if (texturePath == null) return null;
         return Assets.texture("entity/" + texturePath);
     }
 
-
+    /// Returns whether this entity has a name
     public boolean hasName() {
         return name != null && !name.isBlank();
     }
+    /// Returns the name of this entity, possibly null
     public String getName() {
         return name;
     }
 
 
-    public void onAddedTo(Room room) {
-        this.room = room;
-        removed = false;
-    }
-
-    public void onRemoved() {
-        room = null;
-        removed = true;
-    }
-
-
-
+    /// Returns whether this entity blocks light from passing through
     public boolean blocksLight() {
         return true;
     }
+    /// Updates this entity every tick when it is hit by light from the given direction,
+    /// or when it is not hit by light (in which case direction is null)
     public void updateLight(Direction direction) {
         lit = direction != null;
     }
 
-
-
-
+    /// Gets the position of this entity
     public Vector.Double getPosition() {
         return position;
     }
 
+    /// Sets the position of this entity
     public void setPosition(Vector.Double position) {
         setPosition(position.getX(), position.getY());
     }
 
+    /// Sets the position of this entity
     public void setPosition(double x, double y) {
         position.setX(x);
         position.setY(y);
     }
 
+    /// Gets the x position of this entity
     public double getX() {
         return position.x;
     }
 
+    /// Gets the y position of this entity
     public double getY() {
         return position.y;
     }
@@ -149,30 +160,28 @@ public abstract class Entity implements Tickable, Renderable, Resettable {
         return position.y;
     }
 
+    /// Gets the x position of this entity last tick
     public double getOldX() {
         return oldPosition.x;
     }
 
+    /// Gets the y position of this entity last tick
     public double getOldY() {
         return oldPosition.y;
     }
 
-    public boolean isRemoved() {
-        return removed;
-    }
-
+    /// Gets the room that this entity is in
     public Room getRoom() {
         return room;
     }
 
+    /// Gets the game that this entity is in
     public Game getGame() {
         return game;
     }
 
-    public void write(GameState state) {
-
-    }
-
+    /// Functional interface for reading in an entity
+    @FunctionalInterface
     public interface Reader {
         Entity apply(Room.Layer layer, Vector.MutableDouble pos, Args args);
     }

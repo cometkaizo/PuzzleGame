@@ -22,12 +22,14 @@ public class Dialogue implements Tickable, Renderable {
     private int length;
     private int shownLength;
 
+    /// Creates a new dialogue
     public Dialogue(String message, String image, Dialogue next) {
         this.message = message;
         this.image = Assets.texture(image);
         this.next = next;
     }
 
+    /// Renders this dialogue to the screen
     @Override
     public void render(Canvas canvas) {
         var g = canvas.getGraphics();
@@ -62,6 +64,7 @@ public class Dialogue implements Tickable, Renderable {
         g.setColor(oCr);
     }
 
+    /// Ticks this dialogue
     @Override
     public void tick() {
         if (shownLength < length) {
@@ -70,13 +73,16 @@ public class Dialogue implements Tickable, Renderable {
         }
     }
 
+    /// Ticks the sounds for showing the dialogue
     private void tickSounds() {
         if (shownLength % 2 == 0) Assets.sound("select").play();
     }
 
+    /// Returns whether this dialogue is fully shown
     public boolean isFinished() {
         return shownLength == length;
     }
+    /// Fully shows the dialogue prematurely
     public void finish() {
         shownLength = length;
     }

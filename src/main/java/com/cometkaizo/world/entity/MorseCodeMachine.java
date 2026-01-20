@@ -17,11 +17,13 @@ public class MorseCodeMachine extends Interactable {
     private static final int TICKS_PER_DOT = 5; // the length of one morse code dot
     private String pattern; // the pattern, where X means on and _ means off
     private boolean working;
+    /// Creates a new morse code machine
     public MorseCodeMachine(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -29,12 +31,14 @@ public class MorseCodeMachine extends Interactable {
         working = originalGameState.morseCodeWorking.getOrDefault(name, false);
     }
 
+    /// Saves this entity to the game state
     @Override
     public void write(GameState state) {
         super.write(state);
         state.morseCodeWorking.put(name, working);
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         if (working) app.narrate("The machine is spinning and whirring, sometimes blocking out the light.", null);
@@ -52,6 +56,7 @@ public class MorseCodeMachine extends Interactable {
         }
     }
 
+    /// Returns whether this entity blocks light from passing through
     @Override
     public boolean blocksLight() {
         if (!working) return false;
@@ -59,30 +64,25 @@ public class MorseCodeMachine extends Interactable {
         return pattern.charAt(dots) == '_'; // _ means off (no light)
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "morse_code";
     }
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaX() {
         return -2;
     }
+    /// Gets the y translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaY() {
         return 2;
-    }
-
-
-    private static String patternFromMorseCodeNotation(String notation) {
-        return notation
-                .replaceAll("\\.", "X_") // a dot is an on followed by an off
-                .replaceAll("-", "XXX_") // a dash is three ons followed by an off
-                .replaceAll(" {3}", "_______") // the space between words is seven offs
-                .replaceAll(" ", "___"); // the space between letters in the same word is three offs
     }
 }

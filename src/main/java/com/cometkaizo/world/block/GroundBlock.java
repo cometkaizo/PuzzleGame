@@ -12,15 +12,18 @@ import com.cometkaizo.world.entity.Entity;
  */
 public class GroundBlock extends Block {
 
+    /// Creates a new block
     public GroundBlock(Room.Layer layer, Vector.ImmutableInt position, Args args) {
         super(layer, position, args);
     }
 
+    /// Returns whether this block is solid
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Gets the path to the texture atlas for this block
     @Override
     protected String getTexturePath() {
         return "ground/1";

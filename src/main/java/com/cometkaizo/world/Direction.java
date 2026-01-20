@@ -12,6 +12,7 @@ public enum Direction {
     private final Axis axis;
     private final int x, y;
     private final Vector.ImmutableInt delta;
+    /// Creates a new direction
     Direction(Axis axis, int x, int y) {
         this.axis = axis;
         this.x = x;
@@ -19,9 +20,11 @@ public enum Direction {
         this.delta = Vector.immutable(x, y);
     }
 
+    /// Returns the axis that this direction is on
     public Axis axis() {
         return axis;
     }
+    /// Returns the opposite direction to this one
     public Direction opposite() {
         return switch (this) {
             case UP -> DOWN;
@@ -30,6 +33,7 @@ public enum Direction {
             case RIGHT -> LEFT;
         };
     }
+    /// Returns the direction associated with the given letter
     public static Direction ofLetter(String letter) {
         return switch (letter.toUpperCase()) {
             case "U" -> UP;
@@ -40,14 +44,17 @@ public enum Direction {
         };
     }
 
+    /// Returns the delta x value for this direction
     public int x() {
         return x;
     }
 
+    /// Returns the delta y value for this direction
     public int y() {
         return y;
     }
 
+    /// Returns the delta value for this direction
     public Vector.ImmutableInt delta() {
         return delta;
     }

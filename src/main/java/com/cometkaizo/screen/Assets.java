@@ -21,6 +21,7 @@ public class Assets {
     private static final Map<String, Font> FONTS = Collections.synchronizedMap(new HashMap<>());
     private static final Map<String, Sound> SOUNDS = Collections.synchronizedMap(new HashMap<>());
 
+    /// Returns the texture at the given path in the assets folder
     public static Image texture(String path) {
         return TEXTURES.computeIfAbsent("/assets/" + path + ".png", p -> {
             var image = ImageUtils.readImageOrNull(p);
@@ -30,6 +31,7 @@ public class Assets {
             } else return image;
         });
     }
+    /// Returns the texture at the given path in the assets folder, with an outline applied dynamically
     public static Image textureOutlined(String path) {
         String key = "/assets/" + path + " OUTLINE";
         if (TEXTURES.containsKey(key)) return TEXTURES.get(key);
@@ -43,6 +45,7 @@ public class Assets {
         TEXTURES.put(key, outlinedImage);
         return outlinedImage;
     }
+    /// Applies a one pixel outline with the given color and stores it into the output parameter image
     private static void apply1PixelOutline(BufferedImage image, BufferedImage origImage, Color color) {
         int w = image.getWidth(null);
         int h = image.getHeight(null);
@@ -60,6 +63,7 @@ public class Assets {
             }
         }
     }
+    /// Returns false if the pixel at the given position in the image is opaque, and true otherwise
     private static boolean isTranslucent(BufferedImage img, int x, int y) {
         if (x < 0 || x >= img.getWidth() || y < 0 || y >= img.getHeight()) return true;
         int pixel = img.getRGB(x, y);
@@ -68,15 +72,19 @@ public class Assets {
         return alpha < 255;
     }
 
+    /// Returns the default font
     public static Font font() {
         return font("BoldPixels");
     }
+    /// Returns the default font with the given size
     public static Font font(int size) {
         return font("BoldPixels", size);
     }
+    /// Returns the font at the given path, with the given size
     public static Font font(String path, int size) {
         return font(path).deriveFont(Font.PLAIN, size);
     }
+    /// Returns the font at the given path, with the default size
     public static Font font(String path) {
         return FONTS.computeIfAbsent("/assets/gui/font/" + path + ".ttf", p -> {
             try {
@@ -87,6 +95,7 @@ public class Assets {
         });
     }
 
+    /// Returns the sound at the given path in the assets folder
     public static Sound sound(String path) {
         return SOUNDS.computeIfAbsent("/assets/sound/" + path + ".wav", p -> {
             try (var in = new BufferedInputStream(Main.getResource(p))) {
@@ -96,6 +105,7 @@ public class Assets {
             }
         });
     }
+    /// Returns sound at the given path in the assets folder with the given change in pitch
     public static Sound sound(String path, float deltaPitchInSemitones) {
         String fullPath = "/assets/sound/" + path + ".wav";
         return SOUNDS.computeIfAbsent(fullPath + " with delta pitch: " + deltaPitchInSemitones, _ -> {
@@ -107,6 +117,7 @@ public class Assets {
         });
     }
 
+    /// makes a copy of an image
     public static BufferedImage copy(Image image) {
         var copy = new BufferedImage(
                 image.getWidth(null),

@@ -28,15 +28,19 @@ public class InventoryOverlay extends Overlay {
     private final boolean waitingForItemSelection;
     private final int rowCount;
 
+    /// Creates a new overlay
     public InventoryOverlay(GameApp app) {
         this(app, null, null);
     }
+    /// Creates a new overlay
     public InventoryOverlay(GameApp app, Consumer<Item> onClick) {
         this(app, onClick, null);
     }
+    /// Creates a new overlay
     public InventoryOverlay(GameApp app, Overlay prev) {
         this(app, null, prev);
     }
+    /// Creates a new overlay
     public InventoryOverlay(GameApp app, Consumer<Item> onClick, Overlay next) {
         super(app, next);
         this.onClick = onClick == null ? _ -> {} : onClick;
@@ -63,6 +67,7 @@ public class InventoryOverlay extends Overlay {
             }
     }
 
+    /// Renders the inventory to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -73,18 +78,22 @@ public class InventoryOverlay extends Overlay {
         for (var item : items) item.render(canvas);
     }
 
+    /// Returns the x offset of the inventory on the screen (it's centered)
     private int xOffset() {
         return -(Slot.SIZE * WIDTH_IN_ITEMS + Slot.X_PADDING * (WIDTH_IN_ITEMS - 1)) / 2;
     }
+    /// Returns the y offset of the inventory on the screen (changes so that it's centered)
     private int yOffset() {
         return -(Slot.SIZE * rowCount + Slot.Y_PADDING * (rowCount - 1)) / 2;
     }
 
+    /// A single slot that can hold an item in it
     class Slot extends ImageClickable {
         public static final int SIZE = 38;
         public static final int X_PADDING = 4, Y_PADDING = 10;
         public final Item item;
 
+        /// Creates a new slot
         public Slot(int r, int c, Item item) {
             super(InventoryOverlay.this.app, item == null ? () -> {} : () -> onClick.accept(item),
                     w -> w/2 + xOffset() + c * (SIZE + X_PADDING), h -> h/2 + yOffset() + r * (SIZE + Y_PADDING),
@@ -92,6 +101,7 @@ public class InventoryOverlay extends Overlay {
             this.item = item;
         }
 
+        /// Renders this slot to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -101,12 +111,14 @@ public class InventoryOverlay extends Overlay {
         }
     }
 
+    /// Ticks this inventory overlay
     @Override
     public void tick() {
         super.tick();
         for (var item : items) item.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

@@ -6,5 +6,6 @@ package com.cometkaizo.world;
  * Description: A resettable object
  */
 public interface Resettable {
+    /// Resets this object
     void reset();
 }

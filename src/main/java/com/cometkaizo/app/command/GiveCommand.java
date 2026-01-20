@@ -17,6 +17,7 @@ public class GiveCommand extends Command {
 
     private final GameApp app;
 
+    /// Create a give command
     public GiveCommand(GameApp app) {
         this.app = app;
         rootNode.split(
@@ -24,6 +25,7 @@ public class GiveCommand extends Command {
         );
     }
 
+    /// gives an item
     private void give() {
         String name = (String) parsedArgs.get("item_name");
         switch (name) {
@@ -41,6 +43,7 @@ public class GiveCommand extends Command {
         }
     }
 
+    /// gets the list of names for this command
     @Override
     public List<String> getNames() {
         return List.of("give");

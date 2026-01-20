@@ -16,6 +16,7 @@ public class SignOverlay extends Overlay {
     private final Text title, desc;
     private final String variant;
 
+    /// Creates a new overlay
     public SignOverlay(GameApp app, String title, String desc, String variant) {
         super(app);
         this.title = new Text(title, Assets.font("BoldPixels", 70), Color.BLACK,
@@ -29,6 +30,7 @@ public class SignOverlay extends Overlay {
         this.variant = variant;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

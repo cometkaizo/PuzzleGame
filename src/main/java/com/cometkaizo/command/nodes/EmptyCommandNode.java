@@ -7,15 +7,18 @@ package com.cometkaizo.command.nodes;
  */
 class EmptyCommandNode extends NoArgCommandNode {
 
+    /// Creates a new empty command node
     protected EmptyCommandNode(EmptyCommandNodeBuilder builder) {
         super(builder);
     }
 
+    /// Returns whether this command node accepts the argument (it always does)
     @Override
     protected boolean accepts() {
         return true;
     }
 
+    /// Returns a string representation of this object
     @Override
     public String toString() {
         return "EmptyCommandNode{" +

@@ -6,18 +6,18 @@ package com.cometkaizo.util;
  * Description: Useful math-related methods
  */
 public class MathUtils {
+    /// Performs a linear interpolation between from and to using the percentage value a (usually from 0 to 1)
     public static double lerp(double a, double from, double to) {
         return from + (a * (to - from));
     }
 
+    /// Returns whether two numbers are almost equal. This is useful for dealing with floating point inaccuracies.
     public static boolean almostEquals(double a, double b) {
         return Math.abs(b - a) < 1.0E-5D;
     }
 
     /**
      * Converts a Google sheets column letter string into the 0-indexed column index
-     * @param str
-     * @return
      */
     public static int getSheetCol(String str) {
         str = str.toUpperCase();
@@ -43,6 +43,7 @@ public class MathUtils {
         return str;
     }
 
+    /// Returns whether a number is between two other numbers
     public static boolean isBetween(double n, double a, double b) {
         if (a < b) return (a - 1E-5) < n && n < (b + 1E-5);
         else return (b - 1E-5) < n && n < (a + 1E-5);

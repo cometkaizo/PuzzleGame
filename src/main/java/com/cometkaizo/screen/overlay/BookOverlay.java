@@ -173,12 +173,14 @@ public class BookOverlay extends Overlay {
     private final int variant;
     private final Content content;
 
+    /// Creates a new overlay
     public BookOverlay(GameApp app, int variant) {
         super(app);
         this.variant = variant;
         content = CONTENT[variant];
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -190,6 +192,7 @@ public class BookOverlay extends Overlay {
         for (var text : content.other) text.render(canvas);
     }
 
+    /// Represents a single book content
     public record Content(Text leftPage, Text rightPage, Renderable... other) {
         public Content(String leftPage, String rightPage, Renderable... other) {
             this(
@@ -202,16 +205,20 @@ public class BookOverlay extends Overlay {
         }
     }
 
+    /// Represents a mayan symbol
     public record MayanSymbol(Image image, IntUnaryOperator x, IntUnaryOperator y, Text text) implements Renderable {
+        /// Creates a new mayan symbol
         public MayanSymbol(boolean tzolkin, int id) {
             int maxSymbolsPerCol = 11;
             this(tzolkin ? "tzolkin_symbol/" + id : "haab_symbol/" + id, (tzolkin ? 6 : 57) + (id / maxSymbolsPerCol) * 26, -50 + (id % maxSymbolsPerCol) * 10,
                     tzolkin ? TZOLKIN_ENGLISH_NAMES[id]+"\n"+TZOLKIN_NAMES[id] : HAAB_ENGLISH_NAMES[id]+"\n"+HAAB_NAMES[id]);
         }
+        /// Creates a new mayan symbol
         public MayanSymbol(String name, int dx, int dy, String text) {
             this(Assets.texture("gui/mayan_calendar/" + name), w -> w/2 + dx, h -> h/2 + dy,
                     new Text(text, Assets.font(16), Color.BLACK, w -> w/2 + dx + 9, h -> h/2 + dy - 1, 100, false, false));
         }
+        /// Renders this symbol to the screen
         @Override
         public void render(Canvas canvas) {
             int x = canvas.scale(this.x.applyAsInt(canvas.getPixelWidth()));
@@ -223,7 +230,9 @@ public class BookOverlay extends Overlay {
             text.render(canvas);
         }
     }
+    /// Represents a mayan number
     public record MayanNumber(Image image, IntUnaryOperator x, IntUnaryOperator y, Text text) implements Renderable {
+        /// Creates a new mayan number
         public MayanNumber(int num) {
             int maxNumsPerCol = 6;
             int dx = -104 + num / maxNumsPerCol * 20;
@@ -231,6 +240,7 @@ public class BookOverlay extends Overlay {
             this(Assets.texture("gui/mayan_calendar/number/" + num), w -> w/2 + dx, h -> h/2 + dy,
                     new Text("= " + num, Assets.font(16), Color.BLACK, w -> w/2 + dx + 9, h -> h/2 + dy + 1, 100, false, false));
         }
+        /// Renders this mayan number to the screen
         @Override
         public void render(Canvas canvas) {
             int x = canvas.scale(this.x.applyAsInt(canvas.getPixelWidth()));
@@ -243,10 +253,13 @@ public class BookOverlay extends Overlay {
         }
     }
 
+    /// Represents a label of text
     public static class Label extends Text {
+        /// Creates a new label
         public Label(String message, int dx, int dy) {
             this(message, dx, dy, 24);
         }
+        /// Creates a new label
         public Label(String message, int dx, int dy, int size) {
             super(message, Assets.font(size), Color.BLACK, w -> w/2 + dx, h -> h/2 + dy, 100, true, true);
         }

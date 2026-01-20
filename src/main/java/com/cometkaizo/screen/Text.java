@@ -21,6 +21,7 @@ public class Text implements Renderable {
     private final int w;
     private final boolean centerX, centerY;
 
+    /// Creates a new text component
     public Text(String message, Font font, Color color, IntUnaryOperator x, IntUnaryOperator y, int w, boolean centerX, boolean centerY) {
         this.message = message;
         this.font = font;
@@ -32,6 +33,7 @@ public class Text implements Renderable {
         this.centerY = centerY;
     }
 
+    /// Renders this text onto the screen
     @Override
     public void render(Canvas canvas) {
         // cannot do initialization of lines in the constructor because we don't have
@@ -51,6 +53,7 @@ public class Text implements Renderable {
         }
     }
 
+    /// initializes the lines using the given canvas
     private void initLines(Canvas canvas) {
         lines = StringUtils.createLines(message, canvas.getGraphics().getFontMetrics(font), canvas.scale(w));
     }

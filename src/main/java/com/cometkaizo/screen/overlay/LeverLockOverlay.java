@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Author: Andy Wang
  * Date Modified: 2026-01-08
- * Description: Screen overlay for the lever lock
+ * Description: Screen overlay for the lever lock (which actually appears as toggleable lights in game)
  */
 public class LeverLockOverlay extends Overlay {
     private final boolean[][] correctCombination;
@@ -24,6 +24,7 @@ public class LeverLockOverlay extends Overlay {
     private final Clickable submitClickable;
     private final List<Clickable> leverClickables;
 
+    /// Creates a new overlay
     public LeverLockOverlay(GameApp app, boolean[][] correctCombination, Runnable actionOnOpen, Overlay next) {
         super(app, next);
         this.correctCombination = correctCombination;
@@ -49,6 +50,7 @@ public class LeverLockOverlay extends Overlay {
                 newLeverClickable(1, 6)
         );
     }
+    /// Creates a new "lever" that can be clicked
     private Clickable newLeverClickable(int r, int c) {
         return new ImageClickable(app, () -> flipLever(r, c),
                 w -> w / 2 - 62 + c * 18, h -> h / 2 - 30 + r * 18,
@@ -56,6 +58,7 @@ public class LeverLockOverlay extends Overlay {
                 () -> "gui/lever_lock/light_" + (currentCombination[r][c] ? "on" : "off"), -2, -2);
     }
 
+    /// Solves the lock
     private void open() {
         if (open) return;
         if (Arrays.deepEquals(currentCombination, correctCombination)) {
@@ -67,11 +70,13 @@ public class LeverLockOverlay extends Overlay {
         }
     }
 
+    /// Toggles the "lever" at the given coordinates
     private void flipLever(int r, int c) {
         if (open) return;
         currentCombination[r][c] = !currentCombination[r][c];
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -81,6 +86,7 @@ public class LeverLockOverlay extends Overlay {
         leverClickables.forEach(c -> c.render(canvas));
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -88,6 +94,7 @@ public class LeverLockOverlay extends Overlay {
         leverClickables.forEach(c -> c.onClick(click));
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         submitClickable.tick();

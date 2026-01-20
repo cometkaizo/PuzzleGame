@@ -42,7 +42,9 @@ public class GameState {
     public int[] morseCodePosterNotes = null;
     public NoteItem[] noteHolderNotes = new NoteItem[4];
 
+    /// Creates a new default game state (for a new game)
     public GameState() {}
+    /// Reads in a the gam state from the given input stream
     public GameState(InputStream is) throws IOException {
         var in = new ObjectInputStream(is);
         // order matters!
@@ -106,17 +108,20 @@ public class GameState {
             } else noteHolderNotes[i] = null;
         }
     }
+    /// Reads in the game state from the given path
     public GameState(Path path) throws IOException {
         var is = Files.newInputStream(path);
         this(is);
         is.close();
     }
 
+    /// Writes this game state to the given path
     public void write(Path path) throws IOException {
         try (var os = Files.newOutputStream(path)) {
             write(os);
         }
     }
+    /// Writes this game state to the given output stream
     public void write(OutputStream os) throws IOException {
         var out = new ObjectOutputStream(os);
         // order matters!

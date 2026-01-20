@@ -48,10 +48,12 @@ public class Sign extends Interactable {
     private String title, desc;
     private String overlayVariant;
 
+    /// Creates a new sign
     public Sign(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -62,32 +64,35 @@ public class Sign extends Interactable {
         overlayVariant = originalArgs.next("regular");
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         app.setOverlay(new SignOverlay(app, title, desc, overlayVariant));
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "sign";
     }
 
+    /// Content for a sign, consisting of a title and a description
     public record Content(String title, String desc) {
-        public Content(String title) {
-            this(title, "");
-        }
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaX() {
         return -2;
     }
 
+    /// Gets the y translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaY() {
         return 2;

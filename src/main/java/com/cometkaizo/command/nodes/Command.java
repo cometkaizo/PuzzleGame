@@ -1,5 +1,6 @@
 package com.cometkaizo.command.nodes;
 
+import com.cometkaizo.Main;
 import com.cometkaizo.command.CommandSyntaxException;
 
 import java.util.HashMap;
@@ -25,19 +26,22 @@ public abstract class Command {
 
     protected Map<String, Object> parsedArgs = new HashMap<>(0);
 
+    /// Returns whether this command was successful
     public boolean getSuccess() {
         return success;
     }
+    /// Returns the parsed arguments of this command
     public Map<String, Object> getParsedArguments() {
         return parsedArgs;
     }
 
+    /// logs a message
     protected void log(String message) {
-        System.out.println(message);
+        Main.log(message);
     }
-
+    /// prints a message into the error console
     protected void err(String message) {
-        System.err.println(message);
+        Main.err(message);
     }
 
     public abstract List<String> getNames();

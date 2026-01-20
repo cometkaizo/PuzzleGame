@@ -28,31 +28,37 @@ public class Letter extends Interactable {
             Your father
             """;
 
+    /// Creates a new letter entity
     public Letter(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         app.setOverlay(new NoteOverlay(app, MESSAGE, "letter"));
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.BLUE);
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "letter";
     }
 
+    /// Gets the y translation applied to the texture, as a percentage of the height of the image
     @Override
     protected double getTextureDeltaYFactor() {
         return -2.5;
     }
 
+    /// The y-value at which this entity is compared to other entities to determine which is rendered in front
     @Override
     public double getRenderY() {
         return position.y + 0.8;

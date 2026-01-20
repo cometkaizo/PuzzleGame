@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
  */
 public class AppSettings {
 
-
+    /// Prints the fields in this class
     public String toString() {
         try {
             StringBuilder builder = new StringBuilder();

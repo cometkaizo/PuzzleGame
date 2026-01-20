@@ -10,7 +10,7 @@ import com.cometkaizo.screen.ImageClickable;
 import com.cometkaizo.world.Direction;
 import com.cometkaizo.world.entity.RaSculpture;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Author: Andy Wang
@@ -22,15 +22,17 @@ public class AnubisOverlay extends Overlay {
     public static final int SCALE_ARM_RADIUS = 37;
     private WeighableItem weighed;
     private Clickable weighedClickable;
-    private final BiConsumer<WeighableItem, WeighResult> onWeigh;
+    private final Consumer<WeighableItem> onWeigh;
 
-    public AnubisOverlay(GameApp app, WeighableItem weighed, BiConsumer<WeighableItem, WeighResult> onWeigh) {
+    /// Creates a new overlay
+    public AnubisOverlay(GameApp app, WeighableItem weighed, Consumer<WeighableItem> onWeigh) {
         super(app);
         weighedClickable = new ItemClickable();
         this.weighed = weighed;
         this.onWeigh = onWeigh;
     }
 
+    /// called when the item is clicked
     private void clickWeigh() {
         var inventory = app.getGame().getInventory();
         if (weighed != null) {
@@ -49,11 +51,12 @@ public class AnubisOverlay extends Overlay {
         }
     }
 
+    /// Sets the currently weighed item
     private void setWeighed(WeighableItem weighable) {
         weighed = weighable;
         if (weighed != null) app.getGame().getInventory().remove(weighed);
 
-        onWeigh.accept(weighed, getWeighResult());
+        onWeigh.accept(weighed);
 
         if (!(app.getGame().room.getBlockOrEntity("statue of ra") instanceof RaSculpture ra)) return;
 
@@ -69,6 +72,7 @@ public class AnubisOverlay extends Overlay {
         }
     }
 
+    /// Gets the weigh result for the current item
     private WeighResult getWeighResult() {
         return weighed == null ? WeighResult.NO_OBJECT :
                 weighed.weight() > FEATHER_WEIGHT ? WeighResult.OBJECT_HEAVIER :
@@ -83,13 +87,16 @@ public class AnubisOverlay extends Overlay {
             case OBJECT_LIGHTER -> Math.toRadians(-25);
         };
     }
+    /// Gets the screen x value in pixels for the weighed item
     private int weighX(boolean reversed) {
         return -18 + (reversed ? -1 : 1) * (int) (Math.cos(scaleAngle()) * SCALE_ARM_RADIUS);
     }
+    /// Gets the screen y value in pixels for the weighed item
     private int weighY(boolean reversed) {
         return 33 + (reversed ? 1 : -1) * (int) (Math.sin(scaleAngle()) * SCALE_ARM_RADIUS); // y reversed
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -100,26 +107,31 @@ public class AnubisOverlay extends Overlay {
         weighedClickable.render(canvas);
     }
 
+    /// A weigh result - the weight of the object in comparison to the feather
     public enum WeighResult {
         OBJECT_LIGHTER("3"), OBJECT_HEAVIER("2"), OBJECT_EQUAL("0"), NO_OBJECT("1");
         public final String textureName;
+        /// Creates a new weigh result
         WeighResult(String textureName) {
             this.textureName = textureName;
         }
     }
 
+    /// ticks this overlay
     @Override
     public void tick() {
         super.tick();
         weighedClickable.tick();
     }
 
+    /// called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
         weighedClickable.onClick(click);
     }
 
+    /// the clickable weighable item slot
     public class ItemClickable extends ImageClickable {
         public ItemClickable() {
             super(AnubisOverlay.this.app, AnubisOverlay.this::clickWeigh,
@@ -129,6 +141,7 @@ public class AnubisOverlay extends Overlay {
             this.texturePath = () -> weighed == null ? "gui/sculpture/anubis/empty_slot" + (isHovered() ? "_highlighted" : "") : weighed.getTexturePath();
         }
 
+        /// returns whether this image is outlined
         @Override
         protected boolean isOutlined() {
             return super.isOutlined() && weighed != null;

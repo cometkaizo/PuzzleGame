@@ -19,23 +19,27 @@ public class VenusChestOverlay extends Overlay {
 
     private final Clickable keyhole;
 
+    /// Creates a new overlay
     public VenusChestOverlay(GameApp app, Runnable openHeartAction, Overlay next) {
         super(app, next);
         this.openHeartAction = openHeartAction;
         keyhole = new ImageClickable(this.app, this::tryOpenHeart, w -> w/2 - 9, h -> h/2 - 22, _ -> 16, _ -> 16, () -> "gui/sculpture/venus/keyhole", 0, 0);
     }
 
+    /// Opens the inventory, prompting for an organ key
     public void tryOpenHeart() {
         if (heartOpen) return;
         app.setOverlay(new InventoryOverlay(app, item -> {
             if (item instanceof OrganKeyItem) openHeart();
         }, this));
     }
+    /// Opens the heart
     private void openHeart() {
         openHeartAction.run();
         heartOpen = true;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -43,12 +47,14 @@ public class VenusChestOverlay extends Overlay {
         keyhole.render(canvas);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         keyhole.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

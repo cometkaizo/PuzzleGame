@@ -36,6 +36,7 @@ public class OrganOverlay extends Overlay {
     public boolean keyFallenOut;
     private final Runnable solveAction;
 
+    /// Creates a new overlay
     public OrganOverlay(GameApp app, boolean keyFallenOut, Runnable solveAction) {
         super(app);
         this.keyFallenOut = keyFallenOut;
@@ -63,6 +64,7 @@ public class OrganOverlay extends Overlay {
         }
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -86,15 +88,17 @@ public class OrganOverlay extends Overlay {
     }
 
 
-
+    /// Adds a new white key to the white keys array
     public void addNewWhiteKey(int r, int c, int octave, int x) {
         var key = new Key(true, r*WIDTH_IN_KEYS + c, w -> w/2-122 + octave*KEY_PIXEL_WIDTH*7 + x, h -> h/2-21 + r*34);
         whiteKeys[r].add(key);
     }
+    /// Adds a new black key to the black keys array
     public void addNewBlackKey(int r, int c, int octave, int x) {
         var key = new Key(false, r*WIDTH_IN_KEYS + c, w -> w/2-122 + octave*KEY_PIXEL_WIDTH*7 + x, h -> h/2-21 + r*34);
         blackKeys[r].add(key);
     }
+    /// A single white or black key on the organ
     public class Key extends ImageClickable {
         private static final Font FONT = Assets.font("BoldPixels", 24);
         private static final Color FONT_COLOR = new Color(237, 113, 113);
@@ -103,6 +107,7 @@ public class OrganOverlay extends Overlay {
         public final int key;
         public final String writing;
 
+        /// Creates a new key
         public Key(boolean white, int key, IntUnaryOperator x, IntUnaryOperator y) {
             super(OrganOverlay.this.app, () -> {}, x, y, _ -> white ? 7 : 4, _ -> white ? 32 : 19, null, -2, 0);
             this.white = white;
@@ -139,20 +144,25 @@ public class OrganOverlay extends Overlay {
             };
         }
 
+        /// Renders this overlay to the screen
         @Override
         public void render(Canvas canvas) {
             if (hasFallenOut()) return; // if this key has fallen out, don't render it
             super.render(canvas);
             canvas.renderString(writing, FONT, FONT_COLOR, lastX + canvas.scale(3), lastY + canvas.scale(26 + (isPressed() ? 3 : 0)), true, false);
         }
+        /// Returns whether this key has fallen out of the organ
         private boolean hasFallenOut() {
             return key == 81 && keyFallenOut;
         }
 
+        /// Returns whether this key is currently pressed
         private boolean isPressed() {
             return app.isMouseDown() && isHovered();
         }
+
         // override isHovered to account for other possibly hovered keys and only allow one to be hovered
+        /// Returns whether this key is hovered
         @Override
         public boolean isHovered() {
             if (hasFallenOut()) return false;
@@ -160,12 +170,14 @@ public class OrganOverlay extends Overlay {
             else return super.isHovered() && lastHoveredBlackKey == null && (lastHoveredWhiteKey == null || lastHoveredWhiteKey == this);
         }
 
+        /// Ticks this key
         @Override
         public void tick() {
             super.tick();
             tickSound();
         }
 
+        /// Ticks the sound that this key makes
         private void tickSound() {
             if (hasFallenOut()) return;
             if (isPressed() && !wasPressedLastTick) {
@@ -174,6 +186,7 @@ public class OrganOverlay extends Overlay {
             wasPressedLastTick = isPressed();
         }
 
+        /// Called the first tick that this key is pressed
         private void onFirstPress() {
             play();
             pressKey(this);
@@ -184,6 +197,7 @@ public class OrganOverlay extends Overlay {
         }
     }
 
+    /// Presses the given key
     public void pressKey(Key key) {
         if (lastPressedKeys.size() == CORRECT_COMBO.length) lastPressedKeys.poll();
         lastPressedKeys.add(key.writing);
@@ -193,6 +207,7 @@ public class OrganOverlay extends Overlay {
     }
 
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
@@ -200,6 +215,7 @@ public class OrganOverlay extends Overlay {
         for (var row : blackKeys) for (var key : row) key.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

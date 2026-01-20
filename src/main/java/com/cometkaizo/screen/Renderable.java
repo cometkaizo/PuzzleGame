@@ -6,5 +6,6 @@ package com.cometkaizo.screen;
  * Description: Represents an object that can be rendered onto a Canvas
  */
 public interface Renderable {
+    /// Renders this object onto the given canvas
     void render(Canvas canvas);
 }

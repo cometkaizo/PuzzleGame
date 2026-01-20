@@ -16,11 +16,13 @@ import java.util.List;
 public class ExitCommand extends Command {
     private final GameApp app;
 
+    /// Creates an exit command
     public ExitCommand(GameApp app) {
         this.app = app;
         rootNode.then(new ArgumentCommandNodeBuilder(new BooleanArgument("saveBeforeExiting"))).executes(this::exit);
     }
 
+    /// Exits the game
     private void exit() {
         Boolean save = (Boolean) parsedArgs.get("saveBeforeExiting");
         if (save) {
@@ -30,6 +32,7 @@ public class ExitCommand extends Command {
         Main.stop(0);
     }
 
+    /// gets the list of names for this command
     @Override
     public List<String> getNames() {
         return List.of("exit");

@@ -6,6 +6,7 @@ package com.cometkaizo.command;
  * Description: An exception representing incorrect syntax for a command
  */
 public class CommandSyntaxException extends RuntimeException {
+    /// Creates a new command syntax exception
     public CommandSyntaxException(String message) {
         super(message);
     }

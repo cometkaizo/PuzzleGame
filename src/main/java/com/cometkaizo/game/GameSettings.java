@@ -16,7 +16,7 @@ public class GameSettings {
     public double heightInTiles = 6;
     public double cameraPaddingInTiles = 2;
 
-
+    /// Turns all the settings into a string
     public String toString() {
         try {
             StringBuilder builder = new StringBuilder();

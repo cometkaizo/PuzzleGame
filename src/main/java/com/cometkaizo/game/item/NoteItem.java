@@ -79,31 +79,37 @@ public class NoteItem extends Item implements Renderable {
     public final String message;
     private final int variant;
     private final Text text;
+    /// Creates a new note item from the given Args instance
     public NoteItem(Args args) {
         this(args.nextInt(0));
     }
+    /// Creates a new note item with the given variant
     public NoteItem(int variant) {
         this.message = MESSAGES[variant];
         this.variant = variant;
         text = new Text(message, Assets.font("BoldPixels", 20), Color.BLACK, w -> w/2 - 52, h -> h/2 - 50, 120, false, false);
     }
 
+    /// Gets the namespace (id) of this item
     @Override
     protected String getNamespace() {
         return "note";
     }
 
+    /// Gets the display name of this item
     @Override
     public String getName() {
         return "Note";
     }
 
+    /// Renders this item to the screen
     @Override
     public void render(Canvas canvas) {
         canvas.renderCenteredImage(Assets.texture("gui/note/see_through/" + variant));
         text.render(canvas);
     }
 
+    /// Writes this item to a string so that it can be read in again
     @Override
     public String write() {
         return new Args(getNamespace(), variant+"").toString();

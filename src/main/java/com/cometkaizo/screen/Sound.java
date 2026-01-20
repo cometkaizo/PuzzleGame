@@ -18,6 +18,7 @@ public class Sound {
     private static final Set<Sound> PLAYED_THIS_TICK = new HashSet<>();
     protected final AudioFormat format;
     protected final byte[] audio;
+    /// Creates a new sound from the given input stream
     public Sound(InputStream in) {
         try {
             var audioIn = AudioSystem.getAudioInputStream(in);
@@ -27,6 +28,7 @@ public class Sound {
             throw new RuntimeException(e);
         }
     }
+    /// Creates a new sound from the given input stream, with a given pitch shift
     public Sound(InputStream in, float deltaPitchInSemitones) {
         try {
             var origAudio = AudioSystem.getAudioInputStream(in);
@@ -55,9 +57,11 @@ public class Sound {
         return (float) Math.pow(2, semitones / 12); // 2^(1/12) is the multiplier for 1 semitone up, 2^(2/12) for 2 semitones, etc.
     }
 
+    /// Plays this sound and returns the clip
     public Clip play() {
         return play(-15);
     }
+    /// Plays this sound at the given volume and returns the clip
     public Clip play(float volume) {
         if (!PLAYED_THIS_TICK.add(this)) return null;
         try {
@@ -73,6 +77,7 @@ public class Sound {
         }
     }
 
+    /// Tries to set the volume on the clip
     private static void trySetVolume(Clip clip, float volume) {
         if (clip.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
             var gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -89,6 +94,7 @@ public class Sound {
         }
     }
 
+    /// Clears the ticks that were played this tick
     public static void tick() {
         PLAYED_THIS_TICK.clear();
     }

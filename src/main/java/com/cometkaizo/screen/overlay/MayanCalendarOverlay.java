@@ -37,6 +37,7 @@ public class MayanCalendarOverlay extends Overlay {
 
     private final int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo;
 
+    /// Creates a new overlay
     public MayanCalendarOverlay(GameApp app, int[] correctPaintingsCombo, int[] correctSculpturesCombo, int[] correctArtifactsCombo, int[] correctBasementCombo) {
         super(app);
         this.correctPaintingsCombo = correctPaintingsCombo;
@@ -45,6 +46,7 @@ public class MayanCalendarOverlay extends Overlay {
         this.correctBasementCombo = correctBasementCombo;
     }
 
+    /// Increments all wheels by one
     private void increment() {
         if (big.isRotating() || med.isRotating() || small.isRotating()) return;
         if (isFocusing()) focused.increment();
@@ -55,6 +57,7 @@ public class MayanCalendarOverlay extends Overlay {
         }
     }
 
+    /// Decrements all wheels by one
     private void decrement() {
         if (big.isRotating() || med.isRotating() || small.isRotating()) return;
         if (isFocusing()) focused.decrement();
@@ -65,6 +68,7 @@ public class MayanCalendarOverlay extends Overlay {
         }
     }
 
+    /// Increments all wheels by 20
     private void incrementBig() {
         if (big.isRotating() || med.isRotating() || small.isRotating()) return;
         if (isFocusing()) focused.incrementBig();
@@ -75,6 +79,7 @@ public class MayanCalendarOverlay extends Overlay {
         }
     }
 
+    /// Decrements all wheels by 20
     private void decrementBig() {
         if (big.isRotating() || med.isRotating() || small.isRotating()) return;
         if (isFocusing()) focused.decrementBig();
@@ -85,6 +90,8 @@ public class MayanCalendarOverlay extends Overlay {
         }
     }
 
+    /// Called when the checkmark button is pressed.
+    /// Opens the appropriate door if the combination is correct.
     private boolean open() {
         if (isFocusing()) return false;
 
@@ -109,19 +116,23 @@ public class MayanCalendarOverlay extends Overlay {
         return true;
     }
 
+    /// Returns whether the given combination is the current combination
     private boolean isCurrentCombo(int[] combo) {
         return combo[0] == small.rot && combo[1] == med.rot && combo[2] == big.rot;
     }
 
+    /// "Focuses" the given cog so that incrementing/decrementing will only affect that cog
     private boolean focus(Cog cog) {
         if (isFocusing()) return false;
         focused = cog;
         return true;
     }
+    /// Returns true if any cog is currently being focused
     private boolean isFocusing() {
         return focused != null;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -141,14 +152,17 @@ public class MayanCalendarOverlay extends Overlay {
         bigDownButton.render(canvas);
     }
 
+    /// The large, rightmost, vertical wheel
     class BigCog extends Cog {
         static final int LENGTH = 365;
         static final int DAYS_PER_MONTH = 20;
         static final Image[] SYMBOLS = IntStream.range(0, LENGTH).mapToObj(i -> HAAB_SYMBOLS[i / 20]).toArray(Image[]::new);
 
+        /// Creates a new cog
         public BigCog() {
             super("big_cog", LENGTH, 20, -75, 30, 151, -4, 0);
         }
+        /// Renders this cog to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -164,6 +178,7 @@ public class MayanCalendarOverlay extends Overlay {
             g.setClip(oldClip);
         }
 
+        /// Renders the symbols on this cog
         private void renderSymbols(Canvas canvas) {
             var g = canvas.getGraphics();
             int yOffset = yOffset(canvas);
@@ -182,10 +197,12 @@ public class MayanCalendarOverlay extends Overlay {
             }
         }
 
+        /// Returns the cnt'th symbol index
         private int symbolIdAt(int cnt) {
             return symbolIndex(cnt + rot - 4);
         }
 
+        /// Renders the numbers to the screen
         private void renderNumbers(Canvas canvas) {
             var g = canvas.getGraphics();
             int yOffset = yOffset(canvas);
@@ -206,6 +223,7 @@ public class MayanCalendarOverlay extends Overlay {
             }
         }
 
+        /// Returns the y-shift caused by the rotation animation
         private int rotProgressDeltaY(Canvas canvas, int yInterval) {
             int progressDeltaY = canvas.scale(rotProgressPercent() * yInterval);
 
@@ -213,17 +231,22 @@ public class MayanCalendarOverlay extends Overlay {
             else return progressDeltaY;
         }
 
+        /// Returns a safe index that is always within the number of symbols
         private int symbolIndex(int i) {
             return floorMod(i, LENGTH);
         }
+        /// Returns a safe index that is always within the number of numbers
         private int numberIndex(int i) {
             return floorMod(i, NUMBER_SYMBOLS.length);
         }
     }
+    /// The outer wheel
     class MediumCog extends Cog {
+        /// Creates a new cog
         public MediumCog() {
             super("medium_cog", TZOLKIN_SYMBOLS.length, -119, -67, 135, 135, -6, -6);
         }
+        /// Renders this cog to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -254,15 +277,20 @@ public class MayanCalendarOverlay extends Overlay {
             }
         }
 
+        /// Returns whether this cog is outlined
+        /// It is only outlined if the small cog is not, since they overlap
         @Override
         protected boolean isOutlined() {
             return super.isOutlined() && (focused == this || !small.isHovered());
         }
     }
+    /// The inner wheel
     class SmallCog extends Cog {
+        /// Creates a new cog
         public SmallCog() {
             super("small_cog", 13, -58, -27, 55, 55, -5, -5);
         }
+        /// Renders this cog to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -293,17 +321,19 @@ public class MayanCalendarOverlay extends Overlay {
             }
         }
     }
+    /// An abstract cog
     abstract class Cog extends ImageClickable implements Tickable, Renderable {
         String name;
         int maxRot;
         int rot;
         boolean rotForwards = true;
-        int rotProgressCount = 0;
-        int rotProgressCountStep = 1;
+        int rotTick = 0;
+        int rotProgressInterval = 1;
         int rotProgress;
         int maxRotProgress = 3;
-        int maxRotProgressCount = rotProgressCountStep * maxRotProgress * 1;
+        int maxRotTick = rotProgressInterval * maxRotProgress * 1;
 
+        /// Creates a new cog
         public Cog(String name, int maxRot, int dx, int dy, int w, int h, int texDX, int texDY) {
             super(MayanCalendarOverlay.this.app, () -> {}, w1 -> w1/2 + dx, null, w1 -> w, h1 -> h, null, texDX -2, texDY -2);
             this.action = () -> focus(this);
@@ -313,64 +343,72 @@ public class MayanCalendarOverlay extends Overlay {
             this.maxRot = maxRot;
         }
 
+        /// Gets the y-shift caused by focusing a cog
         protected int yOffset(Canvas canvas) {
             return focused == this ? canvas.scale(-15) : 0;
         }
 
+        /// Ticks this cog
         @Override
         public void tick() {
-            if (rotProgressCount > 0) {
-                rotProgressCount --;
-                if (rotProgressCount % rotProgressCountStep == 0) {
-                    if (rotForwards) rotProgress = (rotProgress + 1) % maxRotProgress;
-                    else rotProgress = (rotProgress - 1 + maxRotProgress) % maxRotProgress;
+            if (rotTick > 0) {
+                rotTick--;
+                if (rotTick % rotProgressInterval == 0) {
+                    rotProgress = floorMod(rotProgress + (rotForwards ? 1 : -1), maxRotProgress);
                 }
             }
         }
 
+        /// Increments this cog by one
         public void increment() {
-            rotProgressCount = maxRotProgressCount;
+            rotTick = maxRotTick;
             rot ++;
             rot %= maxRot;
             rotForwards = true;
         }
+        /// Decrements this cog by one
         public void decrement() {
-            rotProgressCount = maxRotProgressCount;
+            rotTick = maxRotTick;
             rot --;
             if (rot < 0) rot += maxRot;
             rotForwards = false;
         }
+        /// Increments this cog by 20
         public void incrementBig() {
-            rotProgressCount = maxRotProgressCount;
-            rot += 20;
-            rot %= maxRot;
+            rotTick = maxRotTick;
+            rot = floorMod(rot + 20, maxRot);
             rotForwards = true;
         }
+        /// Decrements this cog by 20
         public void decrementBig() {
-            rotProgressCount = maxRotProgressCount;
-            rot -= 20;
-            if (rot < 0) rot += maxRot;
+            rotTick = maxRotTick;
+            rot = floorMod(rot - 20, maxRot);
             rotForwards = false;
         }
 
+        /// Returns whether this cog is currently performing a rotation animation
         public boolean isRotating() {
-            return rotProgressCount != 0;
+            return rotTick != 0;
         }
+        /// Gets the percentage of rotation as a double
         protected double rotPercent() {
             double main = (double) rot / maxRot;
             double step = (1D / maxRot) * (rotForwards ? -rotProgressPercent() : rotProgressPercent());
             return main + step;
         }
+        /// Gets the percentage of the rotation animation step as a double
         protected double rotProgressPercent() {
-            return (double) rotProgressCount / maxRotProgressCount;
+            return (double) rotTick / maxRotTick;
         }
 
+        /// Returns whether this cog is outlined
         @Override
         protected boolean isOutlined() {
             return super.isOutlined() && (focused == null || focused == this);
         }
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -388,6 +426,7 @@ public class MayanCalendarOverlay extends Overlay {
         focused = null;
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         bigUpButton.tick();

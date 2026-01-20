@@ -8,13 +8,16 @@ import java.util.function.Predicate;
  * Description: Argument that translates user input into a boolean
  */
 public class BooleanArgument extends Argument {
+    /// Creates a new boolean argument
     public BooleanArgument(String name) {
         super(name);
     }
+    /// Creates a new boolean argument
     public BooleanArgument(String name, Predicate<Object> requirement) {
         super(name, requirement);
     }
 
+    /// Returns true if this argument accepts the given string
     @Override
     public boolean accepts(String string) {
         if (!string.equals("true") && !string.equals("false")) return false;
@@ -22,6 +25,7 @@ public class BooleanArgument extends Argument {
         return requirement.test(b);
     }
 
+    /// Translates the given string into a boolean
     @Override
     public Boolean translate(String string) throws IllegalArgumentException {
         if (!accepts(string)) throw new IllegalArgumentException();

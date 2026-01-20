@@ -17,11 +17,13 @@ public abstract class Collectible extends Interactable {
 
     protected boolean collected;
 
+    /// Creates a new collectible entity
     public Collectible(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(1D, 1D));
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         room.player.onInteract();
@@ -30,18 +32,23 @@ public abstract class Collectible extends Interactable {
         game.getInventory().add(newItem());
         Assets.sound("notify").play();
     }
+    /// Gets the message that is displayed when picked up
     protected abstract String pickupMessage();
+    /// Creates a new item that is picked up
     protected abstract Item newItem();
 
+    /// Returns whether this entity can currently be interacted
     @Override
     protected boolean canBeInteracted() {
         return super.canBeInteracted() && !collected();
     }
 
+    /// Returns whether this entity has already been collected
     public boolean collected() {
         return collected;
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         var g = canvas.getGraphics();

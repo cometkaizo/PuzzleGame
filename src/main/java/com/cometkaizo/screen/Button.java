@@ -15,18 +15,21 @@ public class Button extends ImageClickable {
     protected Font font;
     protected Color color = new Color(0, 0, 0);
 
+    /// Creates a new button
     public Button(GameApp app, String message, int size, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         super(app, action, x, y, w, h, () -> "gui/title_screen/button", -2, -2);
         this.message = message;
         this.font = Assets.font("BoldPixels", size);
     }
 
+    /// Renders this button to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         renderMessage(canvas);
     }
 
+    /// Renders the button label to the screen
     private void renderMessage(Canvas canvas) {
         canvas.renderString(message, font, color, lastX + lastW / 2F, lastY + lastH / 2F, true, true);
     }

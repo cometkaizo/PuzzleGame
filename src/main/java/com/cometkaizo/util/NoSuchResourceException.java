@@ -6,18 +6,22 @@ package com.cometkaizo.util;
  * Description: Exception representing the lack of a wanted resource
  */
 public class NoSuchResourceException extends RuntimeException {
+    /// Creates a new exception
     public NoSuchResourceException(String message) {
         super(message);
     }
 
+    /// Creates a new exception
     public NoSuchResourceException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /// Creates a new exception
     public NoSuchResourceException(Throwable cause) {
         super(cause);
     }
 
+    /// Creates a new exception
     public NoSuchResourceException() {
     }
 }

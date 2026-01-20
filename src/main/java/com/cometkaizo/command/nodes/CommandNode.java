@@ -30,11 +30,13 @@ abstract class CommandNode {
     protected final List<Runnable> tasks;
     protected Command context;
 
+    /// Creates a new command node
     protected CommandNode(CommandNodeBuilder builder) {
         this.subNodes = buildSubNodes(builder);
         this.tasks = List.copyOf(builder.tasks);
         this.level = builder.level;
     }
+    /// builds the subnodes of the given builder
     private static List<CommandNode> buildSubNodes(CommandNodeBuilder builder) {
         return CollectionUtils.map(builder.subNodes, CommandNodeBuilder::build);
     }
@@ -59,6 +61,7 @@ abstract class CommandNode {
             executeSubNodes();
     }
 
+    /// Executes the subnodes
     private void executeSubNodes() throws CommandSyntaxException {
         if (!hasSubNodes()) return;
 
@@ -72,10 +75,13 @@ abstract class CommandNode {
     }
 
 
+    /// Returns whether this command node accepts the given argument
     protected abstract boolean accepts(String arg);
 
+    /// Executes the functionality for this command node
     protected abstract void executeFunctionality();
 
+    /// Creates a new "not enough args" exception
     private CommandSyntaxException notEnoughArgsException() {
         String formattedArgs = Arrays.stream(context.args)
                 .map(Objects::toString)
@@ -93,10 +99,12 @@ abstract class CommandNode {
         );
     }
 
+    /// Returns a user-displayable string representation of this command node
     public String toPrettyString() {
         return getClass().getSimpleName().replaceAll("(?<=.)CommandNode$", "").toUpperCase();
     }
 
+    /// Executes the subnodes of this node with the next argument
     private void executeSubNodesWithNextArg() throws CommandSyntaxException {
 
         for (CommandNode subNode : subNodes) {
@@ -109,6 +117,7 @@ abstract class CommandNode {
         throw wrongArgumentTypeException();
     }
 
+    /// Creates a new "wrong argument type" exception
     private CommandSyntaxException wrongArgumentTypeException() {
         String formattedSubNodes = subNodes.stream()
                 .map(CommandNode::toPrettyString)
@@ -117,6 +126,7 @@ abstract class CommandNode {
         return new CommandSyntaxException("Unexpected argument '" + nextArg() + "'; required: \n    " + formattedSubNodes);
     }
 
+    /// Executes a subnode that does not accept any arguments
     private void executeNoArgSubNode() {
         CommandNode noArgSubNode = getNoArgSubNode();
 
@@ -125,28 +135,34 @@ abstract class CommandNode {
         noArgSubNode.execute(context);
     }
 
+    /// Returns whether any of the subnodes of this command node accepts arguments
     private boolean requiresNextArg() {
         return subNodes.stream().allMatch(CommandNode::acceptsArguments);
     }
 
+    /// Gets the next subnode that does not accept arguments
     private CommandNode getNoArgSubNode() {
         return subNodes.stream()
                 .filter(node -> !node.acceptsArguments())
                 .findFirst().orElse(null);
     }
 
+    /// Returns whether this command node accepts arguments
     public final boolean acceptsArguments() {
         return !(this instanceof NoArgCommandNode);
     }
 
+    /// Returns the next argument
     private String nextArg() {
         return context.args[level + 1];
     }
 
+    /// Returns whether there is an next argument
     private boolean hasNextArg() {
         return context.args.length - 1 > level;
     }
 
+    /// Returns whether this command node has subnodes
     public boolean hasSubNodes() {
         return subNodes.size() > 0;
     }

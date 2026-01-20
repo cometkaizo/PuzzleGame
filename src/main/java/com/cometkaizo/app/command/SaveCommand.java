@@ -15,11 +15,13 @@ public class SaveCommand extends Command {
 
     private final GameApp app;
 
+    /// Creates a new save command
     public SaveCommand(GameApp app) {
         this.app = app;
         rootNode.executes(this::save);
     }
 
+    /// save the game
     private void save() {
         Main.log("Saving game...");
 
@@ -29,6 +31,7 @@ public class SaveCommand extends Command {
         else Main.log("Failed to save world");
     }
 
+    /// gets the list of names for this command
     @Override
     public List<String> getNames() {
         return List.of("game");

@@ -103,16 +103,19 @@ public class MayanCalendar extends Interactable {
     private int[] correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo;
     private MayanCalendarOverlay overlay;
 
+    /// Creates a new mayan calendar entity
     public MayanCalendar(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 2D));
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         app.setOverlay(overlay);
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -122,26 +125,31 @@ public class MayanCalendar extends Interactable {
         correctBasementCombo = nextMayanCombo(originalArgs);
         overlay = new MayanCalendarOverlay(app, correctPaintingsCombo, correctSculpturesCombo, correctArtifactsCombo, correctBasementCombo);
     }
+    /// Reads the next combination in from the Args
     private int[] nextMayanCombo(Args args) {
         return Arrays.stream(args.next(" ").split(" ")).mapToInt(Integer::parseInt).toArray();
     }
 
+    /// Updates this entity, called every tick
     @Override
     public void tick() {
         super.tick();
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.DARK_GRAY);
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "mayan_calendar";

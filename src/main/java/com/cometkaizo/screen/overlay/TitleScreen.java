@@ -25,6 +25,7 @@ public class TitleScreen extends Overlay {
     );
     private Clip music;
 
+    /// Creates a new overlay
     public TitleScreen(GameApp app) {
         super(app);
     }
@@ -43,14 +44,17 @@ public class TitleScreen extends Overlay {
     }
 
     // button functionality
+    /// Starts a new game
     private void newGame() {
         app.setOverlay(null);
     }
+    /// Loads a game from the save slot
     private void loadGame() {
         if (app.loadGame()) {
             app.setOverlay(null);
         }
     }
+    /// Loads a game from the save slot in debug mode
     private void debugGame() {
         if (app.loadGame()) {
             app.getGame().setDevMode(true);
@@ -59,16 +63,19 @@ public class TitleScreen extends Overlay {
         }
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         for (var button : buttons) button.onClick(click);
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         buttons.forEach(com.cometkaizo.screen.Button::tick);
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         canvas.fillScreen(Color.BLACK);
@@ -78,11 +85,13 @@ public class TitleScreen extends Overlay {
         buttons.forEach(button -> button.render(canvas));
     }
 
+    /// Returns whether the game should be updated while this screen is visible
     @Override
     public boolean shouldTickGame() {
         return false;
     }
 
+    /// Returns whether the game should be rendered while this screen is visible
     @Override
     public boolean shouldRenderGame() {
         return false;

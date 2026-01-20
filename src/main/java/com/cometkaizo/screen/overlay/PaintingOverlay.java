@@ -17,6 +17,7 @@ public class PaintingOverlay extends Overlay {
     private final Text content;
     private final String variant;
 
+    /// Creates a new overlay
     public PaintingOverlay(GameApp app, boolean litUp, String variant, String label) {
         super(app);
         this.litUp = litUp;
@@ -27,6 +28,7 @@ public class PaintingOverlay extends Overlay {
         this.variant = variant;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

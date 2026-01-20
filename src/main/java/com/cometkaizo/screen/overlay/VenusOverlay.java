@@ -24,6 +24,7 @@ public class VenusOverlay extends Overlay {
             new Writing("11 14 5 5", 2, 5)
     );
 
+    /// Creates a new overlay
     public VenusOverlay(GameApp app, boolean chestOpen, boolean heartOpen, boolean[][] pedestalCombo, Runnable openChestAction, Runnable openHeartAction) {
         super(app);
         this.chestOpen = chestOpen;
@@ -38,16 +39,19 @@ public class VenusOverlay extends Overlay {
         this.openHeartAction = openHeartAction;
     }
 
+    /// Opens the chest
     public void openChest() {
         app.setOverlay(new NarrationOverlay(app, "You hear the squeaking of hinges. The chest of Venus de Milo swings open to reveal stone organs within.", this));
         openChestAction.run();
         chestOpen = true;
     }
+    /// Opens the heart
     public void openHeart() {
         openHeartAction.run();
         heartOpen = true;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -57,10 +61,12 @@ public class VenusOverlay extends Overlay {
         for (var w : writing) w.render(canvas);
     }
 
+    /// Gets the path to the background texture
     private String getTexturePath() {
         return "gui/sculpture/venus/regular";
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
@@ -68,6 +74,7 @@ public class VenusOverlay extends Overlay {
         if (chestOpen) chest.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -75,7 +82,8 @@ public class VenusOverlay extends Overlay {
         if (chestOpen) chest.onClick(click);
     }
 
-    private class Writing extends Text {
+    /// A single piece of red writing on the sculpture
+    private static class Writing extends Text {
         public Writing(String message, int dx, int dy) {
             super(message, Assets.font("BoldPixels", 30), Color.RED,
                     w -> w/2 + dx, h -> h/2 + dy, 100, true, false);

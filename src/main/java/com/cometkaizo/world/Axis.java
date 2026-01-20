@@ -8,6 +8,7 @@ public enum Axis {
     X,
     Y;
 
+    /// Returns the other axis
     public Axis invert() {
         return this == X ? Y : X;
     }

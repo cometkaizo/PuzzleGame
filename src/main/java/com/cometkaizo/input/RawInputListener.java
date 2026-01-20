@@ -10,6 +10,8 @@ import java.awt.event.*;
  * Description: This class represents an adapter between the Java listeners API and the InputListener class
  */
 public interface RawInputListener extends MouseListener, MouseMotionListener, KeyListener, Tickable {
+    /// Adds an input listener
     void addInputListener(InputListener listener);
+    /// Removes an input listener
     void removeInputListener(InputListener listener);
 }

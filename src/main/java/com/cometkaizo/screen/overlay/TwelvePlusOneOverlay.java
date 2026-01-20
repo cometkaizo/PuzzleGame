@@ -31,10 +31,12 @@ public class TwelvePlusOneOverlay extends Overlay {
     );
     private Letter selected;
 
+    /// Creates a new overlay
     public TwelvePlusOneOverlay(GameApp app) {
         super(app);
     }
 
+    /// Renders the overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -43,9 +45,11 @@ public class TwelvePlusOneOverlay extends Overlay {
         for (var l : letters) l.render(canvas);
     }
 
+    /// A single letter on the overlay
     public class Letter extends ImageClickable {
         public final String letter;
         public int index;
+        /// Creates a new letter at the given index
         public Letter(String letter, int index) {
             super(TwelvePlusOneOverlay.this.app, () -> {}, null, null, _ -> 16, _ -> 16, () -> "gui/twelve_plus_one/letter/" + letter, -2, -2);
             this.x = w -> w/2 - 100 + this.index * 18;
@@ -58,6 +62,9 @@ public class TwelvePlusOneOverlay extends Overlay {
             this.index = index;
         }
 
+        /// Called when this letter is clicked.
+        /// If no letter is currently selected, selects this letter.
+        /// Otherwise, swaps the selected letter with this letter.
         public void selectOrSwap() {
             if (selected == null) {
                 selected = this; // select this
@@ -71,18 +78,21 @@ public class TwelvePlusOneOverlay extends Overlay {
             }
         }
 
+        /// Returns whether this letter is outlined
         @Override
         protected boolean isOutlined() {
             return super.isOutlined() || selected == this;
         }
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         for (var l : letters) l.tick();
     }
 
+    /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

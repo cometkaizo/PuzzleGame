@@ -19,6 +19,7 @@ public class Registry<T> {
     private final Map<String, T> entries = new LinkedHashMap<>(5);
     private Collection<T> entryView = List.of();
 
+    /// Registers the given object with the given key
     @SuppressWarnings("unchecked")
     public <V extends T> Supplier<V> register(String key, Function<GameApp, V> objectFunc) {
         Objects.requireNonNull(objectFunc, "Object function cannot be null");
@@ -37,20 +38,24 @@ public class Registry<T> {
         };
     }
 
+    /// Adds the given object with the given key
     private void addEntryFunction(String key, Function<GameApp, ? extends T> objectFunc) {
         entryFunctions.put(key, objectFunc);
     }
 
+    /// Adds a given entry with the given key
     private void addEntry(String key, T value) {
         Objects.requireNonNull(value, "Contract violation: cannot add null entry");
         entries.put(key, value);
     }
 
+    /// Throws an exception if the key is already registered
     private void throwIfDuplicateKey(String key) {
         Object duplicate = entryFunctions.get(key);
         if (duplicate != null) throw new IllegalArgumentException("Key '" + key + "' already exists for '" + duplicate + "'");
     }
 
+    /// Registers this registry to the given app
     public void register(GameApp app) {
         this.app = app;
         for (String key : entryFunctions.keySet()) {
@@ -60,10 +65,12 @@ public class Registry<T> {
         updateEntryView();
     }
 
+    /// Updates the unmodifiable view to the entries
     private void updateEntryView() {
         entryView = Collections.unmodifiableCollection(entries.values());
     }
 
+    /// Returns the value associated with the key
     public T getValue(String key) {
         if (app == null) throw new IllegalStateException("Unknown key '" + key + "'; " + Registry.class.getSimpleName() + "#register(GameApp) has not been called");
         T result = entries.get(key);
@@ -71,6 +78,7 @@ public class Registry<T> {
         return result;
     }
 
+    /// Returns the key associated with the value
     public String getKey(T value) {
         if (app == null) throw new IllegalStateException("Unknown key '" + value + "'; " + Registry.class.getSimpleName() + "#register(GameApp) has not been called");
         var entry = CollectionUtils.getFirst(entries.entrySet(), e -> e.getValue() == value);
@@ -78,6 +86,7 @@ public class Registry<T> {
         return entry.get().getKey();
     }
 
+    /// Returns an unmodifiable view of the entries
     public Collection<T> values() {
         return entryView;
     }

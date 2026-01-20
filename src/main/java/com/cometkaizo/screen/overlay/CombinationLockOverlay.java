@@ -30,6 +30,7 @@ public class CombinationLockOverlay extends Overlay {
     private final Clickable handleClickable;
     private final List<Clickable> digitClickables;
 
+    /// Creates a new overlay
     public CombinationLockOverlay(GameApp app, String[] correctCombination, String[][] digitOptions, Runnable actionOnOpen, String overlayVariant) {
         super(app);
         this.correctCombination = correctCombination;
@@ -54,12 +55,14 @@ public class CombinationLockOverlay extends Overlay {
                 if (digit.length() > longestDigit.length()) longestDigit = digit;
         this.longestDigit = longestDigit;
     }
+    /// Creates a new Clickable for the id'th digit
     private Clickable newDigitClickable(int id) {
         return new ImageClickable(app, () -> changeDigit(id),
                 w -> w / 2 + 18, h -> h / 2 - 16 + id * 18 + getYOffset(),
                 _ -> 38, _ -> 16, () -> "gui/combination_lock/" + overlayVariant + "/digit", -4, -4);
     }
 
+    /// Opens the lock
     private void open() {
         if (Arrays.equals(currentCombination(), correctCombination)) {
             open = true;
@@ -69,12 +72,14 @@ public class CombinationLockOverlay extends Overlay {
         }
     }
 
+    /// Changes the digit at the given index
     private void changeDigit(int digitId) {
         if (open) return;
         selectedDigits[digitId] ++;
         selectedDigits[digitId] %= digitOptions[digitId].length;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -85,6 +90,7 @@ public class CombinationLockOverlay extends Overlay {
         renderCurrentCombination(canvas);
     }
 
+    /// Renders the current combination
     private void renderCurrentCombination(Canvas canvas) {
         var g = canvas.getGraphics();
         var oldClip = g.getClip();
@@ -105,31 +111,36 @@ public class CombinationLockOverlay extends Overlay {
             canvas.renderString(currentCombo[i], font, color, x, y, true, false);
 
             int padding = g.getFontMetrics(font).stringWidth(longestDigit)/2 + canvas.scale(10);
-            canvas.renderString(selectedDigit(i, selectedDigits[i] + 1), font, secondaryColor, x + padding, y, true, false);
-            canvas.renderString(selectedDigit(i, selectedDigits[i] - 1), font, secondaryColor, x - padding, y, true, false);
+            canvas.renderString(getDigit(i, selectedDigits[i] + 1), font, secondaryColor, x + padding, y, true, false);
+            canvas.renderString(getDigit(i, selectedDigits[i] - 1), font, secondaryColor, x - padding, y, true, false);
         }
 
         g.setClip(oldClip);
     }
 
+    /// Gets the vertical offset
     private int getYOffset() {
         return open ? 28 : 0;
     }
 
+    /// Gets the curent combination
     private String[] currentCombination() {
         return new String[] {selectedDigit(0), selectedDigit(1), selectedDigit(2), selectedDigit(3)};
     }
 
+    /// Gets the selected option in the given digit index
     protected String selectedDigit(int digitIndex) {
         digitIndex = Math.floorMod(digitIndex, digitOptions.length);
         return digitOptions[digitIndex][selectedDigits[digitIndex]];
     }
-    protected String selectedDigit(int digitIndex, int selectedDigit) {
+    /// Gets the digit'th option of the given digit index
+    protected String getDigit(int digitIndex, int digit) {
         digitIndex = Math.floorMod(digitIndex, digitOptions.length);
-        selectedDigit = Math.floorMod(selectedDigit, digitOptions[digitIndex].length);
-        return digitOptions[digitIndex][selectedDigit];
+        digit = Math.floorMod(digit, digitOptions[digitIndex].length);
+        return digitOptions[digitIndex][digit];
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
@@ -137,6 +148,7 @@ public class CombinationLockOverlay extends Overlay {
         digitClickables.forEach(c -> c.onClick(click));
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         handleClickable.tick();

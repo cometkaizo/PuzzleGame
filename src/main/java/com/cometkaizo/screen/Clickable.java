@@ -11,7 +11,7 @@ import java.util.function.IntUnaryOperator;
 /**
  * Author: Andy Wang
  * Date Modified: 2026-01-04
- * Description: A 2D rectangle which performs an action when clicked
+ * Description: A 2D rectangle on the screen which performs an action when clicked
  */
 public class Clickable implements Tickable, Renderable {
     protected final GameApp app;
@@ -19,6 +19,7 @@ public class Clickable implements Tickable, Renderable {
     protected int lastX, lastY, lastW, lastH;
     protected IntUnaryOperator x, y, w, h;
 
+    /// Creates a new clickable
     public Clickable(GameApp app, BooleanSupplier action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         this.app = app;
         this.action = action;
@@ -27,6 +28,7 @@ public class Clickable implements Tickable, Renderable {
         this.w = w;
         this.h = h;
     }
+    /// Creates a new clockable
     public Clickable(GameApp app, Runnable action, IntUnaryOperator x, IntUnaryOperator y, IntUnaryOperator w, IntUnaryOperator h) {
         this(app, () -> {
             action.run();
@@ -34,6 +36,8 @@ public class Clickable implements Tickable, Renderable {
         }, x, y, w, h);
     }
 
+    /// Called when the mouse is pressed.
+    /// Performs the action given in the constructor.
     public boolean onClick(MousePressedEvent click) {
         if (contains(click.screenX(), click.screenY())) {
             return action.getAsBoolean();
@@ -41,19 +45,23 @@ public class Clickable implements Tickable, Renderable {
         return false;
     }
 
+    /// Returns whether this clickable is hovered
     public boolean isHovered() {
         return contains(app.getMouseX(), app.getMouseY());
     }
 
+    /// Returns whether the given pixel coordinates are within this clickable's bounding box
     public boolean contains(int x, int y) {
         return x >= lastX && x <= lastX + lastW && y >= lastY && y <= lastY + lastH;
     }
 
+    /// Ticks this clickable
     @Override
     public void tick() {
 
     }
 
+    /// Renders this clickable to the screen
     @Override
     public void render(Canvas canvas) {
         updatePosAndSize(canvas);
@@ -61,6 +69,7 @@ public class Clickable implements Tickable, Renderable {
         canvas.renderDebugRect(lastX, lastY, lastW, lastH, Color.RED);
     }
 
+    /// Updates the position and size using the functions given in the constructor
     private void updatePosAndSize(Canvas canvas) {
         lastX = canvas.scale(x.applyAsInt(canvas.getPixelWidth()));
         lastY = canvas.scale(y.applyAsInt(canvas.getPixelHeight()));

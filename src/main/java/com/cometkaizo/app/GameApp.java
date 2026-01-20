@@ -51,8 +51,6 @@ public class GameApp extends App implements Tickable {
     private long lastTickTime;
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Constructs a new GameApp instance
      */
     public GameApp() {
@@ -70,8 +68,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Executes a command using the given input string
      */
     public void parseInput(String input) {
@@ -83,8 +79,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: sets up the app
      */
     @Override
@@ -101,8 +95,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: initializes the app window
      */
     private void initWindow() {
@@ -130,8 +122,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: initializes the save directory
      */
     private void makeSaveDirIn(File parent) {
@@ -150,8 +140,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: cleans up the app
      */
     @Override
@@ -165,8 +153,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: runs every tick to update the game
      */
     @Override
@@ -186,8 +172,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: Renders the game and waits for the render to finish
      */
     public void render() {
@@ -202,8 +186,6 @@ public class GameApp extends App implements Tickable {
         }
     }
     /**
-     * Author: Andy Wang
-     * Date Modified: 2026-01-05
      * Description: Schedules an asynchronous render of the game
      */
     private void scheduleRender() {
@@ -211,8 +193,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: saves the game to the given path
      */
     public boolean saveGameTo(Path path) {
@@ -221,8 +201,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: saves the game to the default path
      */
     public boolean saveGame() {
@@ -230,8 +208,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: loads the game from the given path
      */
     public boolean loadGameFrom(Path path) {
@@ -247,8 +223,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: loads the game from the default path
      */
     public boolean loadGame() {
@@ -256,8 +230,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: sets the current game
      */
     private void setGame(Game game) {
@@ -268,8 +240,6 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: toggles debug mode
      */
     public void toggleDebug() {
@@ -277,47 +247,51 @@ public class GameApp extends App implements Tickable {
     }
 
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: listens to input events for the screen overlay
      */
     private class OverlayInputListener implements InputListener {
+        /// posts an event for a key press
         @Override
         public void keyPressed(KeyBinding key) {
             overlayEventBus.post(new KeyPressedEvent(key));
         }
+        /// posts an event for a key down
         @Override
         public void keyDown(KeyBinding key) {
             overlayEventBus.post(new KeyDownEvent(key));
         }
+        /// posts an event for a key release
         @Override
         public void keyReleased(KeyBinding key) {
             overlayEventBus.post(new KeyReleasedEvent(key));
         }
+        /// posts an event for a mouse press
         @Override
         public void mousePressed(MouseButtonBinding button, int x, int y) {
             // there are no "world coordinates" for screen overlay events, so use NaN
             overlayEventBus.post(new MousePressedEvent(button, Double.NaN, Double.NaN, x, y));
         }
+        /// posts an event for a mouse press
         @Override
         public void mouseDown(MouseButtonBinding button, int x, int y) {
             overlayEventBus.post(new MouseDownEvent(button, Double.NaN, Double.NaN, x, y));
         }
+        /// posts an event for a mouse release
         @Override
         public void mouseReleased(MouseButtonBinding button, int x, int y) {
             overlayEventBus.post(new MouseReleasedEvent(button, Double.NaN, Double.NaN, x, y));
         }
+        /// posts an event for a mouse move
         @Override
         public void mouseMoved(int x, int y) {
             overlayEventBus.post(new MouseMovedEvent(Double.NaN, Double.NaN, x, y));
         }
     }
     /**
-     * Author: Andy Wang
-     * Date Modified: TODO
      * Description: listens for window closing
      */
     private class WindowCloseListener extends WindowAdapter {
+        /// Asks the user for confirmation before exiting the game when the "X" is pressed on the window
         @Override
         public void windowClosing(WindowEvent windowEvent) {
             if (JOptionPane.showConfirmDialog(frame,
@@ -358,6 +332,8 @@ public class GameApp extends App implements Tickable {
         this.overlay = overlay;
         if (this.overlay != null) this.overlay.setup();
     }
+
+    /// sets the current overlay to a NarrationOverlay with the given text and given subsequent screen
     public void narrate(String narration, Overlay next) {
         setOverlay(new NarrationOverlay(this, narration, next));
     }

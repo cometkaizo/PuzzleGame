@@ -20,25 +20,30 @@ public class RawInputListenerImpl implements RawInputListener {
     private boolean prevInactive;
     private int mouseX, mouseY;
 
+    /// Creates a new input listener
     public RawInputListenerImpl(Registry<InputBinding> keyBindings, BooleanSupplier activeCondition) {
         this.keyBindings = keyBindings;
         this.activeCondition = activeCondition;
     }
 
+    /// Adds an input listener
     @Override
     public void addInputListener(InputListener listener) {
         inputListeners.add(listener);
     }
+    /// Removes an input listener
     @Override
     public void removeInputListener(InputListener listener) {
         inputListeners.remove(listener);
     }
 
+    /// Called when a key is typed
     @Override
     public void keyTyped(KeyEvent e) {
 
     }
 
+    /// Updates all key bindings when a key is pressed
     @Override
     public void keyPressed(KeyEvent e) {
         if (inactive()) return;
@@ -54,6 +59,7 @@ public class RawInputListenerImpl implements RawInputListener {
         });
     }
 
+    /// Updates all key bindings when a key is released
     @Override
     public void keyReleased(KeyEvent e) {
 //        if (inactive()) return; // don't block "release" events when inactive
@@ -65,11 +71,13 @@ public class RawInputListenerImpl implements RawInputListener {
         });
     }
 
+    /// Called when the mouse is clicked
     @Override
     public void mouseClicked(MouseEvent e) {
 
     }
 
+    /// Updates all mouse bindings when a mouse button is pressed
     @Override
     public void mousePressed(MouseEvent e) {
         if (inactive()) return;
@@ -85,6 +93,7 @@ public class RawInputListenerImpl implements RawInputListener {
         });
     }
 
+    /// Updates all mouse bindings when a mouse button is released
     @Override
     public void mouseReleased(MouseEvent e) {
 //        if (inactive()) return; // don't block "release" events when inactive
@@ -96,21 +105,25 @@ public class RawInputListenerImpl implements RawInputListener {
         });
     }
 
+    /// Called when the mouse enters something
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    /// Called when the mouse exits something
     @Override
     public void mouseExited(MouseEvent e) {
 
     }
 
+    /// Called when the mouse is dragged
     @Override
     public void mouseDragged(MouseEvent e) {
 
     }
 
+    /// Updates the mouse position when it is moved
     @Override
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
@@ -120,10 +133,12 @@ public class RawInputListenerImpl implements RawInputListener {
         inputListeners.forEach(l -> l.mouseMoved(e.getX(), e.getY()));
     }
 
+    /// Returns whether this input listener is currently inactive
     private boolean inactive() {
         return !activeCondition.getAsBoolean();
     }
 
+    /// Called every tick
     @Override
     public void tick() {
         if (inactive() && !prevInactive) interruptHeldKeys();
@@ -144,6 +159,7 @@ public class RawInputListenerImpl implements RawInputListener {
         });
     }
 
+    /// Updates all the held keys
     private void tickHeldKeys() {
         keyBindings.values().forEach(binding -> {
             if (binding instanceof KeyBinding keyBinding && keyBinding.isDown) {

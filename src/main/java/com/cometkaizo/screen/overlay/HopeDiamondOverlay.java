@@ -12,11 +12,13 @@ import com.cometkaizo.screen.Canvas;
 public class HopeDiamondOverlay extends Overlay {
     private final boolean lit;
 
+    /// Creates a new overlay
     public HopeDiamondOverlay(GameApp app, boolean lit) {
         super(app);
         this.lit = lit;
     }
 
+    /// Renders this overlay
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

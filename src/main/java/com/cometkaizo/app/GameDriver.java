@@ -24,6 +24,7 @@ public class GameDriver extends SystemDriver {
      * Author: Andy Wang
      * Date Modified: 2026-01-05
      * Description: Constructs a new GameDriver with the given input stream
+     * Adds the relevant loops for ticking, rendering, and command parsing
      */
     public GameDriver(InputStream input) {
         super(new GameApp());

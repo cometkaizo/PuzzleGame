@@ -60,42 +60,50 @@ public class CombinationPuzzleBox extends Interactable {
     private long openTick = -1;
     private CombinationLockOverlay overlay;
 
-
+    /// Creates a new combination lock
     public CombinationPuzzleBox(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         if (!open) app.setOverlay(overlay);
         else if (opensMessage()) openMessage();
         else app.narrate("You've already solved this lock.", null);
     }
+    /// Opens the note message in this lock
     private void openMessage() {
         app.setOverlay(new NoteOverlay(app, MESSAGES[variant - 1], "mayan_note"));
     }
 
+    /// Forcibly opens the lock
     @Override
     protected void solve() {
         actuallyOpen();
     }
 
+    /// Schedules the lock to open 1 second later
     private void open() {
         open = true;
         openTick = game.tick + 20;
     }
 
+    /// Opens the lock
     private void actuallyOpen() {
         open = true;
         if (opensMessage()) openMessage();
         else if (givesItem()) giveItem();
     }
+    /// Returns whether this lock opens a message
     private boolean opensMessage() {
         return variant <= 5;
     }
+    /// Returns whether this lock gives an item
     private boolean givesItem() {
         return variant >= 6 && variant <= 12;
     }
+    /// Gives the item in this lock to the player
     private void giveItem() {
         if (variant == 6) {
             game.getInventory().add(new MachinePieceItem());
@@ -112,6 +120,7 @@ public class CombinationPuzzleBox extends Interactable {
         }
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -139,43 +148,51 @@ public class CombinationPuzzleBox extends Interactable {
         open = originalGameState.locksOpen.getOrDefault(variant, false);
     }
 
+    /// Updates this entity, called every tick
     @Override
     public void tick() {
         super.tick();
         if (game.tick == openTick) actuallyOpen();
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return solid;
     }
 
+    /// Saves this entity to the game state
     @Override
     public void write(GameState state) {
         super.write(state);
         state.locksOpen.put(variant, open);
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
         canvas.renderDebugBoundingBox(boundingBox, Color.DARK_GRAY);
     }
 
+    /// The y-value at which this entity is compared to other entities to determine which is rendered in front
     @Override
     public double getRenderY() {
         return getY() + 0.8;
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "combination_puzzle_box/" + variant;
     }
 
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaX() {
         return -2;
     }
+    /// Gets the y translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaY() {
         return 2;

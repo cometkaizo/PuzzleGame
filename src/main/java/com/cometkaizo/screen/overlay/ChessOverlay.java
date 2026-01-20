@@ -22,6 +22,7 @@ public class ChessOverlay extends Overlay {
     private Cell[][] cells = new Cell[8][8];
     private Piece pickedUp = null;
 
+    /// Creates a new overlay
     public ChessOverlay(GameApp app, String pieces) {
         super(app);
         for (int r = 0; r < 8; r ++) {
@@ -43,11 +44,13 @@ public class ChessOverlay extends Overlay {
         recalculatePieceMovableCells();
     }
 
+    /// Recalculates pieces' movable cells
     private void recalculatePieceMovableCells() {
         for (var row : this.pieces) for (var piece : row) if (piece != null && !(piece instanceof King)) piece.recalculateMovableCells();
         for (var row : this.pieces) for (var piece : row) if (piece instanceof King) piece.recalculateMovableCells();
     }
 
+    /// Renders the overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -57,6 +60,7 @@ public class ChessOverlay extends Overlay {
         for (var row : pieces) for (var piece : row) if (piece != null) piece.img.render(canvas);
     }
 
+    /// Creates a new piece with the given name at the given location
     Piece newPiece(char name, int r, int c) {
         boolean white = Character.isUpperCase(name);
         return switch (Character.toLowerCase(name)) {
@@ -71,21 +75,25 @@ public class ChessOverlay extends Overlay {
         };
     }
 
+    /// Returns the cell at the given location, or null if there is none
     protected Cell cellAt(int r, int c) {
         return (r >= 0 && r < 8 && c >= 0 && c < 8) ? cells[r][c] : null;
     }
+    /// Returns the piece at the given location, or null if there is none
     protected Piece pieceAt(int r, int c) {
         return (r >= 0 && r < 8 && c >= 0 && c < 8) ? pieces[r][c] : null;
     }
 
-    // todo: restrict pieces moves when their king is in check (this is not an important mechanic for the purpose of the puzzles)
+    // Note: not all rules of chess are implemented here, simply because it is not necessary for the purpose of the puzzles
 
+    /// A chess piece
     public abstract class Piece {
         protected final Clickable img;
         protected final boolean white;
         protected int r, c;
         private Set<Cell> movableCells = Set.of(), attackableCells = Set.of();
 
+        /// Creates a new chess piece
         public Piece(int r, int c, boolean white, String texturePath) {
             this.white = white;
             img = new ImageClickable(app, this::pickUp, this::screenX, this::screenY, _ -> 16, _ -> 16,
@@ -97,6 +105,7 @@ public class ChessOverlay extends Overlay {
             setPos(r, c);
         }
 
+        /// Recalculates the cells that this piece can move to
         public void recalculateMovableCells() {
             var movableCells = new HashSet<Cell>();
             calculateMovableCells(movableCells);
@@ -108,11 +117,14 @@ public class ChessOverlay extends Overlay {
             this.movableCells = movableCells;
         }
 
+        /// calculates the movable cells and stores them into the given set
         protected abstract void calculateMovableCells(Set<Cell> movable);
+        /// Returns whether the given cell is attacked by this piece
         protected boolean canAttackCell(Cell cell) {
             return cell != null && attackableCells.contains(cell);
         }
 
+        /// Calculates the movable cells in a given line
         protected final void calculateMovableCellsInLine(Set<Cell> movable, IntUnaryOperator r, IntUnaryOperator c) {
             for (int i = 1; i < 8; i ++) {
                 var cell = cellAt(r.applyAsInt(i), c.applyAsInt(i));
@@ -123,6 +135,7 @@ public class ChessOverlay extends Overlay {
             }
         }
 
+        /// Picks this piece up
         private boolean pickUp() {
             if (pickedUp == null && canPickUp(this)) {
                 pickedUp = this;
@@ -130,28 +143,34 @@ public class ChessOverlay extends Overlay {
             } else return false;
         }
 
+        /// Gets the screen x
         int screenX(int w) {
             return boardLeft(w) + c * 16;
         }
+        /// Gets the screen y
         int screenY(int h) {
             return boardTop(h) + r * 16 - (pickedUp == this ? 8 : 0);
         }
 
+        /// Sets the position of this chess piece
         public void setPos(int r, int c) {
             this.r = r;
             this.c = c;
         }
     }
 
+    /// returns whether the given piece can be picked up
     protected boolean canPickUp(Piece piece) {
         return true;
     }
 
+    /// A pawn
     public class Pawn extends Piece {
         public Pawn(int r, int c, boolean white) {
             super(r, c, white, "pawn");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             int dr = white ? -1 : 1;
@@ -161,17 +180,20 @@ public class ChessOverlay extends Overlay {
             if (pieceAt(r + dr, c - 1) instanceof Piece p && p.white != white) movable.add(cellAt(r + dr, c - 1));
         }
 
+        /// Returns whether the given cell is attacked by this piece
         @Override
         protected boolean canAttackCell(Cell cell) {
             int dr = white ? -1 : 1;
             return cell != null && cell.r == r + dr && (cell.c == c + 1 || cell.c == c - 1);
         }
     }
+    /// A rook
     public class Rook extends Piece {
         public Rook(int r, int c, boolean white) {
             super(r, c, white, "rook");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             calculateMovableCellsInLine(movable, i -> r + i, i -> c);
@@ -180,11 +202,13 @@ public class ChessOverlay extends Overlay {
             calculateMovableCellsInLine(movable, i -> r, i -> c - i);
         }
     }
+    /// A knight
     public class Knight extends Piece {
         public Knight(int r, int c, boolean white) {
             super(r, c, white, "knight");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             movable.add(cellAt(r + 2, c + 1));
@@ -197,11 +221,13 @@ public class ChessOverlay extends Overlay {
             movable.add(cellAt(r - 1, c - 2));
         }
     }
+    /// A bishop
     public class Bishop extends Piece {
         public Bishop(int r, int c, boolean white) {
             super(r, c, white, "bishop");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             calculateMovableCellsInLine(movable, i -> r + i, i -> c + i);
@@ -210,11 +236,13 @@ public class ChessOverlay extends Overlay {
             calculateMovableCellsInLine(movable, i -> r - i, i -> c - i);
         }
     }
+    /// A king
     public class King extends Piece {
         public King(int r, int c, boolean white) {
             super(r, c, white, "king");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             movable.add(cellAt(r + 1, c));
@@ -238,30 +266,20 @@ public class ChessOverlay extends Overlay {
             }
         }
 
+        /// Returns whether the given cell is attacked by this piece
         @Override
         protected boolean canAttackCell(Cell cell) {
             return cell != null && Math.abs(cell.r - r) <= 1 && Math.abs(cell.c - c) <= 1;
         }
 
-        /// Returns whether this king is attacked by any piece on the opposite side, excluding the piece at the given cell
-        public boolean isAttacked(Cell excludedCell) {
-            var excludedPiece = excludedCell == null ? null : pieceAt(excludedCell.r, excludedCell.c);
-            for (var row : pieces) {
-                for (var piece : row) {
-                    if (piece == null) continue;
-                    if (piece.white == white) continue;
-                    if (piece == excludedPiece) continue;
-                    if (piece.canAttackCell(cellAt(r, c))) return true;
-                }
-            }
-            return false;
-        }
     }
+    /// A queen
     public class Queen extends Piece {
         public Queen(int r, int c, boolean white) {
             super(r, c, white, "queen");
         }
 
+        /// calculates the movable cells and stores them into the given set
         @Override
         protected void calculateMovableCells(Set<Cell> movable) {
             // rook
@@ -278,9 +296,10 @@ public class ChessOverlay extends Overlay {
     }
 
 
-
+    /// A single cell on the chess board
     public class Cell extends Clickable {
         private int r, c;
+        /// Creates a new cell at the given location
         public Cell(int r, int c) {
             super(ChessOverlay.this.app, () -> {
                 movePickedUpPiece(r, c);
@@ -290,13 +309,16 @@ public class ChessOverlay extends Overlay {
             this.r = r;
             this.c = c;
         }
+        /// Returns the screen x of this cell
         public int screenX(int w) {
             return boardLeft(w) + c * 16;
         }
+        /// Returns the screen y of this cell
         public int screenY(int h) {
             return boardTop(h) + r * 16;
         }
 
+        /// Renders this cell to the screen
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);
@@ -304,6 +326,7 @@ public class ChessOverlay extends Overlay {
         }
     }
 
+    /// Moves the picked up piece to the given location
     protected void movePickedUpPiece(int r, int c) {
         if (pickedUp == null) return;
         if (!pickedUp.movableCells.contains(cellAt(r, c))) {
@@ -314,6 +337,7 @@ public class ChessOverlay extends Overlay {
         pickedUp = null;
     }
 
+    /// Moves a piece from the given starting location to the given ending location
     protected void movePiece(int fromR, int fromC, int toR, int toC) {
         var piece = pieces[fromR][fromC];
         pieces[fromR][fromC] = null;
@@ -322,13 +346,16 @@ public class ChessOverlay extends Overlay {
         recalculatePieceMovableCells();
     }
 
+    /// returns the left side of the board on the screen
     private int boardLeft(int screenWidth) {
         return screenWidth / 2 - 64;
     }
+    /// returns the top of the board on the screen
     private int boardTop(int screenHeight) {
         return screenHeight / 2 - 64;
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
@@ -336,6 +363,7 @@ public class ChessOverlay extends Overlay {
         for (var row : cells) for (var cell : row) cell.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);

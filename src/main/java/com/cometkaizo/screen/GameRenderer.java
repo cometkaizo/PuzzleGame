@@ -26,6 +26,7 @@ public class GameRenderer extends JPanel {
     private boolean mouseDown;
     private long lastTickTimeMillis, secondLastTickTimeMillis, lastRenderTimeMillis;
 
+    /// Creates a new game renderer
     public GameRenderer(Settings settings, GameApp app) {
         this.app = app;
 
@@ -43,6 +44,7 @@ public class GameRenderer extends JPanel {
         this.size = getSize();
     }
 
+    /// Paints the application to the window
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -51,12 +53,14 @@ public class GameRenderer extends JPanel {
         g.dispose();
     }
 
+    /// Updates this game renderer with the number of milliseconds the last tick took to complete
     public void tick(long lastTickTimeMillis) {
         this.secondLastTickTimeMillis = this.lastTickTimeMillis;
         this.lastTickTimeMillis = lastTickTimeMillis;
         updatePartialTick();
     }
 
+    /// Renders the application to the screen
     protected void render(Graphics2D g) {
         updatePartialTick();
 
@@ -67,15 +71,20 @@ public class GameRenderer extends JPanel {
         if (app.shouldTickOrRenderOverlay()) renderOverlay(g, size);
 
         lastRenderTimeMillis = System.currentTimeMillis();
+
+        g.dispose();
     }
 
+    /// Updates the partial tick according to the amount of time since last tick
     private void updatePartialTick() {
         this.partialTick = (double) millisSinceLastTick() / TICK_PERIOD;
     }
+    /// Returns the number of milliseconds since the last tick occurred
     private long millisSinceLastTick() {
         return System.currentTimeMillis() - lastTickTimeMillis;
     }
 
+    /// Renders the game to the screen
     private void renderGame(Graphics2D g, Dimension size) {
         canvas.startRender(g, game().getPrevCameraPosition(), game().getCameraPosition(), size.width, size.height, partialTick);
 
@@ -85,6 +94,7 @@ public class GameRenderer extends JPanel {
         canvas.endRender();
     }
 
+    /// Renders the screen overlay to the screen
     private void renderOverlay(Graphics2D g, Dimension size) {
         canvas.startRender(g, Vector.immutable(0D, 0D), Vector.immutable(0D, 0D), size.width, size.height, partialTick);
 
@@ -95,11 +105,13 @@ public class GameRenderer extends JPanel {
         canvas.endRender();
     }
 
+    /// Renders the mouse position if in debug mode
     private void renderDebugMousePos() {
         int mouseXFromCenter = (int) ((mouseX - canvas.halfWidth()) / canvas.renderScale());
         int mouseYFromCenter = (int) ((mouseY - canvas.halfHeight()) / canvas.renderScale());
         canvas.renderDebugString(mouseXFromCenter + ", " + mouseYFromCenter, Color.PINK, 10, 34);
     }
+    /// Renders the TPS and FPS if in debug mode
     private void renderDebugPerformanceMetrics() {
         long lastTickDurationMillis = lastTickTimeMillis - secondLastTickTimeMillis;
         int tps = lastTickDurationMillis == 0 ? TPS : (int) (1000 / lastTickDurationMillis);
@@ -110,14 +122,17 @@ public class GameRenderer extends JPanel {
         canvas.renderDebugString("%7d FPS (%3d ms)".formatted(fps, renderTimeMillis), Color.GRAY, canvas.getWidth() - 250, 68);
     }
 
+    /// Toggles debug mode
     public void toggleDebug() {
         canvas.setDebug(!canvas.isDebug());
     }
 
+    /// Gets the game
     private Game game() {
         return app.getGame();
     }
 
+    /// Updates the mouse position when it moves
     @Override
     protected void processMouseMotionEvent(MouseEvent e) {
         super.processMouseMotionEvent(e);
@@ -125,6 +140,7 @@ public class GameRenderer extends JPanel {
         mouseY = e.getY();
     }
 
+    /// Updates whether the mouse is down
     @Override
     protected void processMouseEvent(MouseEvent e) {
         super.processMouseEvent(e);
@@ -137,16 +153,20 @@ public class GameRenderer extends JPanel {
         }
     }
 
+    /// Gets the mouse x
     public int getMouseX() {
         return mouseX;
     }
+    /// Gets the mouse y
     public int getMouseY() {
         return mouseY;
     }
+    /// Gets whether the mouse is down currently
     public boolean isMouseDown() {
         return mouseDown;
     }
 
+    /// Settings for the game renderer
     public record Settings(
             Dimension size,
             Color backgroundColor

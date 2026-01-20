@@ -75,10 +75,12 @@ public class RosettaStoneOverlay extends Overlay {
                     94, false, false),
     };
 
+    /// Creates a new overlay
     public RosettaStoneOverlay(GameApp app) {
         super(app);
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

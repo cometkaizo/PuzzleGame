@@ -6,7 +6,6 @@ import com.cometkaizo.input.InputBindings;
 import com.cometkaizo.input.KeyBinding;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
-import com.cometkaizo.screen.Dialogue;
 import com.cometkaizo.screen.overlay.InventoryOverlay;
 import com.cometkaizo.util.MathUtils;
 import com.cometkaizo.world.Args;
@@ -14,7 +13,6 @@ import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
 
 import java.awt.*;
-import java.util.Objects;
 /**
  * Author: Andy Wang
  * Date Modified: 2026-01-17
@@ -29,24 +27,27 @@ public class Player extends MovableEntity {
     protected double walkAccel = 0.3, diagWalkAccel = walkAccel * Math.cos(Math.toRadians(45));
     protected double maxWalkSpeed = 0.2, maxDiagWalkSpeed = maxWalkSpeed * Math.cos(Math.toRadians(45));
     protected double friction = 0.1;
-    protected int interactDuration = 5, dialogueInteractDuration = 2, jumpBufferDuration = 3;
+    protected int interactDuration = 5, jumpBufferDuration = 3;
     // jumpTime = -2 means jump not reset, -1 means jump reset
-    protected int jumpTime = -1, walkTime = -1, interactTime = -1, dialogueInteractTime = -1, jumpBufferTime = -1;
+    protected int jumpTime = -1, walkTime = -1, interactTime = -1, jumpBufferTime = -1;
     protected int prevWalkTime = -1;
     protected boolean facingRight = true;
 
+    /// Creates a new player
     public Player(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         this.boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(0.6D, 0.6D));
         eventBus.register(KeyPressedEvent.class, this::onKeyPressed);
     }
 
+    /// Saves this entity to the game state
     @Override
     public void write(GameState state) {
         super.write(state);
         state.playerPos = Vector.mutableDouble(position);
     }
 
+    /// Updates this entity, called every tick
     @Override
     public void tick() {
         tickMotion();
@@ -57,9 +58,9 @@ public class Player extends MovableEntity {
         tickJumpBuffer();
         tickJumpTime();
         tickInteractTime();
-        tickDialogueInteractTime();
     }
 
+    /// Ticks the jump buffer time
     private void tickJumpBuffer() {
         if (canJump() && jumpBufferTime > -1) {
             jump();
@@ -68,21 +69,14 @@ public class Player extends MovableEntity {
         if (jumpBufferTime > -1) jumpBufferTime --;
     }
 
+    /// Ticks the checkpoint
     private void tickCheckpoint() {
-        var prevCheckpoint = originalPosition;
         for (var checkpoint : room.checkpoints) {
-            if (checkpoint.activationArea().contains(position) && canActivateCheckpoint())
-                originalPosition = checkpoint.pos();
+            if (checkpoint.activationArea().contains(position)) originalPosition = checkpoint.pos();
         }
-        if (!Objects.equals(prevCheckpoint, originalPosition)) {
-            // collect checkpoint
-//            Assets.sound("notify").play();
-        }
-    }
-    private boolean canActivateCheckpoint() {
-        return true;
     }
 
+    /// Ticks activation triggers
     private void tickTrigger() {
         for (var trigger : room.triggers) {
             if (trigger.activationArea().contains(position)) {
@@ -90,6 +84,7 @@ public class Player extends MovableEntity {
             }
         }
     }
+    /// Updates the jump time every tick
     private void tickJumpTime() {
         if (jumpTime >= 2 || collidedHorizontally && collidedVertically) {
             jumpTime = -2;
@@ -98,29 +93,23 @@ public class Player extends MovableEntity {
         if (jumpTime == -2 && isAboveGround()) jumpTime = -1;
         if (jumpTime >= 0) jumpTime ++;
     }
+    /// Updates the interaction time every tick
     private void tickInteractTime() {
-        if (game.getDialogue() != null) interactTime = interactDuration;
-        else if (interactTime >= 0) interactTime --;
-    }
-    private void tickDialogueInteractTime() {
-        if (dialogueInteractTime >= 0) dialogueInteractTime --;
+        if (interactTime >= 0) interactTime --;
     }
 
+    /// Returns whether there is ground below the player
     private boolean isAboveGround() {
         return true;
-        //        return room.ground.containsSolid(boundingBox, this);
     }
 
+    /// Returns whether the player is currently jumping
     private boolean isJumping() {
         return jumpTime > -1;
     }
 
-    private boolean isJumpAvailable() {
-        return jumpTime == -1;
-    }
-
+    /// Ticks the motion of this player, including inputs
     private void tickMotion() {
-
         motion.x *= friction;
         motion.y *= friction;
 
@@ -131,22 +120,18 @@ public class Player extends MovableEntity {
         boolean diagonal = (right || left) && (up || down);
 
         prevWalkTime = walkTime;
-        if (!walkDisabled()) {
-            if (right || left || up || down) walkTime = walkTime + 1;
-            else {
-                if (walkTime > 7) {
-                    walkTime %= 7;
-                    prevWalkTime = walkTime;
-                }
-                if (walkTime >= 0) walkTime--;
+        if (right || left || up || down) walkTime = walkTime + 1;
+        else {
+            if (walkTime > 7) {
+                walkTime %= 7;
+                prevWalkTime = walkTime;
             }
-        } else walkTime = 0;
+            if (walkTime >= 0) walkTime--;
+        }
 
         double accel, maxVelocity = Double.MAX_VALUE;
 
         if (!isJumping()) {
-            if (walkDisabled()) return;
-
             accel = diagonal ? this.diagWalkAccel : this.walkAccel;
             maxVelocity = diagonal ? this.maxDiagWalkSpeed : this.maxWalkSpeed;
 
@@ -226,13 +211,7 @@ public class Player extends MovableEntity {
         if (walkTime % 5 == 0) Assets.sound("step").play();
     }
 
-    private boolean walkDisabled() {
-        return game.hasDialogue();
-    }
-    private boolean jumpDisabled() {
-        return game.hasDialogue();
-    }
-
+    /// Updates the bounding box to the correct position every tick
     @Override
     protected void tickBoundingBox() {
         // center the player's hitbox horizontally on the player's position
@@ -241,9 +220,10 @@ public class Player extends MovableEntity {
         boundingBox.position.y = position.y;
     }
 
+    /// Handles jumping and interacting key inputs
     private void onKeyPressed(KeyPressedEvent event) {
         KeyBinding input = event.input();
-        if (!jumpDisabled() && input == InputBindings.JUMP.get()) {
+        if (input == InputBindings.JUMP.get()) {
             jump();
         }
         if (input == InputBindings.INTERACT.get()) {
@@ -253,10 +233,12 @@ public class Player extends MovableEntity {
             }
         }
     }
+    /// Returns whether this player can interact with interactables this tick
     public boolean canInteract() {
         return interactTime == -1;
     }
 
+    /// Makes the player jump
     public void jump() {
         if (!canJump()) {
             jumpBufferTime = jumpBufferDuration;
@@ -264,32 +246,33 @@ public class Player extends MovableEntity {
         }
 
         jumpTime = 0;
-
-//        Assets.sound("jump").play();
     }
 
+    /// Returns whether the player can currently jump
     public boolean canJump() {
-        return isJumpAvailable()/* && !isFloating()*/;
+        return jumpTime == -1;
     }
 
     /// Called when the player interacts with an object. Paired with canInteract() 
     /// to ensure that only one object is interacted with per key click
     public void onInteract() {
         interactTime = interactDuration;
-        dialogueInteractTime = dialogueInteractDuration;
     }
 
+    /// Returns whether this entity can "blip" around corners
     @Override
     protected boolean canBlip() {
         return isJumping();
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         if (jumpTime >= 0 && jumpTime < 5) return "player/jump";
         return "player/normal";
     }
 
+    /// Renders this entity to the screen
     @Override
     public void render(Canvas canvas) {
         var g = canvas.getGraphics();
@@ -325,15 +308,13 @@ public class Player extends MovableEntity {
         canvas.renderDebugBoundingBox(boundingBox, Color.WHITE);
     }
 
+    /// Gets the x translation to be applied to the texture, in unscaled texture pixels
     @Override
     protected int getTextureDeltaX() {
         return -23;
     }
 
-    public static Dialogue dialogue(String msg, String textureVariation, Dialogue next) {
-        return new Dialogue(msg, "gui/player/" + textureVariation, next);
-    }
-
+    /// Gets the player's last non-zero motion
     public Vector.Double getLastMotion() {
         return lastMotion;
     }

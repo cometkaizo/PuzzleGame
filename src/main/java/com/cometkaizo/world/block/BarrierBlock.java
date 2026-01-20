@@ -15,19 +15,23 @@ import java.awt.*;
  */
 public class BarrierBlock extends Block {
 
+    /// Creates a new block
     public BarrierBlock(Room.Layer layer, Vector.ImmutableInt position, Args args) {
         super(layer, position, args);
     }
 
+    /// Returns whether this block is solid
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Renders this block to the screen
     @Override
     public void render(Canvas canvas) {
         canvas.renderDebugBlock(position, Color.RED);
     }
+    /// Gets the path to the texture atlas for this block
     @Override
     protected String getTexturePath() {
         return null;

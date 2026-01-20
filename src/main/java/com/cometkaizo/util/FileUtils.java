@@ -16,9 +16,9 @@ import java.nio.file.Files;
  * Date Modified: 2025-12-21
  * Description: Useful file-related methods
  */
-@SuppressWarnings("unused")
 public class FileUtils {
 
+    /// Prompts the user for a file path
     public static File promptDir(File defaultPath, Component parent) {
         var chooser = new JFileChooser();
         chooser.setCurrentDirectory(defaultPath);
@@ -32,10 +32,12 @@ public class FileUtils {
         } else return null;
     }
 
+    /// Gets the user home file
     public static File getUserHome() {
         return new File(System.getProperty("user.home"));
     }
 
+    /// Gets the user's appdata directory
     public static File getAppdataDir() {
         String userHomeDir = System.getProperty("user.home", ".");
         if (OSUtils.isWindows() && System.getenv("APPDATA") != null)
@@ -45,10 +47,12 @@ public class FileUtils {
         return new File(userHomeDir);
     }
 
+    /// gets the desktop directory
     public static File getDesktopDir() {
         return FileSystemView.getFileSystemView().getHomeDirectory();
     }
 
+    /// Gets the location of this program
     public static File thisProgramLocation() {
         try {
             return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -57,27 +61,22 @@ public class FileUtils {
         }
     }
 
+    /// Runs the given file
     public static void run(File file) throws IOException {
         Desktop.getDesktop().open(file);
     }
 
+    /// Runs the given batch file
     public static Process runBat(File file) throws IOException {
         return Runtime.getRuntime().exec("cmd /c start \"\" \"" + file.getAbsolutePath() + "\"");
     }
 
+    /// Returns whether the given file is not null and exists
     public static boolean exists(File file) {
         return file != null && file.exists();
     }
 
-    public static File resolve(File parent, String... children) {
-        if (parent == null) return null;
-        File result = parent;
-        for (String child : children) {
-            result = new File(result, child);
-        }
-        return result;
-    }
-
+    /// Reads the string from the given file
     public static String readStr(File file) {
         try {
             return Files.readString(file.toPath());

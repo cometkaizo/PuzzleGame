@@ -21,9 +21,11 @@ public abstract class Overlay implements Tickable, Renderable {
     protected final EventBus eventBus;
     protected Overlay next;
 
+    /// Creates a new overlay
     public Overlay(GameApp app) {
         this(app, null);
     }
+    /// Creates a new overlay
     public Overlay(GameApp app, Overlay next) {
         this.app = app;
         this.next = next;

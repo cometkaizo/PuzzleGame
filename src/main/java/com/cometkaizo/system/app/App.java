@@ -11,23 +11,27 @@ public abstract class App implements Tickable {
 
     private final AppSettings settings;
 
+    /// Creates a new app
     protected App(AppSettings settings) {
         this.settings = settings;
     }
 
+    /// Initializes the app
     public void setup() {
 
     }
 
+    /// Cleans up the app for termination
     public void cleanup() {
 
     }
 
+    /// Ticks the app
     public void tick() {
 
     }
 
-
+    /// Get the settings associated with this app
     public AppSettings getSettings() {
         return settings;
     }

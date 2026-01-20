@@ -13,15 +13,18 @@ public abstract class Argument {
     protected final String name;
     protected final Predicate<Object> requirement;
 
+    /// Creates a new argument with the given name
     protected Argument(String name) {
         this.name = name;
         this.requirement = o -> true;
     }
+    /// Creates a new argument with the given name and a requirement
     protected Argument(String name, Predicate<Object> requirement) {
         this.name = name;
         this.requirement = requirement;
     }
 
+    /// gets the name of this argument
     public String getName() {
         return name;
     }
@@ -42,6 +45,7 @@ public abstract class Argument {
      */
     public abstract Object translate(String string) throws IllegalArgumentException;
 
+    /// prints this argument in a way that the user can understand
     public String toPrettyString() {
         return getClass().getSimpleName().replaceAll("(?<=.)Argument$", "").toUpperCase();
     }

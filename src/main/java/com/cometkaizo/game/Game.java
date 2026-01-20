@@ -39,7 +39,6 @@ public class Game implements Tickable, Renderable, InputListener {
     public Room room;
     private Player player;
     public long tick = 0;
-    private Dialogue dialogue;
     private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor, basementDoor;
     private final Inventory inventory = new Inventory();
@@ -77,6 +76,7 @@ public class Game implements Tickable, Renderable, InputListener {
         this(app, settings, new GameState());
     }
 
+    /// Creates a new game
     private Game(GameApp app, GameSettings settings, GameState state) {
         this.app = app;
         this.settings = settings;
@@ -124,20 +124,22 @@ public class Game implements Tickable, Renderable, InputListener {
         }
     }
 
+    /// Resets the room in the event of a player death
     private void onPlayerDeath(PlayerDeathEvent event) {
         if (event.player() != player) throw new IllegalStateException("Different players: " + player + " and " + event.player());
         room.reset();
     }
 
+    /// Potentially toggles debug mode if the debug mode button is pressed
     private void toggleDebug(KeyPressedEvent click) {
         if (click.input() == InputBindings.TOGGLE_DEBUG.get()) if (devMode) app.toggleDebug();
     }
 
 
+    /// Ticks this game
     @Override
     public void tick() {
         Sound.tick();
-        if (getDialogue() != null) getDialogue().tick();
 
         if (world != null) world.tick();
         if (room != null) room.tick();
@@ -148,6 +150,7 @@ public class Game implements Tickable, Renderable, InputListener {
         tick ++;
     }
 
+    /// Updates the camera position
     private void tickCameraPos() {
         targetCameraPosition.setX(player.getX());
         targetCameraPosition.setY(player.getY() + 0.5);
@@ -161,6 +164,7 @@ public class Game implements Tickable, Renderable, InputListener {
         cameraPosition.add(toTarget.scale(cameraSpeed));
     }
 
+    /// Teleports the camera to the player position
     public void teleportCamera() {
         this.cameraPosition.set(player.getPosition()).add(0D, 0.5D);
         this.prevCameraPosition.set(player.getPosition()).add(0D, 0.5D);
@@ -168,14 +172,15 @@ public class Game implements Tickable, Renderable, InputListener {
     }
 
 
+    /// Renders the game to the screen
     @Override
     public void render(Canvas canvas) {
         if (world != null) world.render(canvas);
         if (room != null) room.render(canvas);
         renderEndRoom(canvas);
-        if (getDialogue() != null) getDialogue().render(canvas);
     }
 
+    /// Renders the text that appears in the end room
     private void renderEndRoom(Canvas canvas) {
         canvas.renderString("The End", Assets.font(80), Color.WHITE, canvas.toScreenX(35), canvas.toScreenY(45), true, true);
         canvas.renderString("Thanks for playing", Assets.font(60), Color.WHITE, canvas.toScreenX(35), canvas.toScreenY(44.5), true, true);
@@ -192,55 +197,64 @@ public class Game implements Tickable, Renderable, InputListener {
         canvas.renderString("Puzzle Design", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(41.9), true, false);
     }
 
+    /// Posts key-pressed events
     @Override
     public void keyPressed(KeyBinding key) {
         eventBus.post(new KeyPressedEvent(key));
     }
+    /// Posts key-down events
     @Override
     public void keyDown(KeyBinding key) {
         eventBus.post(new KeyDownEvent(key));
     }
+    /// Posts key-released events
     @Override
     public void keyReleased(KeyBinding key) {
         eventBus.post(new KeyReleasedEvent(key));
     }
 
+    /// Posts mouse-pressed events
     @Override
     public void mousePressed(MouseButtonBinding button, int x, int y) {
         eventBus.post(new MousePressedEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
-
+    /// Posts mouse-down events
     @Override
     public void mouseDown(MouseButtonBinding button, int x, int y) {
         eventBus.post(new MouseDownEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
-
+    /// Posts mouse-released events
     @Override
     public void mouseReleased(MouseButtonBinding button, int x, int y) {
         eventBus.post(new MouseReleasedEvent(button, toCoordX(x), toCoordY(y), x, y));
     }
-
+    /// Posts mouse-moved events
     @Override
     public void mouseMoved(int x, int y) {
         eventBus.post(new MouseMovedEvent(toCoordX(x), toCoordY(y), x, y));
     }
 
+    /// Turns a screen position in pixels to a world position in blocks
     public double toCoordX(int screenX) {
         return cameraPosition.x + (screenX - app.getPanelSize().width / 2D) / (double) settings.tileSize;
     }
-
+    /// Turns a screen position in pixels to a world position in blocks
     public double toCoordY(int screenY) {
         return cameraPosition.y + (app.getPanelSize().height / 2D - screenY) / (double) settings.tileSize;
     }
 
+    /// Sets up the game
     public void setup() {
         app.getGameInputListener().addInputListener(this);
     }
-
+    /// Cleans up the game for termination
     public void cleanup() {
         app.getGameInputListener().removeInputListener(this);
     }
 
+
+
+    // SETTERS & GETTERS
 
     public GameApp getApp() {
         return app;
@@ -268,40 +282,25 @@ public class Game implements Tickable, Renderable, InputListener {
     public Vector.MutableDouble getTargetCameraPosition() {
         return targetCameraPosition;
     }
+    /// Gets the max-y value of the screen
     public int getCameraTop() {
         return (int) Math.ceil(cameraPosition.y + settings.heightInTiles / 2 + settings.cameraPaddingInTiles);
     }
+    /// Gets the min-y value of the screen
     public int getCameraBottom() {
         return (int) Math.floor(cameraPosition.y - settings.heightInTiles / 2 - settings.cameraPaddingInTiles);
     }
+    /// Gets the min-x value of the screen
     public int getCameraLeft() {
         return (int) Math.floor(cameraPosition.x - settings.widthInTiles / 2 - settings.cameraPaddingInTiles);
     }
+    /// Gets the max-x value of the screen
     public int getCameraRight() {
         return (int) Math.ceil(cameraPosition.x + settings.widthInTiles / 2 + settings.cameraPaddingInTiles);
     }
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void advanceDialogue() {
-        if (!hasDialogue()) return;
-        if (dialogue.isFinished()) dialogue = dialogue.next;
-        else dialogue.finish();
-    }
-
-    public Dialogue getDialogue() {
-        return dialogue;
-    }
-
-    public void setDialogue(Dialogue dialogue) {
-        this.dialogue = dialogue;
-        player.onInteract();
-    }
-
-    public boolean hasDialogue() {
-        return dialogue != null;
     }
 
     public GameState getState() {

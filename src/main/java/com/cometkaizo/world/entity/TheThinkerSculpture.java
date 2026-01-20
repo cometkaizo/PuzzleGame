@@ -14,11 +14,13 @@ public class TheThinkerSculpture extends Interactable {
     private boolean brainSolved;
     private TheThinkerOverlay overlay;
 
+    /// Creates a new thinker sculpture
     public TheThinkerSculpture(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
         boundingBox = new BoundingBox(Vector.mutable(0D, 0D), Vector.immutable(2D, 1D));
     }
 
+    /// Reads data in from the world file
     @Override
     public void reset() {
         super.reset();
@@ -26,22 +28,26 @@ public class TheThinkerSculpture extends Interactable {
         overlay = new TheThinkerOverlay(app, brainSolved, () -> brainSolved = true);
     }
 
+    /// Saves this entity to the game state
     @Override
     public void write(GameState state) {
         super.write(state);
         state.thinkerBrainSolved = brainSolved;
     }
 
+    /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
         app.setOverlay(overlay);
     }
 
+    /// Returns whether this entity stops other entities from moving through it
     @Override
     public boolean isSolid(Entity entity) {
         return true;
     }
 
+    /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
         return "sculpture/thinker";

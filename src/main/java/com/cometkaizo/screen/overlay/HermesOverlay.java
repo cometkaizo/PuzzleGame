@@ -33,12 +33,14 @@ public class HermesOverlay extends Overlay {
     private boolean open;
     private final Runnable openAction;
 
+    /// Creates a new overlay
     public HermesOverlay(GameApp app, boolean open, Runnable openAction) {
         super(app);
         this.open = open;
         this.openAction = openAction;
     }
 
+    /// Clicks the id'th wing
     private void click(int id) {
         if (open) return;
         Assets.sound("hermes/" + id).play();
@@ -46,10 +48,12 @@ public class HermesOverlay extends Overlay {
         lastClickedWings.add(id);
         if (isCorrectCombo()) open();
     }
+    /// Returns whether the last 6 clicked wings are in the right order
     private boolean isCorrectCombo() {
         return Arrays.equals(correctWingCombo, lastClickedWings.toArray(Integer[]::new));
     }
 
+    /// Solves the puzzle
     private void open() {
         open = true;
         Assets.sound("hermes/solve").play();
@@ -58,6 +62,7 @@ public class HermesOverlay extends Overlay {
         app.getGame().getInventory().add(new FeatherItem());
     }
 
+    /// Renders this overlay
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);
@@ -66,38 +71,42 @@ public class HermesOverlay extends Overlay {
         for (var wing : wings) wing.render(canvas);
     }
 
+    /// Gets the path to the background texture
     private String getTexturePath() {
         return "gui/sculpture/hermes/" + (open ? "solved" : "regular");
     }
 
+    /// Ticks this overlay
     @Override
     public void tick() {
         super.tick();
         for (var wing : wings) wing.tick();
     }
 
+    /// Called when the mouse is clicked
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
         for (var wing : wings) wing.onClick(click);
     }
 
+    /// A wing on the hermes statue
     public class Wing extends ImageClickable {
         public final int id;
         public final Text text;
 
+        /// Creates a new wing
         public Wing(int id, int dx, int dy) {
             super(HermesOverlay.this.app, () -> {}, w -> w/2 + dx, h -> h/2 + dy, _ -> id == 6 ? 7 : 14, _ -> 10, () -> "gui/sculpture/hermes/wing/" + id, -2, -2);
             this.id = id;
-            action = this::click;
+            action = () -> {
+                HermesOverlay.this.click(this.id);
+                return true;
+            };
             text = new Text("" + id, Assets.font(24), Color.RED, w -> w/2 + dx + 3, h -> h/2 + dy - 7, 100, false, false);
         }
 
-        private boolean click() {
-            HermesOverlay.this.click(id);
-            return true;
-        }
-
+        /// Renders this wing
         @Override
         public void render(Canvas canvas) {
             super.render(canvas);

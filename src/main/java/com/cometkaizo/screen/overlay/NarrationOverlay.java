@@ -10,14 +10,16 @@ import java.awt.*;
 /**
  * Author: Andy Wang
  * Date Modified: 2026-01-04
- * Description: Screen overlay for narration
+ * Description: Screen overlay for narration (black screen with white text)
  */
 public class NarrationOverlay extends Overlay {
     private final Text content;
 
+    /// Creates a new overlay with the given message
     public NarrationOverlay(GameApp app, String message) {
         this(app, message, null);
     }
+    /// Creates a new overlay with the given message and subsequent screen
     public NarrationOverlay(GameApp app, String message, Overlay next) {
         super(app, next);
         content = new Text(message, Assets.font("BoldPixels", 50), Color.WHITE,
@@ -26,6 +28,7 @@ public class NarrationOverlay extends Overlay {
                 160, true, true);
     }
 
+    /// Renders this overlay
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

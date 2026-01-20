@@ -13,11 +13,13 @@ import com.cometkaizo.screen.Canvas;
 public class NoteHolderSeeOverlay extends Overlay {
     private final NoteItem[] notes;
 
+    /// Creates a new overlay
     public NoteHolderSeeOverlay(GameApp app, NoteItem[] notes, Overlay next) {
         super(app, next);
         this.notes = notes;
     }
 
+    /// Renders this overlay to the screen
     @Override
     public void render(Canvas canvas) {
         super.render(canvas);

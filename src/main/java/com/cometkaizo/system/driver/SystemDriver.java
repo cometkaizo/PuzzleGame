@@ -27,14 +27,17 @@ public abstract class SystemDriver {
     private final List<ScheduledFuture<?>> tasks = new ArrayList<>(1);
     private boolean isRunning = false;
 
+    /// Creates a new SystemDriver
     protected SystemDriver(App app) {
         this.app = app;
     }
 
+    /// Gets the console input stream
     public static InputStream getConsoleIn() {
         return System.in;
     }
 
+    /// Starts this driver
     public void start() {
         if (isRunning) return;
         isRunning = true;
@@ -44,6 +47,7 @@ public abstract class SystemDriver {
         waitingTasks.clear();
     }
 
+    /// Stops this driver
     public void stop() {
         if (!isRunning) return;
         isRunning = false;
@@ -53,19 +57,23 @@ public abstract class SystemDriver {
         tasks.clear();
     }
 
+    /// sets up this driver
     protected void setup() {
         app.setup();
     }
 
+    /// cleans up this driver
     protected void cleanup() {
         app.cleanup();
     }
 
 
+    /// Adds a looping task
     protected final void addLoop(Runnable task, long period, TimeUnit unit, ExceptionManager exceptionManager) {
         addTask(() -> executor.scheduleAtFixedRate(new LoopTask(task, exceptionManager), 0, period, unit));
     }
 
+    /// A task that loops
     private record LoopTask(Runnable task, ExceptionManager exceptionManager) implements Runnable {
 
         @Override
@@ -83,6 +91,7 @@ public abstract class SystemDriver {
         }
     }
 
+    /// Adds a looping task
     protected final void addLoop(Runnable task, long period, TimeUnit unit) {
         addLoop(task, period, unit, new ExceptionManager() {
             @Override
@@ -101,14 +110,17 @@ public abstract class SystemDriver {
         });
     }
 
+    /// Adds a task
     protected final void addTask(Supplier<ScheduledFuture<?>> task) {
         waitingTasks.add(task);
     }
 
+    /// Gets the app
     public App getApp() {
         return app;
     }
 
+    /// Returns whether this driver is currently running
     public boolean isRunning() {
         return isRunning;
     }

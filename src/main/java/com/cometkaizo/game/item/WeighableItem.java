@@ -6,5 +6,6 @@ package com.cometkaizo.game.item;
  * Description: This class represents a weighable item
  */
 public abstract class WeighableItem extends Item {
+    /// Gets the weight of this item as an integer
     public abstract int weight();
 }
