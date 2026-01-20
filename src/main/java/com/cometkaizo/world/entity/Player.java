@@ -51,7 +51,6 @@ public class Player extends MovableEntity {
     @Override
     public void tick() {
         tickMotion();
-        tickTrigger();
         tickCheckpoint();
         super.tick();
 
@@ -73,15 +72,6 @@ public class Player extends MovableEntity {
     private void tickCheckpoint() {
         for (var checkpoint : room.checkpoints) {
             if (checkpoint.activationArea().contains(position)) originalPosition = checkpoint.pos();
-        }
-    }
-
-    /// Ticks activation triggers
-    private void tickTrigger() {
-        for (var trigger : room.triggers) {
-            if (trigger.activationArea().contains(position)) {
-                trigger.activate(this);
-            }
         }
     }
     /// Updates the jump time every tick
