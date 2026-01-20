@@ -157,6 +157,18 @@ public class BookOverlay extends Overlay {
                        capable of being sold""",
                     new Text("252", Assets.font(15), Color.BLACK, w -> w/2 - 104, h -> h/2 + 55, 100, false, false),
                     new Text("253", Assets.font(15), Color.BLACK, w -> w/2 + 97, h -> h/2 + 55, 100, false, false)),
+            new Content("""
+                    Chess move notation (algebraic notation) is a system for recording moves by naming the piece, its destination square, and any special actions.
+                    
+                    Pieces are abbreviated (K = king, Q = queen, R = rook, B = bishop, N = knight), while pawns use only the destination square.
+                    
+                    Captures are marked with "x", checks with "+", checkmate with "#", and castling is written as O-O (king-side) or O-O-O (queen-side).
+                    
+                    If two identical pieces can move to the same square, extra information (file or rank) is added to clarify which one moved.
+                    Special cases include pawn promotion (e.g., e8=Q) and en passant captures, which are noted like normal pawn captures.""", """
+                    For example, a bishop move is written with B followed by the square it moves to: Bc4 means "the bishop moves to c4."
+                    If the bishop captures a piece, an x is added, such as Bxe6. If the move gives checkmate, a # is added (Bxe6#).
+                    When two bishops could both move to the same square, extra information (the starting file or rank) is included, like Bac4 or B3c4, to show which bishop moved."""),
     };
     private final int variant;
     private final Content content;
