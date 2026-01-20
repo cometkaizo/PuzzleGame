@@ -28,7 +28,7 @@ public class BookOverlay extends Overlay {
                     
                     Mayan mathematics
                     """, """
-                    Tzolkin translation       Haab translation""",
+                    Digit 2 translation     Digit 4 translation""",
                     new MayanSymbol(true, 0),
                     new MayanSymbol(true, 1),
                     new MayanSymbol(true, 2),
