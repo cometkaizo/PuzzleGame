@@ -6,6 +6,7 @@ import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Button;
 import com.cometkaizo.screen.Canvas;
 
+import javax.sound.sampled.Clip;
 import java.awt.*;
 import java.util.List;
 
@@ -22,9 +23,23 @@ public class TitleScreen extends Overlay {
             new Button(app, "Load Game", 30, this::loadGame, w -> w / 2 - 28, h -> h / 2, _ -> 58, _ -> 16),
             new Button(app, "Debug Game", 30, this::debugGame, w -> w / 2 - 28, h -> h / 2 + 24, _ -> 58, _ -> 16)
     );
+    private Clip music;
 
     public TitleScreen(GameApp app) {
         super(app);
+    }
+
+    @Override
+    public void setup() {
+        super.setup();
+        music = Assets.sound("title_screen_music").play();
+        music.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        if (music != null) music.stop();
     }
 
     // button functionality
