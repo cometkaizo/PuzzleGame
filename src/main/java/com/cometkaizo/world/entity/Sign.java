@@ -16,7 +16,7 @@ public class Sign extends Interactable {
             new Content("Gallery A", "???"),
             new Content("Gallery B", "Here is a wall of time-honored classics in sequence, but one is missing..."),
             new Content("Gallery C", "???"),
-            new Content("Gallery D", "China called itself the \"Central Kingdom\""), // Russia, Kanagawa, Penguins
+            new Content("Gallery D", "China called itself the \"Central Kingdom\". The truth lies in direction."), // Russia, Kanagawa, Penguins
             new Content("Gallery E", "Colorful squares have hidden values. With exacting mathematical method, Piet Mondrian produces paintings which are precisely the sum of their parts."),
             new Content("Chess Board 1", "The black pawn arrives behind its brother.\n\nThe white pawn of the king steps forward.\n\nThe black knight jumps behind the pawn.\n\nWhat shape is formed?"),
             new Content("Chess Board 2", "The white rook attacks the black rook.\n\nThe black rook attacks the royal couple and no longer sees the white rook.\n\nThe white knight jumps in front of the queen to block the black rook's attack.\n\nWhere can the queen go?"),
