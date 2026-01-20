@@ -2,6 +2,7 @@ package com.cometkaizo.world.entity;
 
 import com.cometkaizo.screen.overlay.AutoChessOverlay;
 import com.cometkaizo.screen.overlay.ChessOverlay;
+import com.cometkaizo.screen.overlay.Overlay;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Room;
 import com.cometkaizo.world.Vector;
@@ -13,6 +14,7 @@ import com.cometkaizo.world.Vector;
 public class Chess extends Interactable {
     private String board;
     private String variant;
+    private Overlay overlay;
     /// Creates a new chess board
     public Chess(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -33,13 +35,15 @@ public class Chess extends Interactable {
                 originalArgs.next(emptyRow) +"\n"+
                 originalArgs.next(emptyRow);
         variant = originalArgs.next("regular");
+
+        if ("auto".equals(variant)) overlay = new AutoChessOverlay(app, board);
+        else overlay = new ChessOverlay(app, board);
     }
 
     /// Opens the interaction overlay when the player interacts with this entity
     @Override
     protected void interact() {
-        if ("auto".equals(variant)) app.setOverlay(new AutoChessOverlay(app, board));
-        else app.setOverlay(new ChessOverlay(app, board));
+        app.setOverlay(overlay);
     }
 
     /// Returns whether this entity stops other entities from moving through it

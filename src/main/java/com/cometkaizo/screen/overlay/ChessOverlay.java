@@ -14,13 +14,15 @@ import java.util.function.IntUnaryOperator;
 
 /**
  * Author: Andy Wang
- * Date Modified: 2026-01-04
+ * Date Modified: 2026-01-20
  * Description: Screen overlay for chess
  */
 public class ChessOverlay extends Overlay {
-    private Piece[][] pieces = new Piece[8][8]; // row, column (row 0 is at top, col 0 is at left)
-    private Cell[][] cells = new Cell[8][8];
+    private final String originalPieces;
+    private final Piece[][] pieces = new Piece[8][8]; // row, column (row 0 is at top, col 0 is at left)
+    private final Cell[][] cells = new Cell[8][8];
     private Piece pickedUp = null;
+    private final Clickable resetButton = new ImageClickable(app, this::resetPieces, w -> w/2 + 84, h -> h/2 - 14, _ -> 23, _ -> 23, () -> "gui/chess/reset_button", -2, -2);
 
     /// Creates a new overlay
     public ChessOverlay(GameApp app, String pieces) {
@@ -31,8 +33,15 @@ public class ChessOverlay extends Overlay {
             }
         }
 
+        originalPieces = pieces;
+        resetPieces();
+    }
+
+    /// Resets the pieces to the original layout
+    protected void resetPieces() {
+        pickedUp = null;
         int r = 0;
-        for (String row : pieces.lines().toList()) {
+        for (String row : originalPieces.lines().toList()) {
             int c = 0;
             for (char p : row.toCharArray()) {
                 this.pieces[r][c] = newPiece(p, r, c);
@@ -58,6 +67,8 @@ public class ChessOverlay extends Overlay {
 
         for (var row : cells) for (var cell : row) cell.render(canvas);
         for (var row : pieces) for (var piece : row) if (piece != null) piece.img.render(canvas);
+
+        resetButton.render(canvas);
     }
 
     /// Creates a new piece with the given name at the given location
@@ -361,6 +372,8 @@ public class ChessOverlay extends Overlay {
         super.tick();
         for (var row : pieces) for (var piece : row) if (piece != null) piece.img.tick();
         for (var row : cells) for (var cell : row) cell.tick();
+
+        resetButton.tick();
     }
 
     /// Called when the mouse is clicked
@@ -371,5 +384,7 @@ public class ChessOverlay extends Overlay {
             if (piece != null && piece.img.onClick(click)) return; // if any piece is clicked, no cell should be clicked
         }
         for (var row : cells) for (var cell : row) cell.onClick(click);
+
+        resetButton.onClick(click);
     }
 }

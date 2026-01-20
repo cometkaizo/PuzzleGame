@@ -7,11 +7,11 @@ import java.util.Map;
 
 /**
  * Author: Andy Wang
- * Date Modified: 2026-01-04
+ * Date Modified: 2026-01-20
  * Description: Screen overlay for auto chess
  */
 public class AutoChessOverlay extends ChessOverlay {
-    private Map<Move, Move> autoMoves = new HashMap<>();
+    private final Map<Move, Move> autoMoves = new HashMap<>();
     private long autoMoveTime = -1;
     private Move nextAutoMove;
 
@@ -40,6 +40,14 @@ public class AutoChessOverlay extends ChessOverlay {
     private void putMove(Move playerMove, Move autoMove) {
         autoMoves.put(playerMove, autoMove);
         autoMoves.put(playerMove.inverse(), autoMove.inverse());
+    }
+
+    /// Resets the pieces to the original layout
+    @Override
+    protected void resetPieces() {
+        super.resetPieces();
+        autoMoveTime = -1;
+        nextAutoMove = null;
     }
 
     /// Ticks this screen overlay
