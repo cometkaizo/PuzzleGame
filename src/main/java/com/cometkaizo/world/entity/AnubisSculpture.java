@@ -40,7 +40,7 @@ public class AnubisSculpture extends Interactable {
     protected void interact() {
         if (scaleUnlocked) app.setOverlay(new AnubisOverlay(app, weighed, this::onWeigh));
         else {
-            app.narrate("To awaken Ra, Anubis seeks the truth...", new InventoryOverlay(app, item -> {
+            app.narrate("To awaken Ra, Anubis seeks the feather of truth...", new InventoryOverlay(app, item -> {
                 if (item instanceof FeatherItem) {
                     scaleUnlocked = true;
                     game.getInventory().remove(item);
