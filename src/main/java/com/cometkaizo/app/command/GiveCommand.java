@@ -4,10 +4,7 @@ import com.cometkaizo.app.GameApp;
 import com.cometkaizo.command.arguments.StringArgument;
 import com.cometkaizo.command.nodes.ArgumentCommandNodeBuilder;
 import com.cometkaizo.command.nodes.Command;
-import com.cometkaizo.game.item.FeatherItem;
-import com.cometkaizo.game.item.HeavyHeartItem;
-import com.cometkaizo.game.item.LightHeartItem;
-import com.cometkaizo.game.item.MachinePieceItem;
+import com.cometkaizo.game.item.*;
 
 import java.util.List;
 
@@ -34,6 +31,12 @@ public class GiveCommand extends Command {
             case "heart1" -> app.getGame().getInventory().add(new HeavyHeartItem());
             case "heart2" -> app.getGame().getInventory().add(new LightHeartItem());
             case "machine" -> app.getGame().getInventory().add(new MachinePieceItem());
+            case "notes" -> {
+                app.getGame().getInventory().add(new NoteItem(0));
+                app.getGame().getInventory().add(new NoteItem(1));
+                app.getGame().getInventory().add(new NoteItem(2));
+                app.getGame().getInventory().add(new NoteItem(3));
+            }
             case null, default -> log("Invalid argument");
         }
     }

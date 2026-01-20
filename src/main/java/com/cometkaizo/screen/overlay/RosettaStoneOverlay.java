@@ -16,59 +16,59 @@ public class RosettaStoneOverlay extends Overlay {
     public static final Color COLOR = new Color(236, 228, 223);
     private final Text[] texts = {
             new Text("""
-                    ÑŽ = 3
-                    ÑÇ = Ceh
-                    Ñä = Cumku
-                    Ñë = 5
-                    ÑØ = Imix
-                    Ñü = Zip
-                    ŽŽ = Ik'
-                    ŽÇ = 6
-                    Žä = Chuwen
                     Žë = Kayab
                     ŽØ = 12
+                    ÑŽ = 3
+                    üØ = Kaban
+                    Øä = Etz'nab'
+                    Ñë = 5
+                    Øë = Kawak
                     Žü = Chen
-                    ÇŽ = Lamat
-                    ÇÇ = 0
+                    ŽÇ = 6
+                    ëŽ = Muluk
+                    üë = Yax
+                    Çë = Zotz
+                    ÇØ = 2
+                    ŽŽ = Ik'
                     """, Assets.font(26), COLOR,
                     w -> w / 2 - 55,
                     h -> h / 2 - 23,
                     94, false, false),
             new Text("""
                     Çä = Ajaw
-                    Çë = Zotz
-                    ÇØ = 2
-                    Çü = Uo
-                    äŽ = Xul
-                    äÇ = K'ib'
-                    ää = 1
-                    äë = K'an
-                    äØ = Muan
-                    äü = 4
-                    ëŽ = Muluk
-                    ëÇ = Chikchan
-                    ëä = Wayeb'
-                    ëë = 9
                     ëØ = Mac
+                    ÇŽ = Lamat
+                    ÑÇ = Ceh
+                    ëÇ = Chikchan
+                    üŽ = 8
+                    üÇ = Ben
+                    ää = 1
+                    üä = Xul
+                    ØØ = 10
+                    Ñä = Cumku
+                    ëä = Wayeb'
                     ëü = Men
+                    ëë = 9
+                    äÇ = K'ib'
+                    äë = K'an
                     """, Assets.font(26), COLOR,
                     w -> w / 2 - 15,
                     h -> h / 2 - 40,
                     94, false, false),
             new Text("""
                     ØÑ = 7
-                    ØŽ = Ix
+                    Žä = Chuwen
+                    ÇÇ = 0
                     ØÇ = Mol
-                    Øä = Etz'nab'
-                    Øë = Kawak
-                    ØØ = 10
+                    ÑØ = Imix
+                    äŽ = Xul
+                    Ñü = Zip
                     Øü = Pop
-                    üŽ = 8
-                    üÇ = Ben
-                    üä = Xul
-                    üë = Yax
-                    üØ = Kaban
                     üü = 11
+                    Çü = Uo
+                    äØ = Muan
+                    äü = 4
+                    ØŽ = Ix
                     """, Assets.font(26), COLOR,
                     w -> w / 2 + 24,
                     h -> h / 2 - 57,
