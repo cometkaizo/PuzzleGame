@@ -95,7 +95,7 @@ public class NoteItem extends Item implements Renderable {
 
     @Override
     public void render(Canvas canvas) {
-        canvas.renderCenteredImage(Assets.texture("gui/note_small"));
+        canvas.renderCenteredImage(Assets.texture("gui/note/see_through/" + variant));
         text.render(canvas);
     }
 

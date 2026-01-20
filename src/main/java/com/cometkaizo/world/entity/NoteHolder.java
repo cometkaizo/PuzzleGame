@@ -1,5 +1,6 @@
 package com.cometkaizo.world.entity;
 
+import com.cometkaizo.game.GameState;
 import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.screen.overlay.NoteHolderOverlay;
 import com.cometkaizo.world.*;
@@ -10,7 +11,7 @@ import com.cometkaizo.world.*;
  * Description: Interactable note-holder for light to shine through
  */
 public class NoteHolder extends Interactable {
-    private NoteItem[] notes = new NoteItem[4];
+    private NoteItem[] notes;
 
     public NoteHolder(Room.Layer layer, Vector.MutableDouble position, Args args) {
         super(layer, position, args);
@@ -20,6 +21,13 @@ public class NoteHolder extends Interactable {
     @Override
     public void reset() {
         super.reset();
+        notes = originalGameState.noteHolderNotes;
+    }
+
+    @Override
+    public void write(GameState state) {
+        super.write(state);
+        state.noteHolderNotes = notes;
     }
 
     @Override

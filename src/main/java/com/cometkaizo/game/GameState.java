@@ -2,6 +2,7 @@ package com.cometkaizo.game;
 
 import com.cometkaizo.game.item.Item;
 import com.cometkaizo.game.item.ItemTypes;
+import com.cometkaizo.game.item.NoteItem;
 import com.cometkaizo.game.item.WeighableItem;
 import com.cometkaizo.world.Args;
 import com.cometkaizo.world.Direction;
@@ -38,6 +39,7 @@ public class GameState {
     public boolean organKeyFallenOut;
     public Map<String, Boolean> morseCodeWorking = new HashMap<>();
     public int[] morseCodePosterNotes = null;
+    public NoteItem[] noteHolderNotes = new NoteItem[4];
 
     public GameState() {}
     public GameState(InputStream is) throws IOException {
@@ -92,6 +94,15 @@ public class GameState {
         morseCodePosterNotes = new int[morseCodePosterNotesSize];
         for (int i = 0; i < morseCodePosterNotesSize; i++) {
             morseCodePosterNotes[i] = in.readInt();
+        }
+
+        int noteHolderNoteSize = in.readInt();
+        noteHolderNotes = new NoteItem[noteHolderNoteSize];
+        for (int i = 0; i < noteHolderNoteSize; i++) {
+            if (in.readBoolean()) {
+                var args = new Args(in.readUTF());
+                noteHolderNotes[i] = new NoteItem(args);
+            } else noteHolderNotes[i] = null;
         }
     }
     public GameState(Path path) throws IOException {
@@ -155,6 +166,12 @@ public class GameState {
         out.writeInt(morseCodePosterNotes.length);
         for (int id : morseCodePosterNotes) {
             out.writeInt(id);
+        }
+
+        out.writeInt(noteHolderNotes.length);
+        for (var note : noteHolderNotes) {
+            out.writeBoolean(note != null);
+            if (note != null) out.writeUTF(note.write());
         }
 
         out.flush();
