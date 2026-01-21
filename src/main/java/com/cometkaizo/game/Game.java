@@ -195,6 +195,7 @@ public class Game implements Tickable, Renderable, InputListener {
         canvas.renderString("Story", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.5), true, false);
         canvas.renderString("Visual Assets", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(42.2), true, false);
         canvas.renderString("Puzzle Design", Assets.font(30), Color.WHITE, canvas.toScreenX(38), canvas.toScreenY(41.9), true, false);
+        canvas.renderString("Music", Assets.font(30), Color.WHITE, canvas.toScreenX(32), canvas.toScreenY(41.6), true, false);
     }
 
     /// Posts key-pressed events
