@@ -252,8 +252,8 @@ public class Player extends MovableEntity {
     /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
-        if (jumpTime >= 0 && jumpTime < 5) return "player/jump";
-        return "player/normal";
+        if (jumpTime >= 0 && jumpTime < 5) return "player/jump1";
+        return "player/normal1";
     }
 
     /// Renders this entity to the screen
