@@ -4,8 +4,10 @@ import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.screen.Assets;
 import com.cometkaizo.screen.Canvas;
+import com.cometkaizo.screen.Clickable;
 import com.cometkaizo.screen.ImageClickable;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,26 +16,34 @@ import java.util.Set;
  * Description: Screen overlay for the twelve plus one puzzle
  */
 public class TwelvePlusOneOverlay extends Overlay {
-    private final Set<Letter> letters = Set.of(
-            new Letter("T", 0),
-            new Letter("W", 1),
-            new Letter("V", 2),
-            new Letter("E", 3),
-            new Letter("L", 4),
-            new Letter("L", 5),
-            new Letter("U", 6),
-            new Letter("P", 7),
-            new Letter("E", 8),
-            new Letter("S", 9),
-            new Letter("N", 10),
-            new Letter("E", 11),
-            new Letter("O", 12)
-    );
+    private final Set<Letter> letters = new HashSet<>();
     private Letter selected;
+    private final Clickable resetButton = new ImageClickable(app, this::resetLetters, w -> w/2, h -> h/2 + 40, _ -> 23, _ -> 23, () -> "gui/chess/reset_button", -2, -2);
 
     /// Creates a new overlay
     public TwelvePlusOneOverlay(GameApp app) {
         super(app);
+        resetLetters();
+    }
+
+    /// Resets the letters to the original layout
+    protected void resetLetters() {
+        selected = null;
+
+        letters.clear();
+        letters.add(new Letter("T", 0));
+        letters.add(new Letter("W", 1));
+        letters.add(new Letter("V", 2));
+        letters.add(new Letter("E", 3));
+        letters.add(new Letter("L", 4));
+        letters.add(new Letter("L", 5));
+        letters.add(new Letter("U", 6));
+        letters.add(new Letter("P", 7));
+        letters.add(new Letter("E", 8));
+        letters.add(new Letter("S", 9));
+        letters.add(new Letter("N", 10));
+        letters.add(new Letter("E", 11));
+        letters.add(new Letter("O", 12));
     }
 
     /// Renders the overlay to the screen
@@ -43,6 +53,8 @@ public class TwelvePlusOneOverlay extends Overlay {
         canvas.renderCenteredImage(Assets.texture("gui/twelve_plus_one/regular"));
 
         for (var l : letters) l.render(canvas);
+
+        resetButton.render(canvas);
     }
 
     /// A single letter on the overlay
@@ -90,12 +102,14 @@ public class TwelvePlusOneOverlay extends Overlay {
     public void tick() {
         super.tick();
         for (var l : letters) l.tick();
+        resetButton.tick();
     }
 
     /// Called when the mouse is pressed
     @Override
     protected void onClick(MousePressedEvent click) {
         super.onClick(click);
+        if (resetButton.onClick(click)) return;
         for (var l : letters) {
             if (l.onClick(click)) return;
         }
