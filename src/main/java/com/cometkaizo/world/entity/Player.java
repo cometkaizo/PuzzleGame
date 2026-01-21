@@ -249,12 +249,6 @@ public class Player extends MovableEntity {
         interactTime = interactDuration;
     }
 
-    /// Returns whether this entity can "blip" around corners
-    @Override
-    protected boolean canBlip() {
-        return isJumping();
-    }
-
     /// Gets the path to the texture
     @Override
     protected String getTexturePath() {
@@ -276,8 +270,8 @@ public class Player extends MovableEntity {
         double translateX = 0, translateY = 0;
         double alpha = 1;
         if (walkTime >= 0) {
-            angle = Math.sin((canvas.lerp(prevWalkTime, walkTime))) * 0.2;
-            translateY = -Math.abs(Math.sin(canvas.lerp(prevWalkTime, walkTime)) * 25);
+            angle = Math.sin((canvas.lerp(prevWalkTime, walkTime))) * 0.1;
+            translateY = -Math.abs(Math.sin(canvas.lerp(prevWalkTime, walkTime)) * 35);
         }
 
         {
