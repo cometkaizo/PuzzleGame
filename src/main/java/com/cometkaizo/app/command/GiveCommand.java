@@ -39,6 +39,7 @@ public class GiveCommand extends Command {
                 app.getGame().getInventory().add(new NoteItem(2));
                 app.getGame().getInventory().add(new NoteItem(3));
             }
+            case "organ_key" -> app.getGame().getInventory().add(new OrganKeyItem());
             case null, default -> log("Invalid argument");
         }
     }
