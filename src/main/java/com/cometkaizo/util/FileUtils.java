@@ -68,7 +68,7 @@ public class FileUtils {
 
     /// Runs the given batch file
     public static Process runBat(File file) throws IOException {
-        return Runtime.getRuntime().exec("cmd /c start \"\" \"" + file.getAbsolutePath() + "\"");
+        return Runtime.getRuntime().exec(("cmd /c start \"\" \"" + file.getAbsolutePath() + "\"").split(" "));
     }
 
     /// Returns whether the given file is not null and exists

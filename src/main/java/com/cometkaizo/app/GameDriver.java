@@ -26,19 +26,30 @@ public class GameDriver extends SystemDriver {
      * Description: Constructs a new GameDriver with the given input stream
      * Adds the relevant loops for ticking, rendering, and command parsing
      */
+
+    public class AppParsingRunnable implements Runnable, AutoCloseable{
+        private final Scanner scanner;
+        public AppParsingRunnable(InputStream input){
+            scanner = new Scanner(input);
+        }
+
+        @Override
+        public void run(){
+            if (scanner.hasNextLine()) {
+                app.parseInput(scanner.nextLine());
+            }
+        }
+
+        @Override
+        public void close(){
+            scanner.close();
+        }
+    }
     public GameDriver(InputStream input) {
         super(new GameApp());
         this.app = (GameApp) getApp();
 
-        addLoop(new Runnable() {
-            private final Scanner scanner = new Scanner(input);
-            @Override
-            public void run() {
-                if (scanner.hasNextLine()) {
-                    app.parseInput(scanner.nextLine());
-                }
-            }
-        }, 300, TimeUnit.MILLISECONDS);
+        addLoop(new AppParsingRunnable(input), 300, TimeUnit.MILLISECONDS);
 
         addLoop(() -> {
             long millisSinceLastTick = System.currentTimeMillis() - app.getLastTickTime();

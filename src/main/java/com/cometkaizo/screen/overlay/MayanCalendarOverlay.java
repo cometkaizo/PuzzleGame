@@ -4,8 +4,6 @@ import com.cometkaizo.app.GameApp;
 import com.cometkaizo.game.event.MousePressedEvent;
 import com.cometkaizo.screen.*;
 import com.cometkaizo.screen.Canvas;
-import com.cometkaizo.world.Tickable;
-
 import java.awt.*;
 import java.util.stream.IntStream;
 
@@ -322,7 +320,7 @@ public class MayanCalendarOverlay extends Overlay {
         }
     }
     /// An abstract cog
-    abstract class Cog extends ImageClickable implements Tickable, Renderable {
+    abstract class Cog extends ImageClickable {
         String name;
         int maxRot;
         int rot;
