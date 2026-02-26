@@ -16,8 +16,6 @@ import com.cometkaizo.screen.overlay.Overlay;
 import com.cometkaizo.screen.overlay.TitleScreen;
 import com.cometkaizo.system.app.App;
 import com.cometkaizo.util.FileUtils;
-import com.cometkaizo.world.Tickable;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -33,7 +31,7 @@ import static com.cometkaizo.util.FileUtils.exists;
  * Date Modified: 2026-01-19
  * Description: This class represents the game application.
 */
-public class GameApp extends App implements Tickable {
+public class GameApp extends App {
     public static final String SAVE_DIR_NAME = "PuzzleGame";
 
     private final GameAppSettings settings;

@@ -39,7 +39,6 @@ public class Game implements Tickable, Renderable, InputListener {
     public Room room;
     private Player player;
     public long tick = 0;
-    private int endFadeInTime = -1, endFadeOutTime = -1;
     public Door paintingsDoor, sculpturesDoor, modernDoor, artifactsDoor, artifactsHallDoor, libraryDoor, chessDoor, basementDoor;
     private final Inventory inventory = new Inventory();
     private boolean devMode;

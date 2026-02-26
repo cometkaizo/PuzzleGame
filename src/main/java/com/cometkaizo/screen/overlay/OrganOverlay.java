@@ -8,7 +8,6 @@ import com.cometkaizo.screen.ImageClickable;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 import java.util.Queue;
 import java.util.function.IntUnaryOperator;
 
@@ -27,8 +26,8 @@ public class OrganOverlay extends Overlay {
             "l","u","n","g","s",   "l","i","v","e","r",   "s","t","o","m","a","c","h"
     };
 
-    private List<Key>[] whiteKeys = new List[HEIGHT_IN_KEYS];
-    private List<Key>[] blackKeys = new List[HEIGHT_IN_KEYS];
+    private ArrayList<ArrayList<Key>> whiteKeys = new ArrayList<ArrayList<Key>>(HEIGHT_IN_KEYS);
+    private ArrayList<ArrayList<Key>> blackKeys = new ArrayList<ArrayList<Key>>(HEIGHT_IN_KEYS);
     private Key lastHoveredWhiteKey, lastHoveredBlackKey;
     private Queue<String> lastPressedKeys = new ArrayDeque<>();
 
@@ -42,8 +41,8 @@ public class OrganOverlay extends Overlay {
         this.solveAction = solveAction;
 
         for (int r = 0; r < HEIGHT_IN_KEYS; r ++) {
-            whiteKeys[r] = new ArrayList<>();
-            blackKeys[r] = new ArrayList<>();
+            whiteKeys.add(new ArrayList<>());
+            blackKeys.add(new ArrayList<>());
             int c = 0;
             for (int octave = 0; octave < WIDTH_IN_OCTAVES; octave ++) {
                 // init each octave
@@ -74,7 +73,7 @@ public class OrganOverlay extends Overlay {
     }
 
     /// Renders the list of the keys and returns the hovered key, if any
-    private Key renderKeys(List<Key>[] keys, Canvas canvas) {
+    private Key renderKeys(ArrayList<ArrayList<Key>> keys, Canvas canvas) {
         Key hovered = null;
         // render all non-hovered keys
         for (var row : keys) for (var key : row) {
@@ -90,12 +89,12 @@ public class OrganOverlay extends Overlay {
     /// Adds a new white key to the white keys array
     public void addNewWhiteKey(int r, int c, int octave, int x) {
         var key = new Key(true, r*WIDTH_IN_KEYS + c, w -> w/2-122 + octave*KEY_PIXEL_WIDTH*7 + x, h -> h/2-21 + r*34);
-        whiteKeys[r].add(key);
+        whiteKeys.get(r).add(key);
     }
     /// Adds a new black key to the black keys array
     public void addNewBlackKey(int r, int c, int octave, int x) {
         var key = new Key(false, r*WIDTH_IN_KEYS + c, w -> w/2-122 + octave*KEY_PIXEL_WIDTH*7 + x, h -> h/2-21 + r*34);
-        blackKeys[r].add(key);
+        blackKeys.get(r).add(key);
     }
     /// A single white or black key on the organ
     public class Key extends ImageClickable {
